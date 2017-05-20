@@ -13,7 +13,7 @@ rooroot_t="root"
 mkdir -p ${d}
 
 # 1
-res=32
+res=64
 for f in ${leaf_icons}.svg; do
 	img=${f%.*}
 	echo "make ${img}.svg -> ${d}/${img}.png @ resolution ${res}"
@@ -21,7 +21,7 @@ for f in ${leaf_icons}.svg; do
 done
 
 # 2
-res=48
+res=128
 for f in ${root_icons}.svg; do
 	img=${f%.*}
 	echo "make ${img}.svg -> ${d}/${img}.png @ resolution ${res}"

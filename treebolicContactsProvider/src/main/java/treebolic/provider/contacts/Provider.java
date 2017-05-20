@@ -124,8 +124,7 @@ public class Provider implements IProvider
 			TreeMutableNode first = nodes.get(i);
 			TreeMutableNode last = nodes.get(b - 1);
 
-			boolean isContact = !"directory:".equals(last.getLink());
-			root.setLabel(first.getLabel().substring(0, 3) + "-" + (isContact ? last.getLabel().substring(0, 3) : tail(last.getLabel(), 3)));
+			root.setLabel(label(first, last));
 			root.setContent("root" + level + "-" + i + "<br>" + first.getLabel() + "<br>" + last.getLabel());
 
 			for (int k = i; k < b; k++)
@@ -138,6 +137,16 @@ public class Provider implements IProvider
 		}
 		Log.d(TAG, "<" + level + " roots " + roots.size());
 		return roots;
+	}
+
+	static int TRUNC = 3;
+
+	private String label(final TreeMutableNode first, final TreeMutableNode last)
+	{
+		boolean isContact = !"directory:".equals(last.getLink());
+		String label1 = first.getLabel().replaceFirst("^[@#]", "").toLowerCase();
+		String label2 = last.getLabel().replaceFirst("^[@#]", "").toLowerCase();
+		return (label1.substring(0, TRUNC) + "-" + (isContact ? label2.substring(0, TRUNC) : tail(label2, TRUNC)));
 	}
 
 	private String tail(String str, int n)
@@ -203,8 +212,18 @@ public class Provider implements IProvider
 					final String photoTumbnail2UriString = cursor.getString(Settings.PHOTO_THUMBNAIL_ID_INDEX);
 					final String photo2UriString = cursor.getString(Settings.PHOTO_ID_INDEX);
 
+					final String[] fields = altName.split(", *");
+					String label = fields[0];
+					if (fields.length > 1 && fields[1].charAt(0) != '#')
+					{
+						label += '\n';
+						label += fields[1];
+					}
+
+					//final String label = altName.replace(',','\n');
+
 					final TreeMutableNode node = new TreeMutableNode(null, id);
-					node.setLabel(altName);
+					node.setLabel(label);
 					node.setContent(name + "<br>" + altName);
 					node.setLink(lookup);
 					// node.setImage(image);
@@ -259,12 +278,12 @@ public class Provider implements IProvider
 	/**
 	 * Folder root background color
 	 */
-	private static final Color theFolderBackColor = Color.ORANGE;
+	private static final Color theFolderBackColor = theDefaultContactForeColor;
 
 	/**
 	 * Folder foreground color
 	 */
-	public static final Color theFolderForeColor = Color.BLACK;
+	public static final Color theFolderForeColor = theDefaultContactBackColor;
 
 	/**
 	 * Folder treeedge color
@@ -276,7 +295,7 @@ public class Provider implements IProvider
 	/**
 	 * Top root background color
 	 */
-	private static final Color theRootBackColor = Color.RED;
+	private static final Color theRootBackColor = Color.ORANGE;
 
 	/**
 	 * Top root root foreground color

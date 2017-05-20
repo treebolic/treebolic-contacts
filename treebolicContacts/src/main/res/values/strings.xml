@@ -4,9 +4,7 @@
 
 	<string name="title_activity_main">@string/app_name</string>
 	<string name="title_activity_list_contacts">List contacts</string>
-	<string name="title_activity_treebolic_plugin">Treebolic Plugin</string>
-
-	<string name="title_query">Run</string>
+	<string name="title_activity_treebolic">Contacts</string>
 
 	<string name="action_run">Run</string>
 	<string name="action_list_contacts">List contacts</string>

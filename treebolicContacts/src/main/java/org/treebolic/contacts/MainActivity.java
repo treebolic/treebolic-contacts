@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 
 import org.treebolic.TreebolicIface;
 
+import treebolic.provider.contacts.Permissions;
 import treebolic.provider.contacts.Provider;
 
 public class MainActivity extends AppCompatActivity
@@ -134,6 +135,9 @@ public class MainActivity extends AppCompatActivity
 	@SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
 	private void initialize()
 	{
+		// permissions
+		Permissions.check(this);
+
 		// test if initialized
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		final boolean initialized = sharedPref.getBoolean(Settings.PREF_INITIALIZED, false);
