@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity
 
 			case R.id.action_settings:
 			{
+				final Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
 				return true;
 			}
 
