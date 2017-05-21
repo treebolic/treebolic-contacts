@@ -3,6 +3,7 @@ package treebolic.provider.contacts;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -26,17 +27,25 @@ import treebolic.provider.IProviderContext;
 /**
  * Provider for Contacts
  *
- * @author Bernard Bou
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
 public class Provider implements IProvider
 {
 	private static final String TAG = "ContactProvider";
 
+	/**
+	 * Android context
+	 */
 	private Context context;
 
+	/**
+	 * Constructor
+	 */
 	public Provider()
 	{
 	}
+
+	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
 
 	@Override
 	public void setHandle(final Object thisHandle)
@@ -47,7 +56,7 @@ public class Provider implements IProvider
 	@Override
 	public void setContext(final IProviderContext thisProviderContext)
 	{
-
+		// not needed
 	}
 
 	@Override
@@ -55,6 +64,8 @@ public class Provider implements IProvider
 	{
 		// not needed
 	}
+
+	// I P R O V I D E R  I N T E R F A C E   (M O D E L)
 
 	@Override
 	public Model makeModel(String thisSource, URL thisBase, Properties theseParameters)
@@ -71,12 +82,30 @@ public class Provider implements IProvider
 		return buildTree();
 	}
 
+	// T R E E   F A C T O R Y
+
+	/**
+	 * Max children nodes at level 0, 1 .. n. Level is just above leaves. Last value i holds for level i to n.
+	 */
+	public static int[] TREE_MAX_NODES_AT_LEVEL = {10, 3};
+
+	/**
+	 * Tree factory
+	 *
+	 * @return tree
+	 */
 	private Tree buildTree()
 	{
 		//return buildTree(collectNodes());
 		return buildTree(buildHierarchy(collectNodes(), 0));
 	}
 
+	/**
+	 * Tree factory
+	 *
+	 * @param nodes contact nodes
+	 * @return tree of contact nodes
+	 */
 	private Tree buildTree(List<TreeMutableNode> nodes)
 	{
 		final TreeMutableNode root = new TreeMutableNode(null, "root");
@@ -97,22 +126,23 @@ public class Provider implements IProvider
 		return new Tree(root, null);
 	}
 
-	// H E L P E R S
-
-	static int[] LEVEL_MAX = {10, 3};
-
+	/**
+	 * Build a list of tree parent nodes
+	 *
+	 * @param nodes children nodes
+	 * @param level current level
+	 * @return list of parent nodes
+	 */
 	private List<TreeMutableNode> buildHierarchy1(List<TreeMutableNode> nodes, int level)
 	{
 		Log.d(TAG, ">" + level + " nodes " + nodes.size());
 		final List<TreeMutableNode> roots = new ArrayList<>();
 
-		int m = LEVEL_MAX[level > LEVEL_MAX.length - 1 ? LEVEL_MAX.length - 1 : level];
+		int m = TREE_MAX_NODES_AT_LEVEL[level > TREE_MAX_NODES_AT_LEVEL.length - 1 ? TREE_MAX_NODES_AT_LEVEL.length - 1 : level];
 		int z = nodes.size();
 		for (int i = 0; i < z; i = i + m)
 		{
 			final TreeMutableNode root = new TreeMutableNode(null, "root" + level + "-" + i);
-			//root.setLabel("root" + level + "-" + i);
-			//root.setContent("root" + level + "-" + i);
 			root.setLink("directory:"); //$NON-NLS-1$
 			root.setBackColor(Provider.theFolderBackColor);
 			root.setForeColor(Provider.theFolderForeColor);
@@ -124,6 +154,7 @@ public class Provider implements IProvider
 			TreeMutableNode first = nodes.get(i);
 			TreeMutableNode last = nodes.get(b - 1);
 
+			root.setEdgeLabel(left(first.getLabel(), LABEL_TRUNCATE_AT));
 			root.setLabel(label(first, last));
 			root.setContent("root" + level + "-" + i + "<br>" + first.getLabel() + "<br>" + last.getLabel());
 
@@ -139,37 +170,9 @@ public class Provider implements IProvider
 		return roots;
 	}
 
-	static int TRUNC = 3;
-
-	private String label(final TreeMutableNode first, final TreeMutableNode last)
-	{
-		boolean isContact = !"directory:".equals(last.getLink());
-		String label1 = first.getLabel().replaceFirst("^[@#]", "").toLowerCase();
-		String label2 = last.getLabel().replaceFirst("^[@#]", "").toLowerCase();
-		return (label1.substring(0, TRUNC) + "-" + (isContact ? label2.substring(0, TRUNC) : tail(label2, TRUNC)));
-	}
-
-	private String tail(String str, int n)
-	{
-		int l = str.length();
-		if (l == n)
-		{
-			return str;
-		}
-		else if (l > 3)
-		{
-			return str.substring(l - 3);
-		}
-		else
-		{
-			// whatever is appropriate in this case
-			throw new IllegalArgumentException(str);
-		}
-	}
-
 	private List<TreeMutableNode> buildHierarchy(List<TreeMutableNode> nodes, int level)
 	{
-		int m = LEVEL_MAX[level > LEVEL_MAX.length - 1 ? LEVEL_MAX.length - 1 : level];
+		int m = TREE_MAX_NODES_AT_LEVEL[level > TREE_MAX_NODES_AT_LEVEL.length - 1 ? TREE_MAX_NODES_AT_LEVEL.length - 1 : level];
 		Log.d(TAG, "level=" + level + "  m=" + m);
 		if (nodes == null)
 		{
@@ -184,6 +187,13 @@ public class Provider implements IProvider
 		return buildHierarchy(nodes2, level + 1);
 	}
 
+	// L E A V E S
+
+	/**
+	 * Collect contact nodes
+	 *
+	 * @return list of contact nodes
+	 */
 	private List<TreeMutableNode> collectNodes()
 	{
 		Settings.selectionArgs[0] = "%" + Settings.searchString + "%";
@@ -207,11 +217,9 @@ public class Provider implements IProvider
 					final String lookup = cursor.getString(Settings.LOOKUP_KEY_INDEX);
 					final String name = cursor.getString(Settings.NAME_INDEX);
 					final String altName = cursor.getString(Settings.ALT_NAME_INDEX);
-					final String photoTumbnailUriString = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
-					final String photoUriString = cursor.getString(Settings.PHOTO_URI_INDEX);
-					final String photoTumbnail2UriString = cursor.getString(Settings.PHOTO_THUMBNAIL_ID_INDEX);
-					final String photo2UriString = cursor.getString(Settings.PHOTO_ID_INDEX);
+					final Long photoThumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
 
+					// label
 					final String[] fields = altName.split(", *");
 					String label = fields[0];
 					if (fields.length > 1 && fields[1].charAt(0) != '#')
@@ -219,16 +227,21 @@ public class Provider implements IProvider
 						label += '\n';
 						label += fields[1];
 					}
-
 					//final String label = altName.replace(',','\n');
 
+					// node
 					final TreeMutableNode node = new TreeMutableNode(null, id);
 					node.setLabel(label);
 					node.setContent(name + "<br>" + altName);
 					node.setLink(lookup);
-					// node.setImage(image);
-					// node.setImageIndex(images.size());
 
+					// image
+					if (photoThumbnailId != 0)
+					{
+						final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoId(this.context, photoThumbnailId);
+						final Image image = new Image(bitmap);
+						node.setImage(image);
+					}
 					nodes.add(node);
 				}
 				while (cursor.moveToNext());
@@ -238,6 +251,97 @@ public class Provider implements IProvider
 		}
 		return null;
 	}
+
+	// H E L P E R S
+
+	static int LABEL_TRUNCATE_AT = 3;
+
+	/**
+	 * Label factory of non-leave nodes
+	 *
+	 * @param first first child node
+	 * @param last  lst child node
+	 * @return label of parent node
+	 */
+	private String label(final TreeMutableNode first, final TreeMutableNode last)
+	{
+		boolean isContact = !"directory:".equals(last.getLink());
+		String label1 = first.getLabel().replaceFirst("^[@#]*", "").toLowerCase();
+		String label2 = last.getLabel().replaceFirst("^[@#]*", "").toLowerCase();
+		final StringBuilder sb = new StringBuilder();
+		sb.append(left(label1, LABEL_TRUNCATE_AT)) //
+				.append('-');
+		if (isContact)
+		{
+			sb.append(left(label2, LABEL_TRUNCATE_AT));
+		}
+		else
+		{
+			sb.append(right(label2, LABEL_TRUNCATE_AT));
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Right truncation of a string
+	 *
+	 * @param str string
+	 * @param n   n trailing characters
+	 * @return right of string
+	 */
+	private String right(String str, int n)
+	{
+		int l = str.length();
+		if (l > n)
+		{
+			return str.substring(l - n);
+		}
+		return str;
+	}
+
+	/**
+	 * Left truncation of a string
+	 *
+	 * @param str string
+	 * @param n   n first characters
+	 * @return left of string
+	 */
+	private String left(final String str, int n)
+	{
+		return str.length() > n ? str.substring(0, n) : str;
+	}
+
+
+	// S E T T I N G S
+
+	/**
+	 * Settings factory
+	 *
+	 * @return settings
+	 */
+	treebolic.model.Settings makeSettings()
+	{
+		final treebolic.model.Settings settings = new treebolic.model.Settings();
+		settings.theBackColor = Provider.theBackgroundColor;
+		settings.theNodeBackColor = Provider.theDefaultContactBackColor;
+		settings.theNodeForeColor = Provider.theDefaultContactForeColor;
+		settings.theOrientation = "radial";
+		settings.theHasToolbarFlag = true;
+		settings.theFontFace = "SansSerif";
+		settings.theExpansion = .8F;
+		settings.theSweep = 1.3F;
+		settings.theEllipsizeFlag = true;
+		settings.theLabelMaxLines = 2;
+		settings.theLabelExtraLineFactor = .7F;
+		settings.theHasToolbarFlag = true;
+		settings.theHasStatusbarFlag = true;
+		settings.theFocusOnHoverFlag = true;
+		settings.theTreeEdgeColor = Provider.theContactEdgeColor;
+		settings.theTreeEdgeStyle = (int) IEdge.DOT;
+		settings.theDefaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
+		return settings;
+	}
+
 	// S T A T I C . D A T A
 
 	public enum ImageIndices
@@ -306,27 +410,6 @@ public class Provider implements IProvider
 	 * Root treeedge color
 	 */
 	private static final Color theRootEdgeColor = Color.WHITE;
-
-	treebolic.model.Settings makeSettings()
-	{
-		final treebolic.model.Settings settings = new treebolic.model.Settings();
-		settings.theBackColor = Provider.theBackgroundColor;
-		settings.theNodeBackColor = Provider.theDefaultContactBackColor;
-		settings.theNodeForeColor = Provider.theDefaultContactForeColor;
-		settings.theOrientation = "radial";
-		settings.theHasToolbarFlag = true;
-		settings.theFontFace = "SansSerif";
-		settings.theExpansion = .8F;
-		settings.theSweep = 1.3F;
-		settings.theEllipsizeFlag = true;
-		settings.theHasToolbarFlag = true;
-		settings.theHasStatusbarFlag = true;
-		settings.theFocusOnHoverFlag = true;
-		settings.theTreeEdgeColor = Provider.theContactEdgeColor;
-		settings.theTreeEdgeStyle = (int) IEdge.DOT;
-		settings.theDefaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
-		return settings;
-	}
 
 	/**
 	 * Root Folder foreground color

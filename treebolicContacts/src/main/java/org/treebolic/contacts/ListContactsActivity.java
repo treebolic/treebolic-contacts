@@ -10,6 +10,11 @@ import android.view.MenuItem;
 
 import treebolic.provider.contacts.Provider;
 
+/**
+ * List of contacts activity
+ *
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ */
 public class ListContactsActivity extends AppCompatActivity
 {
 	@Override

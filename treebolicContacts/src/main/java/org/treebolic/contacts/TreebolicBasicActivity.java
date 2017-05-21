@@ -30,7 +30,6 @@ import org.treebolic.guide.Tip;
 import org.treebolic.search.SearchSettings;
 import org.treebolic.search.Tint;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -41,7 +40,7 @@ import treebolic.view.View;
 /**
  * Treebolic basic activity
  *
- * @author Bernard Bou
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
 abstract public class TreebolicBasicActivity extends AppCompatActivity implements IContext
 {

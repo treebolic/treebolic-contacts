@@ -3,9 +3,10 @@ package treebolic.provider.contacts;
 import android.provider.ContactsContract;
 
 /**
- * Created by bbou on 5/17/17.
+ * Settings
+ *
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-
 public class Settings
 {
 	// P R O J E C T I O N
@@ -15,10 +16,10 @@ public class Settings
 			ContactsContract.Contacts.LOOKUP_KEY, //
 			ContactsContract.Contacts.DISPLAY_NAME, //
 			ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE, //
-			ContactsContract.Contacts.PHOTO_THUMBNAIL_URI, // A URI that can be used to retrieve a thumbnail of the contact's photo.
-			ContactsContract.Contacts.PHOTO_URI, // A URI that can be used to retrieve the contact's full-size photo.
+			//ContactsContract.Contacts.PHOTO_THUMBNAIL_URI, // A URI that can be used to retrieve a thumbnail of the contact's photo.
+			//ContactsContract.Contacts.PHOTO_URI, // A URI that can be used to retrieve the contact's full-size photo.
 			ContactsContract.Contacts.PHOTO_ID, // Reference to the row in the data table holding the photo.
-			ContactsContract.Contacts.PHOTO_FILE_ID, // Photo file ID of the full-size photo.
+			//ContactsContract.Contacts.PHOTO_FILE_ID, // Photo file ID of the full-size photo.
 	};
 
 	// The column index for the _ID column
@@ -56,7 +57,7 @@ public class Settings
 	/**
 	 * Search string (first selection arg)
 	 */
-	 static public String searchString = "";
+	static public String searchString = "";
 
 	/**
 	 * Array to hold values that replace the ?
@@ -65,5 +66,5 @@ public class Settings
 
 	// S O R T
 
-	static public String sortOrder  = ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+	static public String sortOrder = ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
 }

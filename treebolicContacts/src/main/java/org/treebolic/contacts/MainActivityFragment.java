@@ -35,7 +35,9 @@ import java.io.InputStream;
 import treebolic.provider.contacts.Settings;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Main activity fragment
+ *
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener
 {

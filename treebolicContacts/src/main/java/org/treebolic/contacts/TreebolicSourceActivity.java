@@ -8,6 +8,11 @@ import org.treebolic.TreebolicIface;
 
 import java.util.Properties;
 
+/**
+ * Treebolic source activity
+ *
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ */
 public abstract class TreebolicSourceActivity extends TreebolicBasicActivity
 {
 	/**

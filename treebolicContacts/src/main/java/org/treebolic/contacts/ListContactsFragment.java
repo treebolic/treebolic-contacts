@@ -3,10 +3,7 @@ package org.treebolic.contacts;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,30 +25,28 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import treebolic.provider.contacts.Settings;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Fragment with list of contacts
+ *
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
 public class ListContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener
 {
 	static private final String TAG = "ListContactsF";
 
+	// A D A P T E R
+
 	/**
-	 * Column names in the Cursor mapping to the ListView ids.
+	 * Column names in the Cursor mapping to the ListView ids
 	 */
 	private final static String[] FROM_COLUMNS = {ContactsContract.Contacts.DISPLAY_NAME};
 
 	/**
-	 * Column names in the Cursor mapping to the ListView ids.
+	 * Column names in the Cursor mapping to the ListView ids
 	 */
 	private final static int[] TO_IDS = {android.R.id.text1};
-
-	// V I E W
 
 	/**
 	 * Adapter that binds the result Cursor to the ListView
@@ -65,12 +60,13 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
 		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
 	}
 
-	public void onActivityCreated(Bundle savedInstanceState)
+	@Override
+	public void onActivityCreated(final Bundle savedInstanceState)
 	{
 		// Always call the super method first
 		super.onActivityCreated(savedInstanceState);
@@ -79,10 +75,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		getLoaderManager().initLoader(0, null, this);
 
 		// Gets the ListView from the View list of the parent activity
-		/*
-	  ListView object
-	 */
-		ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
+		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
 
 		// Gets a CursorAdapter
 		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact, null, FROM_COLUMNS, TO_IDS, 0);
@@ -95,6 +88,8 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		contactsListView.setOnItemClickListener(this);
 	}
 
+	// L O A D E R
+
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
@@ -105,6 +100,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		return new CursorLoader(getActivity(), ContactsContract.Contacts.CONTENT_URI, Settings.PROJECTION, Settings.SELECTION, Settings.selectionArgs, Settings.sortOrder);
 	}
 
+	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
 		// Put the result Cursor in the adapter for the ListView
@@ -117,6 +113,8 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		// Delete the reference to the existing Cursor
 		this.adapter.swapCursor(null);
 	}
+
+	// A D A P T E R
 
 	public class ImageCursorAdapter extends SimpleCursorAdapter
 	{
@@ -149,6 +147,8 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		}
 	}
 
+	// C L I C K
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View item, int position, long rowID)
 	{
@@ -160,21 +160,34 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		cursor.moveToPosition(position);
 
 		// Get the _ID value
-		long contactId = cursor.getLong(Settings.ID_INDEX);
+		final long contactId = cursor.getLong(Settings.ID_INDEX);
 
 		// Get the selected LOOKUP KEY
-		String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
+		final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
 
-		// Lookup Uri
-		Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
+		// Lookup Uri. You can use it as the content URI for retrieving the details for a contact
+		final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
 
 		// Content Uri
-		final Uri contentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
 
-		// Photo Uri
-		final Uri photoUri = Uri.withAppendedPath(contentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+		// IMAGES
 
-		// You can use contactLookupUri as the content URI for retrieving the details for a contact.
+		// Get the selected thumbnail Uri
+		final String thumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
+
+		// Get the selected photo Uri
+		final String photoUri = cursor.getString(Settings.PHOTO_URI_INDEX);
+
+		// Get the selected photo index
+		final long photoId = cursor.getLong(Settings.PHOTO_ID_INDEX);
+
+		// Get the selected thumbnail index
+		final long thumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
+
+		// Thumbnail photo Uri
+		final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+		final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
 
 		final XSpannableStringBuilder sb = new XSpannableStringBuilder();
 		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
@@ -188,19 +201,45 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 
 		sb.append("lookup Uri", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
-				.append(contactLookupUri.toString()) //
+				.append(contactLookupUri == null ? null : contactLookupUri.toString()) //
 				.append('\n');
 
 		sb.append("content Uri", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
-				.append(contentUri.toString()) //
+				.append(contactContentUri == null ? null : contactContentUri.toString()) //
+				.append('\n');
+
+		sb.append("thumbnail Uri", new StyleSpan(Typeface.BOLD), 0) //
+				.append('\n') //
+				.append(thumbnailUri == null ? "null" : thumbnailUri.toString()) //
+				.append('\n');
+
+		sb.append("thumbnail id", new StyleSpan(Typeface.BOLD), 0) //
+				.append('\n') //
+				.append(Long.toString(thumbnailId)) //
 				.append('\n');
 
 		sb.append("photo Uri", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
-				.append(photoUri.toString()) //
+				.append(photoUri == null ? "null" : photoUri.toString()) //
 				.append('\n');
 
+		sb.append("photo id", new StyleSpan(Typeface.BOLD), 0) //
+				.append('\n') //
+				.append(Long.toString(photoId)) //
+				.append('\n');
+
+		sb.append("photo Uri From Content Uri", new StyleSpan(Typeface.BOLD), 0) //
+				.append('\n') //
+				.append(photoUriFromContent == null ? "null" : photoUriFromContent.toString()) //
+				.append('\n');
+
+		sb.append("photo Uri From Photo Id", new StyleSpan(Typeface.BOLD), 0) //
+				.append('\n') //
+				.append(photoUriFromPhotoId == null ? "null" : photoUriFromPhotoId.toString()) //
+				.append('\n');
+
+		// view
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
 		final View dialogView = inflater.inflate(R.layout.detail_contact, null);
@@ -209,7 +248,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		textView.setText(sb);
 		if (photoUri != null)
 		{
-			imageView.setImageURI(photoUri);
+			imageView.setImageURI(Uri.parse(photoUri));
 		}
 		else
 		{
@@ -226,7 +265,6 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		builder.show();
 	}
 
-
 	// U T I L S
 
 	class XSpannableStringBuilder extends SpannableStringBuilder
@@ -239,204 +277,4 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 			return this;
 		}
 	}
-
-	// final long contactId = Long.parseLong(contactIdString);
-	/*
-	final Long contactId = cursor.getLong(ID_INDEX);
-	final Uri contentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-	final Uri photoUri = Uri.withAppendedPath(contentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-	*/
-	// OR InputStream ContactsContract.Contacts.openContactPhotoInputStream (ContentResolver cr, Uri contactLookupUri);
-
-
-	/**
-	 * Get photo
-	 *
-	 * @return the photo URI
-	 */
-	public Uri getPhotoUri(final long contactId)
-	{
-		try
-		{
-			final Cursor cursor = getContext().getContentResolver().query(ContactsContract.Data.CONTENT_URI, //
-					null, //
-					ContactsContract.Data.CONTACT_ID + "=" + contactId + " AND " + ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", //
-					null,  //
-					null);
-			if (cursor != null)
-			{
-				if (!cursor.moveToFirst())
-				{
-					return null; // no photo
-				}
-				cursor.close();
-			}
-			else
-			{
-				return null; // error in cursor process
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-
-		final Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-		return Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-	}
-
-	/**
-	 * Get thumbnail photo input stream
-	 *
-	 * @param contactId contact id
-	 * @return input stream
-	 */
-	public InputStream openPhoto(final long contactId)
-	{
-		final Uri contentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-		final Uri photoUri = Uri.withAppendedPath(contentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-		final Cursor cursor = getContext().getContentResolver().query(photoUri, new String[]{ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
-		if (cursor == null)
-		{
-			return null;
-		}
-		try
-		{
-			if (cursor.moveToFirst())
-			{
-				byte[] data = cursor.getBlob(0);
-				if (data != null)
-				{
-					return new ByteArrayInputStream(data);
-				}
-			}
-		}
-		finally
-		{
-			cursor.close();
-		}
-		return null;
-	}
-
-	/**
-	 * Get display photo input stream
-	 *
-	 * @param contactId contact od
-	 * @return input stream (Photo.PHOTO -> ByteArrayInputStream)
-	 */
-	public InputStream openDisplayPhoto(final long contactId)
-	{
-		final Uri contentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-		final Uri photoUri = Uri.withAppendedPath(contentUri, ContactsContract.Contacts.Photo.DISPLAY_PHOTO);
-		try
-		{
-			final AssetFileDescriptor fd = getContext().getContentResolver().openAssetFileDescriptor(photoUri, "r");
-			if (fd != null)
-			{
-				return fd.createInputStream();
-			}
-		}
-		catch (IOException e)
-		{
-			//
-		}
-		return null;
-	}
-
-	private static final String[] PHOTO_BITMAP_PROJECTION = new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO};
-
-	/**
-	 * Get thumbnail
-	 *
-	 * @param thumbnailId id as per ContactsContract.Contacts.PHOTO_ID
-	 * @return bitmap
-	 */
-	final Bitmap getThumbnail(final int thumbnailId)
-	{
-		final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, thumbnailId);
-		final Cursor cursor = getContext().getContentResolver().query(uri, PHOTO_BITMAP_PROJECTION, null, null, null);
-		if (cursor != null)
-		{
-			try
-			{
-				Bitmap thumbnail = null;
-				if (cursor.moveToFirst())
-				{
-					final byte[] thumbnailBytes = cursor.getBlob(0);
-					if (thumbnailBytes != null)
-					{
-						thumbnail = BitmapFactory.decodeByteArray(thumbnailBytes, 0, thumbnailBytes.length);
-					}
-				}
-				return thumbnail;
-			}
-			finally
-			{
-				cursor.close();
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Put photo to image view
-	 *
-	 * @param contactId contact id
-	 * @param imageView image view
-	 */
-	void putPhoto(final long contactId, final ImageView imageView)
-	{
-		final Uri photoUri = getPhotoUri(contactId);
-		if (photoUri != null)
-		{
-			imageView.setImageURI(photoUri);
-		}
-		else
-		{
-			imageView.setImageResource(R.drawable.ic_contact);
-		}
-	}
-
-	/**
-	 * Put photo to image view
-	 *
-	 * @param thumbnailId thumbnail id
-	 * @param imageView   image view
-	 */
-	public void putPhotoBitmap(final int thumbnailId, final ImageView imageView)
-	{
-		if (thumbnailId != -1)
-		{
-			final Bitmap thumbnail = getThumbnail(thumbnailId);
-			if (thumbnail != null)
-			{
-				imageView.setImageBitmap(thumbnail);
-			}
-		}
-	}
-
-	protected Bitmap getContactPhoto(Context context, Uri lookupUri)
-	{
-		InputStream stream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), lookupUri);
-		if (stream == null)
-		{
-			return null;
-		}
-		Bitmap resultPhoto = BitmapFactory.decodeStream(stream);
-		try
-		{
-			stream.close();
-		}
-		catch (IOException e)
-		{
-			//
-		}
-		return resultPhoto;
-	}
-
-	// int columnLookupKey = cursor.getColumnIndex(Contacts.LOOKUP_KEY);
-	// String lookupKey = cursor.getString(columnLookupKey);
-	// Uri lookupUri = Uri.withAppendedPath(Contacts.CONTENT_LOOKUP_URI, lookupKey);
-	// Bitmap contactPhoto = getContactPhoto(context, lookupUri);
 }

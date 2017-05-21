@@ -23,6 +23,11 @@ import org.treebolic.TreebolicIface;
 import treebolic.provider.contacts.Permissions;
 import treebolic.provider.contacts.Provider;
 
+/**
+ * Main activity
+ *
+ * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ */
 public class MainActivity extends AppCompatActivity
 {
 	private static final String TAG = "MainActivity";
