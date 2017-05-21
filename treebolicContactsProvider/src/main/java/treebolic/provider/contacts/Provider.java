@@ -239,7 +239,9 @@ public class Provider implements IProvider
 					if (photoThumbnailId != 0)
 					{
 						final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoId(this.context, photoThumbnailId);
-						final Image image = new Image(bitmap);
+						final Bitmap roundBitmap = Utils.roundCrop(bitmap);
+						final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
+						final Image image = new Image(scaledupBitmap);
 						node.setImage(image);
 					}
 					nodes.add(node);

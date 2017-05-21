@@ -16,10 +16,10 @@ public class Settings
 			ContactsContract.Contacts.LOOKUP_KEY, //
 			ContactsContract.Contacts.DISPLAY_NAME, //
 			ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE, //
-			//ContactsContract.Contacts.PHOTO_THUMBNAIL_URI, // A URI that can be used to retrieve a thumbnail of the contact's photo.
-			//ContactsContract.Contacts.PHOTO_URI, // A URI that can be used to retrieve the contact's full-size photo.
 			ContactsContract.Contacts.PHOTO_ID, // Reference to the row in the data table holding the photo.
-			//ContactsContract.Contacts.PHOTO_FILE_ID, // Photo file ID of the full-size photo.
+			ContactsContract.Contacts.PHOTO_FILE_ID, // Photo file ID of the full-size photo.
+			ContactsContract.Contacts.PHOTO_THUMBNAIL_URI, // A URI that can be used to retrieve a thumbnail of the contact's photo.
+			ContactsContract.Contacts.PHOTO_URI, // A URI that can be used to retrieve the contact's full-size photo.
 	};
 
 	// The column index for the _ID column
@@ -34,17 +34,17 @@ public class Settings
 	// The column index for the NAME column
 	static public final int ALT_NAME_INDEX = 3;
 
-	// The column index for the photo thumbnail uri column
-	static public final int PHOTO_THUMBNAIL_URI_INDEX = 4;
-
-	// The column index for the photo uri column
-	static public final int PHOTO_URI_INDEX = 5;
-
 	// The column index for the photo thumbnail id column
-	static public final int PHOTO_THUMBNAIL_ID_INDEX = 6;
+	static public final int PHOTO_THUMBNAIL_ID_INDEX = 4;
 
 	// The column index for the photo id column
-	static public final int PHOTO_ID_INDEX = 7;
+	static public final int PHOTO_ID_INDEX = 5;
+
+	// The column index for the photo thumbnail uri column
+	static public final int PHOTO_THUMBNAIL_URI_INDEX = 6;
+
+	// The column index for the photo uri column
+	static public final int PHOTO_URI_INDEX = 7;
 
 	// S E L E C T I O N
 
