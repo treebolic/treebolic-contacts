@@ -33,10 +33,103 @@ public class Provider implements IProvider
 {
 	private static final String TAG = "ContactProvider";
 
+	// S E T T I N G S  D A T A
+
+	/**
+	 * Ordinals used as indexes of images
+	 */
+	public enum ImageIndices
+	{
+		ROOT, FOLDER, CONTACT,
+	}
+
+	/**
+	 * Image array
+	 */
+	static Image[] images = new Image[]{ //
+			Image.try_make(Provider.class.getResource("images/root.png")), // ROOT
+			Image.try_make(Provider.class.getResource("images/folder.png")), // FOLDER
+			Image.try_make(Provider.class.getResource("images/contact.png")), // CONTACT
+	};
+
+	// COLORS
+
+	/**
+	 * Background color
+	 */
+	static private Color backgroundColor = new Color(0x004C41);
+
+	// contact
+
+	/**
+	 * Contact background color
+	 */
+	public static final Color contactBackColor = new Color(0x00968C);
+
+	/**
+	 * Contact foreground color
+	 */
+	public static final Color contactForeColor = Color.LIGHT_GRAY;
+
+	/**
+	 * Contact treeedge color
+	 */
+	private static final Color contactEdgeColor = Color.LIGHT_GRAY;
+
+	// folder
+
+	/**
+	 * Folder root background color
+	 */
+	private static final Color folderBackColor = contactForeColor;
+
+	/**
+	 * Folder foreground color
+	 */
+	public static final Color folderForeColor = contactBackColor;
+
+	/**
+	 * Folder treeedge color
+	 */
+	private static final Color folderEdgeColor = Color.WHITE;
+
+	// root
+
+	/**
+	 * Top root background color
+	 */
+	private static final Color rootBackColor = Color.ORANGE;
+
+	/**
+	 * Top root root foreground color
+	 */
+	private static final Color rootForeColor = Color.WHITE;
+
+	/**
+	 * Root treeedge color
+	 */
+	private static final Color rootEdgeColor = Color.WHITE;
+
+	// P A R A M E T E R S
+
+	/**
+	 * Max children nodes at level 0, 1 .. n. Level is just above leaves. Last value i holds for level i to n.
+	 */
+	public static int[] TREE_MAX_NODES_AT_LEVEL = {10, 3};
+
+	/**
+	 * Truncation threshold
+	 */
+	static int LABEL_TRUNCATE_AT = 3;
+
+	// C O N T E X T
+
 	/**
 	 * Android context
 	 */
 	private Context context;
+
+	// C O N S T R U C T
 
 	/**
 	 * Constructor
@@ -72,7 +165,7 @@ public class Provider implements IProvider
 	{
 		final Tree tree = makeTree(thisSource, thisBase, theseParameters, false);
 		final treebolic.model.Settings settings = makeSettings();
-		final Image[] images = theImages;
+		final Image[] images = Provider.images;
 		return new Model(tree, settings, images);
 	}
 
@@ -83,11 +176,6 @@ public class Provider implements IProvider
 	}
 
 	// T R E E   F A C T O R Y
-
-	/**
-	 * Max children nodes at level 0, 1 .. n. Level is just above leaves. Last value i holds for level i to n.
-	 */
-	public static int[] TREE_MAX_NODES_AT_LEVEL = {10, 3};
 
 	/**
 	 * Tree factory
@@ -110,9 +198,9 @@ public class Provider implements IProvider
 	{
 		final TreeMutableNode root = new TreeMutableNode(null, "root");
 		root.setLabel("CONTACTS");
-		root.setBackColor(Provider.theRootBackColor);
-		root.setForeColor(Provider.theRootForeColor);
-		root.setEdgeColor(Provider.theRootEdgeColor);
+		root.setBackColor(Provider.rootBackColor);
+		root.setForeColor(Provider.rootForeColor);
+		root.setEdgeColor(Provider.rootEdgeColor);
 		root.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
 		root.setImageIndex(ImageIndices.ROOT.ordinal());
 
@@ -144,9 +232,9 @@ public class Provider implements IProvider
 		{
 			final TreeMutableNode root = new TreeMutableNode(null, "root" + level + "-" + i);
 			root.setLink("directory:"); //$NON-NLS-1$
-			root.setBackColor(Provider.theFolderBackColor);
-			root.setForeColor(Provider.theFolderForeColor);
-			root.setEdgeColor(Provider.theFolderEdgeColor);
+			root.setBackColor(Provider.folderBackColor);
+			root.setForeColor(Provider.folderForeColor);
+			root.setEdgeColor(Provider.folderEdgeColor);
 			root.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
 			root.setImageIndex(ImageIndices.FOLDER.ordinal());
 
@@ -154,7 +242,7 @@ public class Provider implements IProvider
 			TreeMutableNode first = nodes.get(i);
 			TreeMutableNode last = nodes.get(b - 1);
 
-			root.setEdgeLabel(left(first.getLabel(), LABEL_TRUNCATE_AT));
+			root.setEdgeLabel(left(first.getLabel(), LABEL_TRUNCATE_AT).toLowerCase());
 			root.setLabel(label(first, last));
 			root.setContent("root" + level + "-" + i + "<br>" + first.getLabel() + "<br>" + last.getLabel());
 
@@ -170,6 +258,13 @@ public class Provider implements IProvider
 		return roots;
 	}
 
+	/**
+	 * Recursive build hierarchy
+	 *
+	 * @param nodes nodes at level
+	 * @param level level
+	 * @return
+	 */
 	private List<TreeMutableNode> buildHierarchy(List<TreeMutableNode> nodes, int level)
 	{
 		int m = TREE_MAX_NODES_AT_LEVEL[level > TREE_MAX_NODES_AT_LEVEL.length - 1 ? TREE_MAX_NODES_AT_LEVEL.length - 1 : level];
@@ -256,8 +351,6 @@ public class Provider implements IProvider
 
 	// H E L P E R S
 
-	static int LABEL_TRUNCATE_AT = 3;
-
 	/**
 	 * Label factory of non-leave nodes
 	 *
@@ -313,7 +406,6 @@ public class Provider implements IProvider
 		return str.length() > n ? str.substring(0, n) : str;
 	}
 
-
 	// S E T T I N G S
 
 	/**
@@ -324,9 +416,9 @@ public class Provider implements IProvider
 	treebolic.model.Settings makeSettings()
 	{
 		final treebolic.model.Settings settings = new treebolic.model.Settings();
-		settings.theBackColor = Provider.theBackgroundColor;
-		settings.theNodeBackColor = Provider.theDefaultContactBackColor;
-		settings.theNodeForeColor = Provider.theDefaultContactForeColor;
+		settings.theBackColor = Provider.backgroundColor;
+		settings.theNodeBackColor = Provider.contactBackColor;
+		settings.theNodeForeColor = Provider.contactForeColor;
 		settings.theOrientation = "radial";
 		settings.theHasToolbarFlag = true;
 		settings.theFontFace = "SansSerif";
@@ -338,85 +430,13 @@ public class Provider implements IProvider
 		settings.theHasToolbarFlag = true;
 		settings.theHasStatusbarFlag = true;
 		settings.theFocusOnHoverFlag = true;
-		settings.theTreeEdgeColor = Provider.theContactEdgeColor;
+		settings.theTreeEdgeColor = Provider.contactEdgeColor;
 		settings.theTreeEdgeStyle = (int) IEdge.DOT;
 		settings.theDefaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
 		return settings;
 	}
 
-	// S T A T I C . D A T A
-
-	public enum ImageIndices
-	{
-		ROOT, FOLDER, CONTACT,
-	}
-
-	static Image[] theImages = new Image[]{ //
-			Image.try_make(Provider.class.getResource("images/root.png")), // ROOT
-			Image.try_make(Provider.class.getResource("images/folder.png")), // FOLDER
-			Image.try_make(Provider.class.getResource("images/contact.png")), // CONTACT
-	};
-
-	/**
-	 * Background color
-	 */
-	static private Color theBackgroundColor = new Color(0x004C41);
-
-	// CONTACT
-
-	/**
-	 * Contact background color
-	 */
-	public static final Color theDefaultContactBackColor = new Color(0x00968C);
-
-	/**
-	 * Contact foreground color
-	 */
-	public static final Color theDefaultContactForeColor = Color.LIGHT_GRAY;
-
-	/**
-	 * Contact treeedge color
-	 */
-	private static final Color theContactEdgeColor = Color.LIGHT_GRAY;
-
-	// FOLDER
-
-	/**
-	 * Folder root background color
-	 */
-	private static final Color theFolderBackColor = theDefaultContactForeColor;
-
-	/**
-	 * Folder foreground color
-	 */
-	public static final Color theFolderForeColor = theDefaultContactBackColor;
-
-	/**
-	 * Folder treeedge color
-	 */
-	private static final Color theFolderEdgeColor = Color.WHITE;
-
-	// ROOT
-
-	/**
-	 * Top root background color
-	 */
-	private static final Color theRootBackColor = Color.ORANGE;
-
-	/**
-	 * Top root root foreground color
-	 */
-	private static final Color theRootForeColor = Color.WHITE;
-
-	/**
-	 * Root treeedge color
-	 */
-	private static final Color theRootEdgeColor = Color.WHITE;
-
-	/**
-	 * Root Folder foreground color
-	 */
-	private static final Color theRootFolderForeColor = Color.BLACK; // Color.WHITE;0xCCCCCC
+	// T E S T
 
 	public void model()
 	{

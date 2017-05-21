@@ -74,19 +74,18 @@ public class Utils
 
 	static public Bitmap roundCrop(final Bitmap bitmap)
 	{
-		final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+		final int w = bitmap.getWidth();
+		final int h = bitmap.getHeight();
+		final Bitmap output = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 		final Canvas canvas = new Canvas(output);
-
-		final int color = 0xff424242;
-		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
 		canvas.drawARGB(0, 0, 0, 0);
+		final Rect rect = new Rect(0, 0, w, h);
 
+		final int color = 0xff808080;
 		final Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setColor(color);
-		// canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-		canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
+		canvas.drawCircle(h / 2, h / 2, h / 2, paint);	// canvas.drawRoundRect(rect, roundPx, roundPx, paint);
 
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 		canvas.drawBitmap(bitmap, rect, rect, paint);

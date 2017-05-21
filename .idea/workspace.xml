@@ -10,10 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e357679-a691-479e-bec4-ec1616a208e4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/.idea/workspace.xml" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java" />
-      <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java" />
       <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java" />
     </list>
     <ignored path="TreebolicContacts.iws" />
@@ -46,31 +44,78 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ic_launcher.png" pinned="false" current-in-tab="false">
-        <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/mipmap-xhdpi/ic_launcher.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
+      <file leaf-file-name="Provider.java" pinned="false" current-in-tab="false">
+        <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1542">
+              <caret line="438" column="13" selection-start-line="438" selection-start-column="13" selection-end-line="438" selection-end-column="13" />
+              <folding>
+                <element signature="docComment;class#Provider#0" expanded="false" />
+                <element signature="docComment;class#ImageIndices#0;class#Provider#0" expanded="false" />
+                <element signature="class#ImageIndices#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#images#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#backgroundColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#contactBackColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#contactForeColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#contactEdgeColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#folderBackColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#folderForeColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#folderEdgeColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#rootBackColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#rootForeColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#rootEdgeColor#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#TREE_MAX_NODES_AT_LEVEL#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#LABEL_TRUNCATE_AT#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;field#context#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#Provider#0;class#Provider#0" expanded="false" />
+                <element signature="method#setContext#0;class#Provider#0" expanded="false" />
+                <element signature="method#setLocator#0;class#Provider#0" expanded="false" />
+                <element signature="method#makeModel#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#buildTree#0;class#Provider#0" expanded="false" />
+                <element signature="method#buildTree#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#buildTree#1;class#Provider#0" expanded="false" />
+                <element signature="method#buildTree#1;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+                <element signature="method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#buildHierarchy#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#collectNodes#0;class#Provider#0" expanded="false" />
+                <element signature="method#collectNodes#0;class#Provider#0" expanded="false" />
+                <element signature="e#8053#8102#0" expanded="false" />
+                <element signature="docComment;method#label#0;class#Provider#0" expanded="false" />
+                <element signature="method#label#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#right#0;class#Provider#0" expanded="false" />
+                <element signature="method#right#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#left#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#makeSettings#0;class#Provider#0" expanded="false" />
+                <element signature="method#makeSettings#0;class#Provider#0" expanded="false" />
+                <element signature="method#model#0;class#Provider#0" expanded="false" />
+                <marker date="1495358827012" expanded="false" signature="6218:6595" ph="{...}" />
+              </folding>
+            </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ic_launcher.png" pinned="false" current-in-tab="true">
-        <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
+      <file leaf-file-name="Settings.java" pinned="false" current-in-tab="false">
+        <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="143">
+              <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ic_launcher.png" pinned="false" current-in-tab="false">
-        <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/mipmap-mdpi/ic_launcher.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ic_launcher.png" pinned="false" current-in-tab="false">
-        <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/mipmap-hdpi/ic_launcher.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
+      <file leaf-file-name="Utils.java" pinned="false" current-in-tab="true">
+        <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="697">
+              <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2736#2737#0" expanded="true" />
+                <element signature="e#2796#2797#0" expanded="true" />
+              </folding>
+            </state>
           </provider>
         </entry>
       </file>
@@ -14515,7 +14560,6 @@
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Permissions.java" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/values/strings.xml" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/layout/actionbutton.xml" />
-        <option value="/mnt/data2/devel/android-treebolic-as/TreebolicLib/treebolicLibView/src/main/java/treebolic/view/Painter.java" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/layout/detail_contact.xml" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicActivity.java" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsFragment.java" />
@@ -14527,8 +14571,9 @@
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicSourceActivity.java" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicBasicActivity.java" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java" />
-        <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java" />
+        <option value="/mnt/data2/devel/android-treebolic-as/TreebolicLib/treebolicLibView/src/main/java/treebolic/view/Painter.java" />
         <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java" />
+        <option value="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java" />
       </list>
     </option>
   </component>
@@ -14581,14 +14626,6 @@
               <option name="myItemId" value="treebolicContactsProvider" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -14597,66 +14634,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="treebolicContactsProvider" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="values" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TreebolicContacts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="treebolicContactsProvider" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TreebolicContacts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="treebolicContacts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TreebolicContacts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="treebolicContacts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="drawable" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TreebolicContacts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="treebolicContacts" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -14676,6 +14653,24 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="treebolicContacts" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TreebolicContacts" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="treebolicContacts" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contacts" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -15093,7 +15088,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495354049196</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="round thumbnails">
+      <created>1495355715662</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1495355715662</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -15145,11 +15147,12 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="initial" />
     <MESSAGE value="in progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="in progress" />
+    <MESSAGE value="round thumbnails" />
+    <option name="LAST_COMMIT_MESSAGE" value="round thumbnails" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="10" />
+      <option name="time" value="11" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -15330,13 +15333,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicLib/treebolicLibView/src/main/java/treebolic/view/Painter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="1992" column="11" selection-start-line="1992" selection-start-column="11" selection-end-line="1992" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../androidstudio/sdk/sources/android-25/android/graphics/BitmapFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="328">
@@ -15498,14 +15494,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../androidstudio/sdk/sources/android-25/android/graphics/Bitmap.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="335">
@@ -15518,26 +15506,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="117">
           <caret line="15" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="96" column="36" selection-start-line="96" selection-start-column="36" selection-end-line="96" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2785#2786#0" expanded="true" />
-            <element signature="e#2845#2846#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="228" column="21" selection-start-line="228" selection-start-column="21" selection-end-line="228" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -15565,6 +15533,83 @@
     <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
       <provider selected="true" editor-type-id="images">
         <state />
+      </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicLib/treebolicLibView/src/main/java/treebolic/view/Painter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="1978" column="59" selection-start-line="1978" selection-start-column="59" selection-end-line="1978" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1542">
+          <caret line="438" column="13" selection-start-line="438" selection-start-column="13" selection-end-line="438" selection-end-column="13" />
+          <folding>
+            <element signature="docComment;class#Provider#0" expanded="false" />
+            <element signature="docComment;class#ImageIndices#0;class#Provider#0" expanded="false" />
+            <element signature="class#ImageIndices#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#images#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#backgroundColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#contactBackColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#contactForeColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#contactEdgeColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#folderBackColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#folderForeColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#folderEdgeColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#rootBackColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#rootForeColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#rootEdgeColor#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#TREE_MAX_NODES_AT_LEVEL#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#LABEL_TRUNCATE_AT#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;field#context#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#Provider#0;class#Provider#0" expanded="false" />
+            <element signature="method#setContext#0;class#Provider#0" expanded="false" />
+            <element signature="method#setLocator#0;class#Provider#0" expanded="false" />
+            <element signature="method#makeModel#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#buildTree#0;class#Provider#0" expanded="false" />
+            <element signature="method#buildTree#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#buildTree#1;class#Provider#0" expanded="false" />
+            <element signature="method#buildTree#1;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+            <element signature="method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#buildHierarchy#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#collectNodes#0;class#Provider#0" expanded="false" />
+            <element signature="method#collectNodes#0;class#Provider#0" expanded="false" />
+            <element signature="e#8053#8102#0" expanded="false" />
+            <element signature="docComment;method#label#0;class#Provider#0" expanded="false" />
+            <element signature="method#label#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#right#0;class#Provider#0" expanded="false" />
+            <element signature="method#right#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#left#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#makeSettings#0;class#Provider#0" expanded="false" />
+            <element signature="method#makeSettings#0;class#Provider#0" expanded="false" />
+            <element signature="method#model#0;class#Provider#0" expanded="false" />
+            <marker date="1495358827012" expanded="false" signature="6218:6595" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="83" column="36" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2736#2737#0" expanded="true" />
+            <element signature="e#2796#2797#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>
