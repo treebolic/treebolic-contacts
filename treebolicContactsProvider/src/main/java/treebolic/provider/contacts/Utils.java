@@ -12,6 +12,11 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Photo utilities
@@ -20,6 +25,26 @@ import android.provider.ContactsContract;
  */
 public class Utils
 {
+	/**
+	 * Get thumbnail photo from photoId
+	 *
+	 * @param context  context
+	 * @param photoUri id as per ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+	 * @return bitmap
+	 */
+	static public Bitmap queryThumbnailPhotoFromPhotoUri(final Context context, final String photoUri)
+	{
+		try
+		{
+			return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(photoUri));
+		}
+		catch (IOException e)
+		{
+			//
+		}
+		return null;
+	}
+
 	/**
 	 * Get thumbnail photo from photoId
 	 *
@@ -85,7 +110,7 @@ public class Utils
 		final Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setColor(color);
-		canvas.drawCircle(h / 2, h / 2, h / 2, paint);	// canvas.drawRoundRect(rect, roundPx, roundPx, paint);
+		canvas.drawCircle(h / 2, h / 2, h / 2, paint);    // canvas.drawRoundRect(rect, roundPx, roundPx, paint);
 
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 		canvas.drawBitmap(bitmap, rect, rect, paint);
@@ -96,5 +121,17 @@ public class Utils
 	static public Bitmap scale(final Bitmap bitmap, int w, int h)
 	{
 		return Bitmap.createScaledBitmap(bitmap, w, h, false);
+	}
+
+	static String bitmapToUrl(final Bitmap bitmap)
+	{
+		final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+		final byte[] byteArray = byteArrayOutputStream.toByteArray();
+		final String imageBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+		final String dataUrl = "data:image/png;base64," + imageBase64;
+		return dataUrl;
+
+		// webview.loadUrl(dataURL); //pass the bitmap base64 dataurl in URL parameter
 	}
 }

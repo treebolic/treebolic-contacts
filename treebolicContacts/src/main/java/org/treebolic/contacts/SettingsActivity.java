@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-class SettingsActivity extends AppCompatPreferenceActivity
+public class SettingsActivity extends AppCompatPreferenceActivity
 {
 	/**
 	 * Determines whether to always show the simplified settings UI, where settings are presented in a single list. When false, settings are shown as a

@@ -9,6 +9,11 @@ import android.provider.ContactsContract;
  */
 public class Settings
 {
+	/**
+	 * URLSCHEME that is handled
+	 */
+	static final public String URLSCHEME = "contact:";
+
 	// P R O J E C T I O N
 
 	static public final String[] PROJECTION = {//

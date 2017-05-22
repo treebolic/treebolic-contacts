@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -156,6 +157,9 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		final SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
 		final Cursor cursor = adapter.getCursor();
 
+		final String[] columns = cursor.getColumnNames();
+		Log.d(TAG, columns.toString());
+
 		// Move to the selected contact
 		cursor.moveToPosition(position);
 
@@ -239,6 +243,9 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 				.append(photoUriFromPhotoId == null ? "null" : photoUriFromPhotoId.toString()) //
 				.append('\n');
 
+		// info
+		//getAll(contactId);
+
 		// view
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -276,5 +283,62 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 			setSpan(what, start, length(), flags);
 			return this;
 		}
+	}
+
+	private void getAll(long contactId)
+	{
+		final Context context = getContext();
+		final Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+		final String[] columns = cursor.getColumnNames();
+		Log.d(TAG, columns.toString());
+		while (cursor.moveToNext())
+		{
+			String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+			int type = cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+			switch (type)
+			{
+				case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+					// do something with the Home number here...
+					break;
+				case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+					// do something with the Mobile number here...
+					break;
+				case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+					// do something with the Work number here...
+					break;
+			}
+		}
+		cursor.close();
+	}
+
+	private void getAll2(long contactId)
+	{
+		final Context context = getContext();
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+		final String[] columns = cursor.getColumnNames();
+		Log.d(TAG, columns.toString());
+		if (cursor.getCount() > 0)
+		{
+			/*
+			while (cursor.moveToNext())
+			{
+				final String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+				final String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				final boolean hasPhone = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0;
+
+				if (hasPhone)
+				{
+					Cursor cursor2 = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+					while (cursor2.moveToNext())
+					{
+						String phoneNo = cursor2.getString(cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					}
+					cursor2.close();
+				}
+			}
+			 */
+		}
+		cursor.close();
 	}
 }

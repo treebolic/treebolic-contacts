@@ -27,9 +27,17 @@
 
 		<activity
 			android:name="org.treebolic.contacts.TreebolicActivity"
-			android:exported="true"
 			android:hardwareAccelerated="true"
 			android:label="@string/title_activity_treebolic"
+			android:parentActivityName=".MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="org.treebolic.contacts.MainActivity"/>
+		</activity>
+
+		<activity
+			android:name="org.treebolic.contacts.SettingsActivity"
+			android:label="@string/title_activity_settings"
 			android:parentActivityName=".MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"

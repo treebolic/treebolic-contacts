@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -68,11 +69,6 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 	 * Parameter : CSS style for WebViews
 	 */
 	protected String style;
-
-	/**
-	 * Parameter : Returned URL urlScheme that is handled
-	 */
-	protected String urlScheme;
 
 	/**
 	 * Parameter : more parameters
@@ -326,7 +322,6 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 		this.imageBase = params.getString(TreebolicIface.ARG_IMAGEBASE);
 		this.settings = params.getString(TreebolicIface.ARG_SETTINGS);
 		this.style = params.getString(TreebolicIface.ARG_STYLE);
-		this.urlScheme = params.getString(TreebolicIface.ARG_URLSCHEME);
 		this.more = params.getParcelable(TreebolicIface.ARG_MORE);
 		this.parentActivity = params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY);
 	}
@@ -362,10 +357,13 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 	public boolean linkTo(final String url, final String target)
 	{
 		// if url is handled by client, return query to client, which will handle it by initiating another query
-		if (this.urlScheme != null && url.startsWith(this.urlScheme))
+		if (url.startsWith(treebolic.provider.contacts.Settings.URLSCHEME))
 		{
-			final String source2 = url.substring(this.urlScheme.length());
-			requery(source2);
+			final String contactId = url.substring(treebolic.provider.contacts.Settings.URLSCHEME.length());
+			final Intent intent = new Intent(Intent.ACTION_VIEW);
+			final Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactId);
+			intent.setData(uri);
+			startActivity(intent);
 			return true;
 		}
 

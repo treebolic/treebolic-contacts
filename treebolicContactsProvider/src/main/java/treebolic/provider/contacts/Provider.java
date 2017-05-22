@@ -24,6 +24,8 @@ import treebolic.model.TreeMutableNode;
 import treebolic.provider.IProvider;
 import treebolic.provider.IProviderContext;
 
+import static treebolic.provider.contacts.Settings.URLSCHEME;
+
 /**
  * Provider for Contacts
  *
@@ -235,16 +237,18 @@ public class Provider implements IProvider
 			root.setBackColor(Provider.folderBackColor);
 			root.setForeColor(Provider.folderForeColor);
 			root.setEdgeColor(Provider.folderEdgeColor);
-			root.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
+			root.setEdgeStyle(IEdge.SOLID | IEdge.FROMCIRCLE | IEdge.TOTRIANGLE | IEdge.TOFILL);
 			root.setImageIndex(ImageIndices.FOLDER.ordinal());
 
 			int b = Math.min(i + m, z);
 			TreeMutableNode first = nodes.get(i);
 			TreeMutableNode last = nodes.get(b - 1);
 
-			root.setEdgeLabel(left(first.getLabel(), LABEL_TRUNCATE_AT).toLowerCase());
-			root.setLabel(label(first, last));
-			root.setContent("root" + level + "-" + i + "<br>" + first.getLabel() + "<br>" + last.getLabel());
+			final String startLabel = left(label(first), LABEL_TRUNCATE_AT);
+			final String rangeLabel = makeLabel(first, last);
+			root.setEdgeLabel(startLabel);
+			// root.setLabel(rangeLabel);
+			root.setContent(/* "root" + level + "-" + i + "<br>"  + */ rangeLabel + "<br>" + label(first) + "<br>" + label(last));
 
 			for (int k = i; k < b; k++)
 			{
@@ -312,9 +316,10 @@ public class Provider implements IProvider
 					final String lookup = cursor.getString(Settings.LOOKUP_KEY_INDEX);
 					final String name = cursor.getString(Settings.NAME_INDEX);
 					final String altName = cursor.getString(Settings.ALT_NAME_INDEX);
-					final Long photoThumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
+					//final Long photoThumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
+					final String photoThumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
 
-					// label
+					// makeLabel
 					final String[] fields = altName.split(", *");
 					String label = fields[0];
 					if (fields.length > 1 && fields[1].charAt(0) != '#')
@@ -322,15 +327,28 @@ public class Provider implements IProvider
 						label += '\n';
 						label += fields[1];
 					}
-					//final String label = altName.replace(',','\n');
+					//final String makeLabel = altName.replace(',','\n');
 
 					// node
 					final TreeMutableNode node = new TreeMutableNode(null, id);
 					node.setLabel(label);
 					node.setContent(name + "<br>" + altName);
-					node.setLink(lookup);
+					node.setLink(URLSCHEME + id);
 
 					// image
+					if (photoThumbnailUri != null)
+					{
+						final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoUri(this.context, photoThumbnailUri);
+						final Bitmap roundBitmap = Utils.roundCrop(bitmap);
+						final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
+						final Bitmap scaleddownBitmap = Utils.scale(roundBitmap, 50, 50);
+						final Image image = new Image(scaledupBitmap);
+						node.setImage(image);
+
+						final String data = Utils.bitmapToUrl(scaleddownBitmap);
+						node.setContent("<table><tr><td><img src='" + data + "'/></td><td>" + node.getContent() + "</tr></table>");
+					}
+					/*
 					if (photoThumbnailId != 0)
 					{
 						final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoId(this.context, photoThumbnailId);
@@ -339,6 +357,7 @@ public class Provider implements IProvider
 						final Image image = new Image(scaledupBitmap);
 						node.setImage(image);
 					}
+					*/
 					nodes.add(node);
 				}
 				while (cursor.moveToNext());
@@ -356,16 +375,39 @@ public class Provider implements IProvider
 	 *
 	 * @param first first child node
 	 * @param last  lst child node
-	 * @return label of parent node
+	 * @return makeLabel of parent node
 	 */
-	private String label(final TreeMutableNode first, final TreeMutableNode last)
+	private String label(final TreeMutableNode node)
 	{
-		boolean isContact = !"directory:".equals(last.getLink());
-		String label1 = first.getLabel().replaceFirst("^[@#]*", "").toLowerCase();
-		String label2 = last.getLabel().replaceFirst("^[@#]*", "").toLowerCase();
+		final String l = node.getLabel();
+		if (l != null)
+		{
+			return l;
+		}
+		return node.getContent();
+	}
+
+	/**
+	 * Label factory of non-leave nodes
+	 *
+	 * @param first first child node
+	 * @param last  lst child node
+	 * @return makeLabel of parent node
+	 */
+	private String makeLabel(final TreeMutableNode first, final TreeMutableNode last)
+	{
+		String label1 = label(first);
+		String label2 = label(last);
+		if (label1 == null || label2 == null)
+		{
+			return null;
+		}
+		label1 = label1.replaceFirst("^[@#]*", "").toLowerCase();
+		label2 = label2.replaceFirst("^[@#]*", "").toLowerCase();
 		final StringBuilder sb = new StringBuilder();
 		sb.append(left(label1, LABEL_TRUNCATE_AT)) //
 				.append('-');
+		boolean isContact = !"directory:".equals(last.getLink());
 		if (isContact)
 		{
 			sb.append(left(label2, LABEL_TRUNCATE_AT));
@@ -386,12 +428,16 @@ public class Provider implements IProvider
 	 */
 	private String right(String str, int n)
 	{
+		if (str == null)
+		{
+			return null;
+		}
 		int l = str.length();
 		if (l > n)
 		{
-			return str.substring(l - n);
+			return str.substring(l - n).toLowerCase();
 		}
-		return str;
+		return str.toLowerCase();
 	}
 
 	/**
@@ -403,7 +449,11 @@ public class Provider implements IProvider
 	 */
 	private String left(final String str, int n)
 	{
-		return str.length() > n ? str.substring(0, n) : str;
+		if (str == null)
+		{
+			return null;
+		}
+		return str.length() > n ? str.substring(0, n).toLowerCase() : str.toLowerCase();
 	}
 
 	// S E T T I N G S
