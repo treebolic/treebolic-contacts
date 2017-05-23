@@ -16,6 +16,6 @@
 	<string name="pref_header_general">General</string>
 	<string name="pref_title_source">Source</string>
 	<string name="pref_description_source">Source for Contacts</string>
-	<string name="pref_default_source">Default source</string>
+	<string name="pref_default_source"></string>
 	<string name="title_activity_settings">Settings</string>
 </resources>

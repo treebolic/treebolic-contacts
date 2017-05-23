@@ -184,6 +184,8 @@ public class MainActivity extends AppCompatActivity
 	 */
 	static public Intent makeTreebolicIntent(final Context context)
 	{
+		final String source = treebolic.provider.contacts.Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
+
 		// parent activity to return to
 		final Intent parentIntent = new Intent();
 		parentIntent.setClass(context, org.treebolic.contacts.MainActivity.class);
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity
 
 		// model passing
 		intent.putExtra(TreebolicIface.ARG_PROVIDER, "treebolic.provider.contacts.Provider");
-		intent.putExtra(TreebolicIface.ARG_SOURCE, (String) null);
+		intent.putExtra(TreebolicIface.ARG_SOURCE, (String) source);
 
 		// other parameters passing
 		intent.putExtra(TreebolicIface.ARG_BASE, (String) null);

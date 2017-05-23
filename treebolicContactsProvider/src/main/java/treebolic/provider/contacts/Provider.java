@@ -176,7 +176,7 @@ public class Provider implements IProvider
 	@Override
 	public Tree makeTree(String thisSource, URL thisBase, Properties theseParameters, boolean checkRecursion)
 	{
-		return buildTree();
+		return buildTree(thisSource);
 	}
 
 	// T R E E   F A C T O R Y
@@ -186,10 +186,10 @@ public class Provider implements IProvider
 	 *
 	 * @return tree
 	 */
-	private Tree buildTree()
+	private Tree buildTree(final String source)
 	{
 		//return buildTree(collectNodes());
-		return buildTree(buildHierarchy(collectNodes(), 0));
+		return buildTree(buildHierarchy(collectNodes(source), 0));
 	}
 
 	/**
@@ -300,18 +300,22 @@ public class Provider implements IProvider
 	/**
 	 * Collect contact nodes
 	 *
+	 * @param source selectiion
 	 * @return list of contact nodes
 	 */
-	private List<TreeMutableNode> collectNodes()
+	private List<TreeMutableNode> collectNodes(final String source)
 	{
-		Settings.selectionArgs[0] = "%" + Settings.searchString + "%";
+		final String[] selectionArgs = {source};
+		final boolean nullSource = source == null || source.isEmpty();
+		selectionArgs[0] = nullSource ? null : "%" + source + "%";
+
 		final Uri uri = ContactsContract.Contacts.CONTENT_URI;
 		final ContentResolver contentResolver = this.context.getContentResolver();
-		final Cursor cursor = contentResolver.query(uri,   // content URI of the words table
-				Settings.PROJECTION,    // columns to return for each row
-				Settings.SELECTION,     // selection criteria
-				Settings.selectionArgs, // selection criteria arguments to placeholders
-				Settings.sortOrder);    // sort order for the returned rows
+		final Cursor cursor = contentResolver.query(uri, // content URI of the words table
+				Settings.PROJECTION, // columns to return for each row
+				nullSource ? null : Settings.SELECTION_DN_LIKE, // selection criteria
+				nullSource ? null : selectionArgs, // selection criteria arguments to placeholders
+				Settings.sortOrder); // sort order for the returned rows
 		if (cursor != null)
 		{
 			if (cursor.moveToFirst())
@@ -387,9 +391,8 @@ public class Provider implements IProvider
 	/**
 	 * Label factory of non-leave nodes
 	 *
-	 * @param first first child node
-	 * @param last  lst child node
-	 * @return makeLabel of parent node
+	 * @param node node
+	 * @return label of node
 	 */
 	private String label(final TreeMutableNode node)
 	{
@@ -505,7 +508,7 @@ public class Provider implements IProvider
 	public void model()
 	{
 		//final Tree tree = buildTree(collectNodes());
-		final Tree tree = buildTree();
+		final Tree tree = buildTree((String)null);
 		final String dump = ModelDump.toString(tree);
 		System.out.println(dump);
 

@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.treebolic.TreebolicIface;
+
 import treebolic.provider.contacts.Settings;
 
 /**
@@ -94,11 +96,20 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
-		// Makes search string into pattern and stores it in the selection array
-		Settings.selectionArgs[0] = "%" + Settings.searchString + "%";
+		final String source = Settings.getStringPref(getContext(), TreebolicIface.PREF_SOURCE);
+		final String[] selectionArgs = {source};
+		final boolean nullSource = source == null || source.isEmpty();
+		selectionArgs[0] = nullSource ? null : "%" + source + "%";
+
+		selectionArgs[0] = source == null || source.isEmpty() ? null : "%" + source + "%";
 
 		// Starts the query
-		return new CursorLoader(getActivity(), ContactsContract.Contacts.CONTENT_URI, Settings.PROJECTION, Settings.SELECTION, Settings.selectionArgs, Settings.sortOrder);
+		return new CursorLoader(getActivity(), //
+				ContactsContract.Contacts.CONTENT_URI, //
+				Settings.PROJECTION, //
+				nullSource ? null : Settings.SELECTION_DN_LIKE, //
+				nullSource ? null : selectionArgs, //
+				Settings.sortOrder);
 	}
 
 	@Override

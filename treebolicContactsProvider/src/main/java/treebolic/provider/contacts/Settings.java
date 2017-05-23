@@ -1,5 +1,8 @@
 package treebolic.provider.contacts;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 
 /**
@@ -56,20 +59,25 @@ public class Settings
 	/**
 	 * Selection expressions
 	 */
-	static public final String SELECTION = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?";
-	static public final String SELECTION_EQUALS = ContactsContract.Contacts.DISPLAY_NAME + " = ?";
-
-	/**
-	 * Search string (first selection arg)
-	 */
-	static public String searchString = "";
-
-	/**
-	 * Array to hold values that replace the ?
-	 */
-	static public String[] selectionArgs = {searchString};
+	static public final String SELECTION_DN_LIKE = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?";
 
 	// S O R T
 
 	static public String sortOrder = ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+
+	// H E L P E R
+
+	/**
+	 * Get string preference
+	 *
+	 * @param context context
+	 * @param key     key
+	 * @return value
+	 */
+	static public String getStringPref(final Context context, final String key)
+	{
+		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		return sharedPref.getString(key, null);
+	}
 }
+
