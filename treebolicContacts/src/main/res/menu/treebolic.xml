@@ -26,6 +26,16 @@
 		android:icon="@drawable/ic_action_search_settings"
 		android:title="@string/title_search_settings"
 		app:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/action_list_contacts"
+		android:orderInCategory="100"
+		android:title="@string/action_list_contacts"
+		app:showAsAction="never"/>
+	<item
+		android:id="@+id/action_settings"
+		android:orderInCategory="100"
+		android:title="@string/action_settings"
+		app:showAsAction="never"/>
 	<!-- TODO
 	<item
 		android:id="@+id/action_save_narrowing"

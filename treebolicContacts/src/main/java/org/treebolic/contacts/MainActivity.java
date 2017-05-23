@@ -114,18 +114,18 @@ public class MainActivity extends AppCompatActivity
 				return true;
 			}
 
+			case R.id.action_settings:
+			{
+				final Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+				return true;
+			}
+
 			case R.id.action_model:
 			{
 				final Provider provider = new Provider();
 				provider.setHandle(this);
 				provider.model();
-				return true;
-			}
-
-			case R.id.action_settings:
-			{
-				final Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
 				return true;
 			}
 

@@ -54,6 +54,8 @@ public class Provider implements IProvider
 			Image.try_make(Provider.class.getResource("images/contact.png")), // CONTACT
 	};
 
+	private static final String NL = "<br>";
+
 	// COLORS
 
 	/**
@@ -93,7 +95,7 @@ public class Provider implements IProvider
 	/**
 	 * Folder treeedge color
 	 */
-	private static final Color folderEdgeColor = Color.WHITE;
+	private static final Color folderEdgeColor = Color.CYAN;
 
 	// root
 
@@ -198,22 +200,22 @@ public class Provider implements IProvider
 	 */
 	private Tree buildTree(List<TreeMutableNode> nodes)
 	{
-		final TreeMutableNode root = new TreeMutableNode(null, "root");
-		root.setLabel("CONTACTS");
-		root.setBackColor(Provider.rootBackColor);
-		root.setForeColor(Provider.rootForeColor);
-		root.setEdgeColor(Provider.rootEdgeColor);
-		root.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
-		root.setImageIndex(ImageIndices.ROOT.ordinal());
+		final TreeMutableNode topRoot = new TreeMutableNode(null, "root");
+		topRoot.setLabel("CONTACTS");
+		topRoot.setBackColor(Provider.rootBackColor);
+		topRoot.setForeColor(Provider.rootForeColor);
+		topRoot.setEdgeColor(Provider.rootEdgeColor);
+		topRoot.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
+		topRoot.setImageIndex(ImageIndices.ROOT.ordinal());
 
 		if (nodes != null)
 		{
 			for (TreeMutableNode node : nodes)
 			{
-				node.addToParent(root);
+				node.addToParent(topRoot);
 			}
 		}
-		return new Tree(root, null);
+		return new Tree(topRoot, null);
 	}
 
 	/**
@@ -230,6 +232,12 @@ public class Provider implements IProvider
 
 		int m = TREE_MAX_NODES_AT_LEVEL[level > TREE_MAX_NODES_AT_LEVEL.length - 1 ? TREE_MAX_NODES_AT_LEVEL.length - 1 : level];
 		int z = nodes.size();
+
+		// balance
+		if (z % m == 1)
+		{
+			m--;
+		}
 		for (int i = 0; i < z; i = i + m)
 		{
 			final TreeMutableNode root = new TreeMutableNode(null, "root" + level + "-" + i);
@@ -237,8 +245,8 @@ public class Provider implements IProvider
 			root.setBackColor(Provider.folderBackColor);
 			root.setForeColor(Provider.folderForeColor);
 			root.setEdgeColor(Provider.folderEdgeColor);
-			root.setEdgeStyle(IEdge.SOLID | IEdge.FROMCIRCLE | IEdge.TOTRIANGLE | IEdge.TOFILL);
-			root.setImageIndex(ImageIndices.FOLDER.ordinal());
+			root.setEdgeStyle(IEdge.SOLID | /*IEdge.FROMDEF | IEdge.FROMCIRCLE | */IEdge.TOTRIANGLE | IEdge.TOFILL | IEdge.TODEF);
+			//root.setImageIndex(ImageIndices.FOLDER.ordinal());
 
 			int b = Math.min(i + m, z);
 			TreeMutableNode first = nodes.get(i);
@@ -248,7 +256,8 @@ public class Provider implements IProvider
 			final String rangeLabel = makeLabel(first, last);
 			root.setEdgeLabel(startLabel);
 			// root.setLabel(rangeLabel);
-			root.setContent(/* "root" + level + "-" + i + "<br>"  + */ rangeLabel + "<br>" + label(first) + "<br>" + label(last));
+			// root.setContent(/* "root" + level + "-" + i + NL  + */ rangeLabel + NL + label(first) + NL + label(last));
+			root.setContent(rangeLabel + /* NL + (b - i) + " elements" + */ NL + "<small>" + label(first) + NL + label(last) + "</small>");
 
 			for (int k = i; k < b; k++)
 			{
@@ -332,7 +341,7 @@ public class Provider implements IProvider
 					// node
 					final TreeMutableNode node = new TreeMutableNode(null, id);
 					node.setLabel(label);
-					node.setContent(name + "<br>" + altName);
+					node.setContent(name + NL + altName);
 					node.setLink(URLSCHEME + id);
 
 					// image
@@ -348,6 +357,11 @@ public class Provider implements IProvider
 						final String data = Utils.bitmapToUrl(scaleddownBitmap);
 						node.setContent("<table><tr><td><img src='" + data + "'/></td><td>" + node.getContent() + "</tr></table>");
 					}
+					else
+					{
+						node.setImageIndex(ImageIndices.CONTACT.ordinal());
+					}
+
 					/*
 					if (photoThumbnailId != 0)
 					{
@@ -384,7 +398,7 @@ public class Provider implements IProvider
 		{
 			return l;
 		}
-		return node.getContent();
+		return node.getContent().split(NL)[0];
 	}
 
 	/**
@@ -482,7 +496,7 @@ public class Provider implements IProvider
 		settings.theFocusOnHoverFlag = true;
 		settings.theTreeEdgeColor = Provider.contactEdgeColor;
 		settings.theTreeEdgeStyle = (int) IEdge.DOT;
-		settings.theDefaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
+		//settings.theDefaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
 		return settings;
 	}
 

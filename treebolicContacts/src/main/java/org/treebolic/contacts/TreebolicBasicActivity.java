@@ -250,42 +250,52 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 	public boolean onOptionsItemSelected(final MenuItem item)
 	{
 		int itemId = item.getItemId();
-		if (itemId == R.id.action_settings)
+		switch(itemId)
 		{
-			final Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			return true;
+			case R.id.action_finish:
+			{
+				finish();
+				return true;
+			}
+			case R.id.action_tips:
+			{
+				Tip.show(getSupportFragmentManager());
+				return true;
+			}
+			case R.id.action_help:
+			{
+				HelpActivity.start(this);
+				return true;
+			}
+			case R.id.action_search_run:
+			{
+				handleSearchRun();
+				return true;
+			}
+			case R.id.action_search_reset:
+			{
+				handleSearchReset();
+				return true;
+			}
+			case R.id.action_search_settings:
+			{
+				SearchSettings.show(getSupportFragmentManager());
+				return true;
+			}
+			case R.id.action_list_contacts:
+			{
+				final Intent intent = new Intent(this, ListContactsActivity.class);
+				startActivity(intent);
+				return true;
+			}
+			case R.id.action_settings:
+			{
+				final Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+				return true;
+			}
 		}
-		else if (itemId == R.id.action_finish)
-		{
-			finish();
-			return true;
-		}
-		else if (itemId == R.id.action_tips)
-		{
-			Tip.show(getSupportFragmentManager());
-			return true;
-		}
-		else if (itemId == R.id.action_help)
-		{
-			HelpActivity.start(this);
-			return true;
-		}
-		else if (itemId == R.id.action_search_run)
-		{
-			handleSearchRun();
-			return true;
-		}
-		else if (itemId == R.id.action_search_reset)
-		{
-			handleSearchReset();
-			return true;
-		}
-		else if (itemId == R.id.action_search_settings)
-		{
-			SearchSettings.show(getSupportFragmentManager());
-			return true;
-		}
+
 		return false;
 	}
 
