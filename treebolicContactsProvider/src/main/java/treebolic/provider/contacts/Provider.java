@@ -359,7 +359,7 @@ public class Provider implements IProvider
 						node.setImage(image);
 
 						final String data = Utils.bitmapToUrl(scaleddownBitmap);
-						node.setContent("<table><tr><td><img src='" + data + "'/></td><td>" + node.getContent() + "</tr></table>");
+						node.setContent("<table><tr><td valign='top'><img src='" + data + "'/></td><td>" + node.getContent() + "</tr></table>");
 					}
 					else
 					{
