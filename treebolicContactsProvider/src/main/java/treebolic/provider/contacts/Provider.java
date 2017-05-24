@@ -201,7 +201,7 @@ public class Provider implements IProvider
 	private Tree buildTree(List<TreeMutableNode> nodes)
 	{
 		final TreeMutableNode topRoot = new TreeMutableNode(null, "root");
-		topRoot.setLabel("CONTACTS");
+		topRoot.setLabel("contacts");
 		topRoot.setBackColor(Provider.rootBackColor);
 		topRoot.setForeColor(Provider.rootForeColor);
 		topRoot.setEdgeColor(Provider.rootEdgeColor);

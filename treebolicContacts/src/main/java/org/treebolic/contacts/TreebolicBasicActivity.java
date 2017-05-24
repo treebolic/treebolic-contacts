@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
@@ -36,6 +37,7 @@ import java.util.Properties;
 
 import treebolic.IContext;
 import treebolic.Widget;
+import treebolic.glue.component.Container;
 import treebolic.view.View;
 
 /**
@@ -128,6 +130,12 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 
 		// toolbar
 		@SuppressLint("InflateParams") final Toolbar toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.toolbar, null);
+
+		// setup
+		final TypedValue value = new TypedValue();
+		getResources().getValue(R.dimen.splitter_position_percent, value, true);
+		float splitterPositionPercent = value.getFloat();
+		Container.setSplitterPositionPercent(splitterPositionPercent);
 
 		// widget
 		this.widget = new Widget(this, this);
