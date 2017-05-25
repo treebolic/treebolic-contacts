@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -33,7 +34,7 @@ public class ListContactsActivity extends AppCompatActivity
 		final ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null)
 		{
-			actionBar.setDisplayOptions(ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_TITLE);
+			actionBar.setDisplayOptions(ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP);
 		}
 
 		// fragment
@@ -71,6 +72,8 @@ public class ListContactsActivity extends AppCompatActivity
 
 			case R.id.action_settings:
 			{
+				final Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
 				return true;
 			}
 

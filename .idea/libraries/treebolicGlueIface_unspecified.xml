@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="treebolicGlueIface-unspecified">
+    <CLASSES>
+      <root url="jar:///mnt/data2/devel/android-treebolic-as/TreebolicLib/treebolicGlueIface/build/intermediates/bundles/default/classes.jar!/" />
+      <root url="file:///mnt/data2/devel/android-treebolic-as/TreebolicLib/treebolicGlueIface/build/intermediates/bundles/default/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

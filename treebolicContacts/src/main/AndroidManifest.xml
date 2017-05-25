@@ -22,7 +22,11 @@
 
 		<activity
 			android:name=".ListContactsActivity"
-			android:label="@string/title_activity_list_contacts">
+			android:label="@string/title_activity_list_contacts"
+			android:parentActivityName=".MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="org.treebolic.contacts.MainActivity"/>
 		</activity>
 
 		<activity
