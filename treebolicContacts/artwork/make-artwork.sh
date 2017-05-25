@@ -12,7 +12,7 @@ web_list="ic_launcher.svg"
 
 declare -A launcher_res
 launcher_res=([mdpi]=48 [hdpi]=72 [xhdpi]=96 [xxhdpi]=144 [xxxhdpi]=192)
-launcher_list="ic_launcher.svg"
+launcher_list="ic_launcher.svg ic_launcher_round.svg"
 
 declare -A splash_res
 splash_res=([mdpi]=256 [hdpi]=384 [xhdpi]=512 [xxhdpi]=768 [xxxhdpi]=1024)
@@ -26,6 +26,16 @@ declare -A photo_res
 photo_res=([mdpi]=256 [hdpi]=384 [xhdpi]=512 [xxhdpi]=768 [xxxhdpi]=1024)
 photo_list="ic_contact_default.svg"
 
+for svg in ${launcher_list}; do
+	for r in ${!launcher_res[@]}; do 
+		d="${dirres}/mipmap-${r}"
+		mkdir -p ${d}
+		png="${svg%.svg}.png"
+		echo "${svg}.svg -> ${d}/${png}.png @ resolution ${launcher_res[$r]}"
+		inkscape ${svg} --export-png=${d}/${png} -h${launcher_res[$r]} > /dev/null 2> /dev/null
+	done
+done
+
 for svg in ${web_list}; do
 	for r in ${!web_res[@]}; do 
 		d="${dirapp}"
@@ -33,16 +43,6 @@ for svg in ${web_list}; do
 		png="${svg%.svg}-web.png"
 		echo "${svg}.svg -> ${d}/${png}.png @ resolution ${web_res[$r]}"
 		inkscape ${svg} --export-png=${d}/${png} -h${web_res[$r]} > /dev/null 2> /dev/null
-	done
-done
-
-for svg in ${launcher_list}; do
-	for r in ${!launcher_res[@]}; do 
-		d="${dirres}/drawable-${r}"
-		mkdir -p ${d}
-		png="${svg%.svg}.png"
-		echo "${svg}.svg -> ${d}/${png}.png @ resolution ${launcher_res[$r]}"
-		inkscape ${svg} --export-png=${d}/${png} -h${launcher_res[$r]} > /dev/null 2> /dev/null
 	done
 done
 
