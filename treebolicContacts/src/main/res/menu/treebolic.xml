@@ -36,16 +36,6 @@
 		android:orderInCategory="100"
 		android:title="@string/action_settings"
 		app:showAsAction="never"/>
-	<!-- TODO
-	<item
-		android:id="@+id/action_save_narrowing"
-		android:title="@string/title_save_narrowing"
-		app:showAsAction="never"/>
-	<item
-		android:id="@+id/action_clear_narrowing"
-		android:title="@string/title_clear_narrowing"
-		app:showAsAction="never"/>
-	-->
 	<item
 		android:id="@+id/action_tips"
 		android:title="@string/title_tips"
@@ -58,5 +48,15 @@
 		android:id="@+id/action_finish"
 		android:title="@string/title_finish"
 		app:showAsAction="never"/>
+	<!-- TODO
+	<item
+		android:id="@+id/action_save_narrowing"
+		android:title="@string/title_save_narrowing"
+		app:showAsAction="never"/>
+	<item
+		android:id="@+id/action_clear_narrowing"
+		android:title="@string/title_clear_narrowing"
+		app:showAsAction="never"/>
+	-->
 
 </menu>

@@ -19,8 +19,8 @@
    height="533.33331"
    version="1.0">
   <sodipodi:namedview
-     inkscape:window-height="1176"
-     inkscape:window-width="1871"
+     inkscape:window-height="1103"
+     inkscape:window-width="1920"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      guidetolerance="10.0"
@@ -32,10 +32,10 @@
      id="base"
      showgrid="false"
      inkscape:zoom="0.69462777"
-     inkscape:cx="-388.78915"
+     inkscape:cx="-674.55371"
      inkscape:cy="290.70256"
-     inkscape:window-x="49"
-     inkscape:window-y="24"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:current-layer="svg2"
      inkscape:window-maximized="1"
      fit-margin-top="0"
@@ -100,7 +100,7 @@
        inkscape:connector-curvature="0" />
   </g>
   <ellipse
-     style="opacity:0.98999999;fill:#c0c0c0;fill-opacity:0.99215686;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     style="opacity:0.98999999;fill:#008080;fill-opacity:0.99215686;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
      id="path9967"
      cx="265.60989"
      cy="267.64133"

@@ -15,12 +15,16 @@ launcher_res=([mdpi]=48 [hdpi]=72 [xhdpi]=96 [xxhdpi]=144 [xxxhdpi]=192)
 launcher_list="ic_launcher.svg"
 
 declare -A splash_res
-splash_res=([mdpi]=144 [hdpi]=192 [xhdpi]=288 [xxhdpi]=384 [xxxhdpi]=576)
+splash_res=([mdpi]=256 [hdpi]=384 [xhdpi]=512 [xxhdpi]=768 [xxxhdpi]=1024)
 splash_list="ic_splash.svg"
 
 declare -A icon_res
 icon_res=([mdpi]=48 [hdpi]=72 [xhdpi]=96 [xxhdpi]=144 [xxxhdpi]=192)
-icon_list="ic_treebolic.svg ic_contact.svg ic_contact_default.svg"
+icon_list="ic_treebolic.svg ic_contact.svg"
+
+declare -A photo_res
+photo_res=([mdpi]=256 [hdpi]=384 [xhdpi]=512 [xxhdpi]=768 [xxxhdpi]=1024)
+photo_list="ic_contact_default.svg"
 
 for svg in ${web_list}; do
 	for r in ${!web_res[@]}; do 
@@ -52,13 +56,13 @@ for svg in ${splash_list}; do
 	done
 done
 
-for svg in ${icon_list}; do
-	for r in ${!icon_res[@]}; do 
+for svg in ${photo_list}; do
+	for r in ${!photo_res[@]}; do 
 		d="${dirres}/drawable-${r}"
 		mkdir -p ${d}
 		png="${svg%.svg}.png"
-		echo "${svg}.svg -> ${d}/${png} @ resolution ${icon_res[$r]}"
-		inkscape ${svg} --export-png=${d}/${png} -h${icon_res[$r]} > /dev/null 2> /dev/null
+		echo "${svg}.svg -> ${d}/${png} @ resolution ${photo_res[$r]}"
+		inkscape ${svg} --export-png=${d}/${png} -h${photo_res[$r]} > /dev/null 2> /dev/null
 	done
 done
 

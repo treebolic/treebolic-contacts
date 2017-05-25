@@ -144,12 +144,18 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 
 			// Photo Uri
 			final String name = cursor.getString(Settings.NAME_INDEX);
-			final String photoTumbnailUriString = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
 			final String photoUriString = cursor.getString(Settings.PHOTO_URI_INDEX);
-			if (photoTumbnailUriString != null)
+			final String photoThumbnailUriString = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
+			if (photoThumbnailUriString != null)
 			{
-				final Uri photoUri = Uri.parse(photoTumbnailUriString);
-				Log.d(TAG, "photoUri of " + name + " is " + photoTumbnailUriString);
+				final Uri photoUri = Uri.parse(photoThumbnailUriString);
+				Log.d(TAG, "thumbnail of " + name + " is " + photoThumbnailUriString);
+				imageView.setImageURI(photoUri);
+			}
+			else if (photoUriString != null)
+			{
+				final Uri photoUri = Uri.parse(photoUriString);
+				Log.d(TAG, "photo of " + name + " is " + photoUriString);
 				imageView.setImageURI(photoUri);
 			}
 			else
@@ -178,10 +184,10 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		final long contactId = cursor.getLong(Settings.ID_INDEX);
 
 		// Get the selected LOOKUP KEY
-		final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
+		// final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
 
 		// Lookup Uri. You can use it as the content URI for retrieving the details for a contact
-		final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
+		// final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
 
 		// Content Uri
 		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
@@ -200,15 +206,23 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		// Get the selected thumbnail index
 		final long thumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
 
-		// Thumbnail photo Uri
-		final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-		final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
+		// Photo Uri
+		//final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+		//final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
 
 		final XSpannableStringBuilder sb = new XSpannableStringBuilder();
 		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
 				.append(Long.toString(contactId)).append('\n');
 
+		// info
+		//getAllContent(contactId, sb);
+		getNames(contactId, sb);
+		getPhones(contactId, sb);
+		getEmails(contactId, sb);
+		getAddresses(contactId, sb);
+
+		/*
 		sb.append("key", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
 				.append(contactKey) //
@@ -218,32 +232,45 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 				.append('\n') //
 				.append(contactLookupUri == null ? null : contactLookupUri.toString()) //
 				.append('\n');
-
+		*/
 		sb.append("content Uri", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
 				.append(contactContentUri == null ? null : contactContentUri.toString()) //
 				.append('\n');
 
-		sb.append("thumbnail Uri", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(thumbnailUri == null ? "null" : thumbnailUri.toString()) //
-				.append('\n');
+		if (thumbnailUri != null)
+		{
+			sb.append("thumbnail Uri", new StyleSpan(Typeface.BOLD), 0) //
+					.append('\n') //
+					.append(thumbnailUri == null ? "null" : thumbnailUri.toString()) //
+					.append('\n');
+		}
 
-		sb.append("thumbnail id", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(Long.toString(thumbnailId)) //
-				.append('\n');
+		if (photoUri != null)
+		{
+			sb.append("photo Uri", new StyleSpan(Typeface.BOLD), 0) //
+					.append('\n') //
+					.append(photoUri == null ? "null" : photoUri.toString()) //
+					.append('\n');
+		}
 
-		sb.append("photo Uri", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(photoUri == null ? "null" : photoUri.toString()) //
-				.append('\n');
+		if (thumbnailId != 0)
+		{
+			sb.append("thumbnail id", new StyleSpan(Typeface.BOLD), 0) //
+					.append('\n') //
+					.append(Long.toString(thumbnailId)) //
+					.append('\n');
+		}
 
-		sb.append("photo id", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(Long.toString(photoId)) //
-				.append('\n');
+		if (photoId != 0)
+		{
+			sb.append("photo id", new StyleSpan(Typeface.BOLD), 0) //
+					.append('\n') //
+					.append(Long.toString(photoId)) //
+					.append('\n');
+		}
 
+		/*
 		sb.append("photo Uri From Content Uri", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
 				.append(photoUriFromContent == null ? "null" : photoUriFromContent.toString()) //
@@ -253,9 +280,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 				.append('\n') //
 				.append(photoUriFromPhotoId == null ? "null" : photoUriFromPhotoId.toString()) //
 				.append('\n');
-
-		// info
-		//getAll(contactId);
+		*/
 
 		// view
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -268,9 +293,13 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		{
 			imageView.setImageURI(Uri.parse(photoUri));
 		}
+		else if (thumbnailUri != null)
+		{
+			imageView.setImageURI(Uri.parse(thumbnailUri));
+		}
 		else
 		{
-			imageView.setImageResource(R.drawable.ic_contact);
+			imageView.setImageResource(R.drawable.ic_contact_default);
 		}
 
 		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
@@ -296,60 +325,252 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		}
 	}
 
-	private void getAll(long contactId)
+	// M O R E
+
+	private void getAllContent(long contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		final Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
 		final String[] columns = cursor.getColumnNames();
-		Log.d(TAG, columns.toString());
-		while (cursor.moveToNext())
-		{
-			String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-			int type = cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-			switch (type)
-			{
-				case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-					// do something with the Home number here...
-					break;
-				case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-					// do something with the Mobile number here...
-					break;
-				case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-					// do something with the Work number here...
-					break;
-			}
-		}
-		cursor.close();
-	}
 
-	private void getAll2(long contactId)
-	{
-		final Context context = getContext();
-		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
-		final String[] columns = cursor.getColumnNames();
-		Log.d(TAG, columns.toString());
-		if (cursor.getCount() > 0)
-		{
-			/*
-			while (cursor.moveToNext())
-			{
-				final String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-				final String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-				final boolean hasPhone = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0;
+		Log.d(TAG, join(columns));
+		//str2sb("columns", columns, sb);
 
-				if (hasPhone)
+		if (cursor != null)
+		{
+			if (cursor.getCount() > 0)
+			{
+				/*
+				final int idxHasPhone = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+				final int idxPhoneNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+				final int idxPhoneType = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+				*/
+				while (cursor.moveToNext())
 				{
-					Cursor cursor2 = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
-					while (cursor2.moveToNext())
+					/*
+					final boolean hasPhone = cursor.getInt(idxHasPhone) > 0;
+					final String phoneNumber = idxPhoneNumber == -1 ? "" : cursor.getString(idxPhoneNumber);
+					final int phoneType = idxPhoneNumber == -1 ? -1 : cursor.getInt(idxPhoneType);
+
+					// phone
+					switch (phoneType)
 					{
-						String phoneNo = cursor2.getString(cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+						case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+							sb.append("phone (home)", new StyleSpan(Typeface.BOLD), 0) //
+									.append('\n') //
+									.append(phoneNumber) //
+									.append('\n');
+							break;
+						case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+							sb.append("phone (mobile)", new StyleSpan(Typeface.BOLD), 0) //
+									.append('\n') //
+									.append(phoneNumber) //
+									.append('\n');
+							break;
+						case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+							sb.append("phone (work)", new StyleSpan(Typeface.BOLD), 0) //
+									.append('\n') //
+									.append(phoneNumber) //
+									.append('\n');
+							break;
+						case -1:
+							sb.append("phone (unknown)", new StyleSpan(Typeface.BOLD), 0) //
+									.append('\n') //
+									.append(phoneNumber) //
+									.append('\n');
+							break;
 					}
-					cursor2.close();
+					*/
 				}
 			}
-			 */
+			cursor.close();
 		}
-		cursor.close();
+	}
+
+	private void getNames(final long id, final XSpannableStringBuilder sb)
+	{
+		final Context context = getContext();
+		final ContentResolver cr = context.getContentResolver();
+		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, Long.toString(id)}, null);
+		if (cursor != null)
+		{
+			if (cursor.getCount() > 0)
+			{
+				final int idxGiven = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME); // first
+				final int idxFamily = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME); // last
+				final int idxDisplay = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME); // display
+
+				sb.append("names", new StyleSpan(Typeface.BOLD), 0) //
+						.append('\n');
+
+				while (cursor.moveToNext())
+				{
+					final String given = cursor.getString(idxGiven);
+					final String family = cursor.getString(idxFamily);
+					final String display = cursor.getString(idxDisplay);
+					sb.append(given) //
+							.append('\n');
+					sb.append(family) //
+							.append('\n');
+					sb.append(display) //
+							.append('\n');
+				}
+			}
+			cursor.close();
+		}
+	}
+
+	private void getAddresses(final long id, final XSpannableStringBuilder sb)
+	{
+		final Context context = getContext();
+		final ContentResolver cr = context.getContentResolver();
+		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, Long.toString(id)}, null);
+		if (cursor != null)
+		{
+			if (cursor.getCount() > 0)
+			{
+				final int idxFormatted = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS);
+				final int idxStreet = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET);
+				final int idxCity = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY);
+				final int idxPostCode = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE);
+				final int idxCountry = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY);
+
+				while (cursor.moveToNext())
+				{
+					sb.append("address", new StyleSpan(Typeface.BOLD), 0) //
+							.append('\n');
+
+					final String formatted = cursor.getString(idxFormatted);
+					if (formatted != null)
+					{
+						sb.append(formatted) //
+								.append(" (formatted)\n");
+					}
+					final String street = cursor.getString(idxStreet);
+					if (street != null)
+					{
+						sb.append(street) //
+								.append(" (street)\n");
+					}
+					final String city = cursor.getString(idxCity);
+					if (city != null)
+					{
+						sb.append(city) //
+								.append(" (city)\n");
+					}
+					final String postCode = cursor.getString(idxPostCode);
+					if (postCode != null)
+					{
+						sb.append(postCode) //
+								.append(" (postcode)\n");
+					}
+					final String country = cursor.getString(idxCountry);
+					if (country != null)
+					{
+						sb.append(country) //
+								.append(" (country)\n");
+					}
+				}
+			}
+			cursor.close();
+		}
+	}
+
+	private void getEmails(final long id, final XSpannableStringBuilder sb)
+	{
+		final Context context = getContext();
+		final ContentResolver cr = context.getContentResolver();
+		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE, Long.toString(id)}, null);
+		if (cursor != null)
+		{
+			if (cursor.getCount() > 0)
+			{
+				final int idxEmail = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+
+				sb.append("email", new StyleSpan(Typeface.BOLD), 0) //
+						.append('\n');
+
+				while (cursor.moveToNext())
+				{
+					String email = cursor.getString(idxEmail);
+					sb.append(email) //
+							.append('\n');
+				}
+			}
+			cursor.close();
+		}
+	}
+
+	private void getPhones(long contactId, final XSpannableStringBuilder sb)
+	{
+		final Context context = getContext();
+		final ContentResolver cr = context.getContentResolver();
+		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, Long.toString(contactId)}, null);
+		if (cursor != null)
+		{
+			if (cursor.getCount() > 0)
+			{
+				final int idxPhoneNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+				final int idxPhoneType = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+				sb.append("phone", new StyleSpan(Typeface.BOLD), 0) //
+						.append('\n');
+
+				while (cursor.moveToNext())
+				{
+					final String phoneNumber = idxPhoneNumber == -1 ? "" : cursor.getString(idxPhoneNumber);
+					final int phoneType = idxPhoneNumber == -1 ? -1 : cursor.getInt(idxPhoneType);
+
+					// phone
+					switch (phoneType)
+					{
+						case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+							sb.append(phoneNumber) //
+									.append(" (home)\n");
+							break;
+						case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+							sb.append(phoneNumber) //
+									.append(" (mobile)\n");
+							break;
+						case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+							sb.append(phoneNumber) //
+									.append(" (work)\n");
+							break;
+						default:
+						case -1:
+							sb.append(phoneNumber) //
+									.append(" (other)\n");
+							break;
+					}
+				}
+			}
+			cursor.close();
+		}
+	}
+
+	private void str2sb(final String header, final String[] strs, final XSpannableStringBuilder sb)
+	{
+		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
+		sb.append(join(strs)).append('\n');
+	}
+
+	private String join(final String[] strs)
+	{
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		sb.append('{');
+		for (String str : strs)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				sb.append(',');
+			}
+			sb.append(str);
+		}
+		sb.append('}');
+		return sb.toString();
 	}
 }
