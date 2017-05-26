@@ -185,6 +185,8 @@ public class MainActivity extends AppCompatActivity
 	static public Intent makeTreebolicIntent(final Context context)
 	{
 		final String source = treebolic.provider.contacts.Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
+		final Bundle bundle = new Bundle();
+		bundle.putBoolean("groups", true);
 
 		// parent activity to return to
 		final Intent parentIntent = new Intent();
@@ -201,6 +203,7 @@ public class MainActivity extends AppCompatActivity
 		intent.putExtra(TreebolicIface.ARG_BASE, (String) null);
 		intent.putExtra(TreebolicIface.ARG_IMAGEBASE, (String) null);
 		intent.putExtra(TreebolicIface.ARG_SETTINGS, (String) null);
+		intent.putExtra(TreebolicIface.ARG_MORE, bundle);
 
 		// parent passing
 		intent.putExtra(TreebolicIface.ARG_PARENTACTIVITY, parentIntent);

@@ -143,11 +143,6 @@ public class Provider implements IProvider
 	 */
 	static int LABEL_TRUNCATE_AT = 3;
 
-	/**
-	 * Group
-	 */
-	static boolean DO_GROUPS = true;
-
 	// C O N T E X T
 
 	/**
@@ -187,18 +182,18 @@ public class Provider implements IProvider
 	// I P R O V I D E R  I N T E R F A C E   (M O D E L)
 
 	@Override
-	public Model makeModel(final String thisSource, final URL thisBase, final Properties theseParameters)
+	public Model makeModel(final String source, final URL base, final Properties parameters)
 	{
-		final Tree tree = makeTree(thisSource, thisBase, theseParameters, false);
+		final Tree tree = makeTree(source, base, parameters, false);
 		final treebolic.model.Settings settings = makeSettings();
 		final Image[] images = Provider.images;
 		return new Model(tree, settings, images);
 	}
 
 	@Override
-	public Tree makeTree(final String thisSource, final URL thisBase, final Properties theseParameters, final boolean checkRecursion)
+	public Tree makeTree(final String source, final URL base, final Properties parameters, final boolean checkRecursion)
 	{
-		return buildTree(thisSource);
+		return buildTree(source, parameters);
 	}
 
 	// T R E E   F A C T O R Y
@@ -206,12 +201,14 @@ public class Provider implements IProvider
 	/**
 	 * Tree factory
 	 *
+	 * @param source          source
+	 * @param theseParameters parameters
 	 * @return tree
 	 */
-	private Tree buildTree(final String source)
+	private Tree buildTree(final String source, final Properties theseParameters)
 	{
-		//return buildTree(collectContacts());
-		if (DO_GROUPS)
+		final String doGroups = theseParameters.getProperty("groups", "false");
+		if ("true".equals(doGroups))
 		{
 			return buildTree(buildHierarchy(collectGroups(), 0));
 		}
@@ -716,7 +713,7 @@ public class Provider implements IProvider
 	public void model()
 	{
 		//final Tree tree = buildTree(collectContacts());
-		final Tree tree = buildTree((String) null);
+		final Tree tree = buildTree(null, null);
 		final String dump = ModelDump.toString(tree);
 		System.out.println(dump);
 
