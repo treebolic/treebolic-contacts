@@ -80,6 +80,23 @@ public class Provider implements IProvider
 	 */
 	private static final Color contactEdgeColor = Color.LIGHT_GRAY;
 
+	// group
+
+	/**
+	 * Group background color
+	 */
+	public static final Color groupBackColor = Color.LIGHT_GRAY;
+
+	/**
+	 * Group foreground color
+	 */
+	public static final Color groupForeColor = new Color(0x00968C);
+
+	/**
+	 * Group treeedge color
+	 */
+	private static final Color groupEdgeColor = Color.LIGHT_GRAY;
+
 	// folder
 
 	/**
@@ -126,6 +143,11 @@ public class Provider implements IProvider
 	 */
 	static int LABEL_TRUNCATE_AT = 3;
 
+	/**
+	 * Group
+	 */
+	static boolean DO_GROUPS = true;
+
 	// C O N T E X T
 
 	/**
@@ -165,7 +187,7 @@ public class Provider implements IProvider
 	// I P R O V I D E R  I N T E R F A C E   (M O D E L)
 
 	@Override
-	public Model makeModel(String thisSource, URL thisBase, Properties theseParameters)
+	public Model makeModel(final String thisSource, final URL thisBase, final Properties theseParameters)
 	{
 		final Tree tree = makeTree(thisSource, thisBase, theseParameters, false);
 		final treebolic.model.Settings settings = makeSettings();
@@ -174,7 +196,7 @@ public class Provider implements IProvider
 	}
 
 	@Override
-	public Tree makeTree(String thisSource, URL thisBase, Properties theseParameters, boolean checkRecursion)
+	public Tree makeTree(final String thisSource, final URL thisBase, final Properties theseParameters, final boolean checkRecursion)
 	{
 		return buildTree(thisSource);
 	}
@@ -188,9 +210,12 @@ public class Provider implements IProvider
 	 */
 	private Tree buildTree(final String source)
 	{
-		//return buildTree(collectNodes());
-		return buildTree(buildHierarchy(collectGroups(), 0));
-		//return buildTree(buildHierarchy(collectNodes(source), 0));
+		//return buildTree(collectContacts());
+		if (DO_GROUPS)
+		{
+			return buildTree(buildHierarchy(collectGroups(), 0));
+		}
+		return buildTree(buildHierarchy(collectContacts(source), 0));
 	}
 
 	/**
@@ -199,7 +224,7 @@ public class Provider implements IProvider
 	 * @param nodes contact nodes
 	 * @return tree of contact nodes
 	 */
-	private Tree buildTree(List<TreeMutableNode> nodes)
+	private Tree buildTree(final List<TreeMutableNode> nodes)
 	{
 		final TreeMutableNode topRoot = new TreeMutableNode(null, "root");
 		topRoot.setLabel("contacts");
@@ -209,14 +234,25 @@ public class Provider implements IProvider
 		topRoot.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
 		topRoot.setImageIndex(ImageIndices.ROOT.ordinal());
 
+		attachToParent(topRoot, nodes);
+		return new Tree(topRoot, null);
+	}
+
+	/**
+	 * Attach to parent
+	 *
+	 * @param parent parent node
+	 * @param nodes  children nodes
+	 */
+	private void attachToParent(final TreeMutableNode parent, final List<TreeMutableNode> nodes)
+	{
 		if (nodes != null)
 		{
 			for (TreeMutableNode node : nodes)
 			{
-				node.addToParent(topRoot);
+				node.addToParent(parent);
 			}
 		}
-		return new Tree(topRoot, null);
 	}
 
 	/**
@@ -226,7 +262,7 @@ public class Provider implements IProvider
 	 * @param level current level
 	 * @return list of parent nodes
 	 */
-	private List<TreeMutableNode> buildHierarchy1(List<TreeMutableNode> nodes, int level)
+	private List<TreeMutableNode> buildHierarchy1(final List<TreeMutableNode> nodes, final int level)
 	{
 		Log.d(TAG, ">" + level + " nodes " + nodes.size());
 		final List<TreeMutableNode> roots = new ArrayList<>();
@@ -279,7 +315,7 @@ public class Provider implements IProvider
 	 * @param level level
 	 * @return
 	 */
-	private List<TreeMutableNode> buildHierarchy(List<TreeMutableNode> nodes, int level)
+	private List<TreeMutableNode> buildHierarchy(final List<TreeMutableNode> nodes, final int level)
 	{
 		int m = TREE_MAX_NODES_AT_LEVEL[level > TREE_MAX_NODES_AT_LEVEL.length - 1 ? TREE_MAX_NODES_AT_LEVEL.length - 1 : level];
 		Log.d(TAG, "level=" + level + "  m=" + m);
@@ -304,7 +340,7 @@ public class Provider implements IProvider
 	 * @param source selection
 	 * @return list of contact nodes
 	 */
-	private List<TreeMutableNode> collectNodes(final String source)
+	private List<TreeMutableNode> collectContacts(final String source)
 	{
 		final String[] selectionArgs = {source};
 		final boolean nullSource = source == null || source.isEmpty();
@@ -347,6 +383,11 @@ public class Provider implements IProvider
 		return nodes;
 	}
 
+	/**
+	 * Collect groups
+	 *
+	 * @return list of groups (with members)
+	 */
 	private List<TreeMutableNode> collectGroups()
 	{
 		final ContentResolver contentResolver = this.context.getContentResolver();
@@ -379,10 +420,17 @@ public class Provider implements IProvider
 					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
 					Log.d("group ", groupId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
 
-					final TreeMutableNode node = makeGroupNode(groupId, title, titleRes, accountName, accountType);
-					nodes.add(node);
+					// members
+					final List<TreeMutableNode> memberNodes = collectGroupMembers(groupId);
+					if (memberNodes != null && memberNodes.size() > 0)
+					{
+						// group
+						final TreeMutableNode node = makeGroupNode(groupId, title, titleRes, accountName, accountType);
+						nodes.add(node);
 
-					//collectGroupUsers(groupId);
+						final List<TreeMutableNode> subNodes = buildHierarchy(memberNodes, 0);
+						attachToParent(node, subNodes);
+					}
 				}
 				while (cursor.moveToNext());
 			}
@@ -391,7 +439,13 @@ public class Provider implements IProvider
 		return nodes;
 	}
 
-	private List<TreeMutableNode> collectGroupUsers(final String groupID)
+	/**
+	 * Collect group members
+	 *
+	 * @param groupID group id
+	 * @return list of members
+	 */
+	private List<TreeMutableNode> collectGroupMembers(final String groupID)
 	{
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
@@ -399,7 +453,7 @@ public class Provider implements IProvider
 				Settings.GROUP_MEMBERS_PROJECTION, //
 				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'", //
 				null,  //
-				null //
+				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE //
 		);
 		List<TreeMutableNode> nodes = null;
 		if (cursor != null)
@@ -432,6 +486,15 @@ public class Provider implements IProvider
 		return nodes;
 	}
 
+	/**
+	 * Make contact node
+	 *
+	 * @param id                contact id
+	 * @param name              name
+	 * @param altName           alternative name
+	 * @param photoThumbnailUri photo uri
+	 * @return contact node
+	 */
 	private TreeMutableNode makeContactNode(final String id, final String name, final String altName, final String photoThumbnailUri/*, final long photoThumbnailId*/)
 	{
 		// makeLabel
@@ -480,13 +543,26 @@ public class Provider implements IProvider
 		return node;
 	}
 
-	private TreeMutableNode makeGroupNode(String groupId, String title, String titleRes, String accountName, String accountType)
+	/**
+	 * Make group node
+	 *
+	 * @param groupId     group id
+	 * @param title       group title
+	 * @param titleRes    group title res
+	 * @param accountName account name
+	 * @param accountType account type
+	 * @return group node
+	 */
+	private TreeMutableNode makeGroupNode(final String groupId, final String title, final String titleRes, final String accountName, final String accountType)
 	{
 		final TreeMutableNode node = new TreeMutableNode(null, groupId);
 		node.setLabel(title);
 		node.setContent(title + NL + accountName + ' ' + accountType);
 		node.setLink(URLSCHEME + groupId);
 		node.setImageIndex(ImageIndices.GROUP.ordinal());
+		node.setBackColor(groupBackColor);
+		node.setForeColor(groupForeColor);
+		node.setEdgeColor(groupEdgeColor);
 		return node;
 	}
 
@@ -548,7 +624,7 @@ public class Provider implements IProvider
 	 * @param n   n trailing characters
 	 * @return right of string
 	 */
-	private String right(String str, int n)
+	private String right(final String str, final int n)
 	{
 		if (str == null)
 		{
@@ -569,7 +645,7 @@ public class Provider implements IProvider
 	 * @param n   n first characters
 	 * @return left of string
 	 */
-	private String left(final String str, int n)
+	private String left(final String str, final int n)
 	{
 		if (str == null)
 		{
@@ -608,6 +684,12 @@ public class Provider implements IProvider
 		return settings;
 	}
 
+	/**
+	 * Join list
+	 *
+	 * @param strs array of strings
+	 * @return joined strings
+	 */
 	private String join(final String[] strs)
 	{
 		final StringBuilder sb = new StringBuilder();
@@ -633,13 +715,13 @@ public class Provider implements IProvider
 
 	public void model()
 	{
-		//final Tree tree = buildTree(collectNodes());
+		//final Tree tree = buildTree(collectContacts());
 		final Tree tree = buildTree((String) null);
 		final String dump = ModelDump.toString(tree);
 		System.out.println(dump);
 
 		/*
-		final List<MutableNode> contacts = collectNodes();
+		final List<MutableNode> contacts = collectContacts();
 		for (INode node : contacts)
 		{
 			Log.d(TAG, node.getLabel());

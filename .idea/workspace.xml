@@ -12,9 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8e357679-a691-479e-bec4-ec1616a208e4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/.idea/workspace.xml" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsFragment.java" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsFragment.java" />
       <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java" />
-      <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java" />
       <change type="MODIFICATION" beforePath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/treebolicContactsProvider.iml" afterPath="/mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/treebolicContactsProvider.iml" />
     </list>
     <ignored path="TreebolicContacts.iws" />
@@ -50,12 +48,12 @@
       <file leaf-file-name="Provider.java" pinned="false" current-in-tab="true">
         <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="440" column="9" selection-start-line="440" selection-start-column="9" selection-end-line="440" selection-end-column="9" />
+            <state relative-caret-position="312">
+              <caret line="87" column="30" selection-start-line="87" selection-start-column="30" selection-end-line="87" selection-end-column="30" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="docComment;class#Provider#0" expanded="false" />
                 <element signature="docComment;class#ImageIndices#0;class#Provider#0" expanded="false" />
+                <element signature="class#ImageIndices#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;field#images#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;field#backgroundColor#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;field#contactBackColor#0;class#Provider#0" expanded="false" />
@@ -76,12 +74,37 @@
                 <element signature="method#makeModel#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;method#buildTree#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;method#buildTree#1;class#Provider#0" expanded="false" />
+                <element signature="method#buildTree#1;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#attachToParent#0;class#Provider#0" expanded="false" />
+                <element signature="method#attachToParent#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+                <element signature="method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+                <element signature="e#6821#6850#0" expanded="false" />
                 <element signature="docComment;method#buildHierarchy#0;class#Provider#0" expanded="false" />
                 <element signature="method#buildHierarchy#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#collectContacts#0;class#Provider#0" expanded="false" />
+                <element signature="e#9167#9236#0" expanded="false" />
+                <element signature="docComment;method#collectGroups#0;class#Provider#0" expanded="false" />
+                <element signature="e#10184#10235#0" expanded="false" />
+                <element signature="docComment;method#collectGroupMembers#0;class#Provider#0" expanded="false" />
+                <element signature="e#12194#12245#0" expanded="false" />
+                <element signature="e#12756#12839#0" expanded="false" />
+                <element signature="docComment;method#makeContactNode#0;class#Provider#0" expanded="false" />
+                <element signature="e#13997#14050#0" expanded="false" />
+                <element signature="docComment;method#makeGroupNode#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#label#0;class#Provider#0" expanded="false" />
+                <element signature="method#label#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#makeLabel#0;class#Provider#0" expanded="false" />
+                <element signature="method#makeLabel#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;method#right#0;class#Provider#0" expanded="false" />
+                <element signature="method#right#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;method#left#0;class#Provider#0" expanded="false" />
+                <element signature="method#left#0;class#Provider#0" expanded="false" />
                 <element signature="docComment;method#makeSettings#0;class#Provider#0" expanded="false" />
+                <element signature="docComment;method#join#0;class#Provider#0" expanded="false" />
+                <element signature="method#join#0;class#Provider#0" expanded="false" />
+                <element signature="method#model#0;class#Provider#0" expanded="false" />
+                <marker date="1495802902753" expanded="false" signature="8088:9717" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -90,8 +113,8 @@
       <file leaf-file-name="Settings.java" pinned="false" current-in-tab="false">
         <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="44" column="39" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="39" />
+            <state relative-caret-position="444">
+              <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="85" />
               <folding />
             </state>
           </provider>
@@ -14605,8 +14628,8 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -15119,7 +15142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495781772957</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="in progress groups">
+      <created>1495792191371</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1495792191371</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -15132,7 +15162,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3029382" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3029382" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32522798" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -15140,7 +15170,6 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15335463" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24920128" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32624114" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2539936" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -15151,6 +15180,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24920128" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -15184,15 +15214,15 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java</url>
-          <line>385</line>
+          <line>391</line>
           <properties />
-          <option name="timeStamp" value="28" />
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="30" />
+      <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -15323,13 +15353,13 @@
       </provider>
     </entry>
     <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/layout/content_main.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52">
           <caret line="4" column="47" selection-start-line="4" selection-start-column="47" selection-end-line="4" selection-end-column="47" />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/../../../androidstudio/sdk/extras/android/m2repository/com/android/support/support-fragment/25.3.1/support-fragment-25.3.1-sources.jar!/android/support/v4/app/LoaderManager.java">
@@ -15382,53 +15412,53 @@
       </provider>
     </entry>
     <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/menu/list_contacts.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
-    </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/menu/main.xml">
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="20" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
         </state>
       </provider>
-    </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/menu/treebolic.xml">
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/menu/treebolic.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
           <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
         </state>
       </provider>
-    </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/layout/detail_contact.xml">
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/layout/detail_contact.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
           <caret line="14" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
         </state>
       </provider>
-    </entry>
-    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/layout/item_contact.xml">
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
+    </entry>
+    <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContacts/src/main/res/layout/item_contact.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
           <caret line="28" column="15" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/res/values/strings.xml">
@@ -15529,26 +15559,25 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="130">
           <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="44" column="39" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="39" />
+        <state relative-caret-position="444">
+          <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="85" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file:///mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="440" column="9" selection-start-line="440" selection-start-column="9" selection-end-line="440" selection-end-column="9" />
+        <state relative-caret-position="312">
+          <caret line="87" column="30" selection-start-line="87" selection-start-column="30" selection-end-line="87" selection-end-column="30" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="docComment;class#Provider#0" expanded="false" />
             <element signature="docComment;class#ImageIndices#0;class#Provider#0" expanded="false" />
+            <element signature="class#ImageIndices#0;class#Provider#0" expanded="false" />
             <element signature="docComment;field#images#0;class#Provider#0" expanded="false" />
             <element signature="docComment;field#backgroundColor#0;class#Provider#0" expanded="false" />
             <element signature="docComment;field#contactBackColor#0;class#Provider#0" expanded="false" />
@@ -15569,12 +15598,37 @@
             <element signature="method#makeModel#0;class#Provider#0" expanded="false" />
             <element signature="docComment;method#buildTree#0;class#Provider#0" expanded="false" />
             <element signature="docComment;method#buildTree#1;class#Provider#0" expanded="false" />
+            <element signature="method#buildTree#1;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#attachToParent#0;class#Provider#0" expanded="false" />
+            <element signature="method#attachToParent#0;class#Provider#0" expanded="false" />
             <element signature="docComment;method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+            <element signature="method#buildHierarchy1#0;class#Provider#0" expanded="false" />
+            <element signature="e#6821#6850#0" expanded="false" />
             <element signature="docComment;method#buildHierarchy#0;class#Provider#0" expanded="false" />
             <element signature="method#buildHierarchy#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#collectContacts#0;class#Provider#0" expanded="false" />
+            <element signature="e#9167#9236#0" expanded="false" />
+            <element signature="docComment;method#collectGroups#0;class#Provider#0" expanded="false" />
+            <element signature="e#10184#10235#0" expanded="false" />
+            <element signature="docComment;method#collectGroupMembers#0;class#Provider#0" expanded="false" />
+            <element signature="e#12194#12245#0" expanded="false" />
+            <element signature="e#12756#12839#0" expanded="false" />
+            <element signature="docComment;method#makeContactNode#0;class#Provider#0" expanded="false" />
+            <element signature="e#13997#14050#0" expanded="false" />
+            <element signature="docComment;method#makeGroupNode#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#label#0;class#Provider#0" expanded="false" />
+            <element signature="method#label#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#makeLabel#0;class#Provider#0" expanded="false" />
+            <element signature="method#makeLabel#0;class#Provider#0" expanded="false" />
             <element signature="docComment;method#right#0;class#Provider#0" expanded="false" />
+            <element signature="method#right#0;class#Provider#0" expanded="false" />
             <element signature="docComment;method#left#0;class#Provider#0" expanded="false" />
+            <element signature="method#left#0;class#Provider#0" expanded="false" />
             <element signature="docComment;method#makeSettings#0;class#Provider#0" expanded="false" />
+            <element signature="docComment;method#join#0;class#Provider#0" expanded="false" />
+            <element signature="method#join#0;class#Provider#0" expanded="false" />
+            <element signature="method#model#0;class#Provider#0" expanded="false" />
+            <marker date="1495802902753" expanded="false" signature="8088:9717" ph="{...}" />
           </folding>
         </state>
       </provider>
