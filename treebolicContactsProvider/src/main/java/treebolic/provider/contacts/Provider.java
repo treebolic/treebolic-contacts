@@ -207,7 +207,7 @@ public class Provider implements IProvider
 	 */
 	private Tree buildTree(final String source, final Properties theseParameters)
 	{
-		final String doGroups = theseParameters.getProperty("groups", "false");
+		final String doGroups = theseParameters.getProperty(Settings.PARAM_DO_GROUPS, "false");
 		if ("true".equals(doGroups))
 		{
 			return buildTree(buildHierarchy(collectGroups(), 0));

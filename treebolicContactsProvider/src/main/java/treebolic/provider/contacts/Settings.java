@@ -102,5 +102,22 @@ public class Settings
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPref.getString(key, null);
 	}
+
+	/**
+	 * Get boolean preference
+	 *
+	 * @param context context
+	 * @param key     key
+	 * @return value
+	 */
+	static public boolean getBooleanPref(final Context context, final String key)
+	{
+		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		return sharedPref.getBoolean(key, false);
+	}
+
+	// P A R A M E T E R S
+
+	static public String PARAM_DO_GROUPS = "dogroups";
 }
 
