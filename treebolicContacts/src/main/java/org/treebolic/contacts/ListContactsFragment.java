@@ -216,7 +216,6 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 				.append(Long.toString(contactId)).append('\n');
 
 		// info
-		//getAllContent(contactId, sb);
 		getNames(contactId, sb);
 		getPhones(contactId, sb);
 		getEmails(contactId, sb);
@@ -326,66 +325,6 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	}
 
 	// M O R E
-
-	private void getAllContent(long contactId, final XSpannableStringBuilder sb)
-	{
-		final Context context = getContext();
-		final Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
-		final String[] columns = cursor.getColumnNames();
-
-		Log.d(TAG, join(columns));
-		//str2sb("columns", columns, sb);
-
-		if (cursor != null)
-		{
-			if (cursor.getCount() > 0)
-			{
-				/*
-				final int idxHasPhone = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
-				final int idxPhoneNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-				final int idxPhoneType = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
-				*/
-				while (cursor.moveToNext())
-				{
-					/*
-					final boolean hasPhone = cursor.getInt(idxHasPhone) > 0;
-					final String phoneNumber = idxPhoneNumber == -1 ? "" : cursor.getString(idxPhoneNumber);
-					final int phoneType = idxPhoneNumber == -1 ? -1 : cursor.getInt(idxPhoneType);
-
-					// phone
-					switch (phoneType)
-					{
-						case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-							sb.append("phone (home)", new StyleSpan(Typeface.BOLD), 0) //
-									.append('\n') //
-									.append(phoneNumber) //
-									.append('\n');
-							break;
-						case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-							sb.append("phone (mobile)", new StyleSpan(Typeface.BOLD), 0) //
-									.append('\n') //
-									.append(phoneNumber) //
-									.append('\n');
-							break;
-						case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-							sb.append("phone (work)", new StyleSpan(Typeface.BOLD), 0) //
-									.append('\n') //
-									.append(phoneNumber) //
-									.append('\n');
-							break;
-						case -1:
-							sb.append("phone (unknown)", new StyleSpan(Typeface.BOLD), 0) //
-									.append('\n') //
-									.append(phoneNumber) //
-									.append('\n');
-							break;
-					}
-					*/
-				}
-			}
-			cursor.close();
-		}
-	}
 
 	private void getNames(final long id, final XSpannableStringBuilder sb)
 	{

@@ -54,6 +54,45 @@ public class Settings
 	// The column index for the photo uri column
 	static public final int PHOTO_URI_INDEX = 7;
 
+
+	// G R O U P  P R O J E C T I O N
+
+	static public final String[] GROUP_PROJECTION = new String[]{ //
+			ContactsContract.Groups._ID, //
+			ContactsContract.Groups.TITLE, //
+			ContactsContract.Groups.TITLE_RES, //
+			ContactsContract.Groups.ACCOUNT_NAME, //
+			ContactsContract.Groups.ACCOUNT_TYPE, //
+	};
+
+	// The column index for the group id column
+	static public final int GROUP_ID_INDEX = 0;
+
+	// The column index for the group title column
+	static public final int GROUP_TITLE_INDEX = 1;
+
+	// The column index for the group title res column
+	static public final int GROUP_TITLE_RES_INDEX = 2;
+
+	// The column index for the group account name column
+	static public final int GROUP_ACCOUNT_NAME = 3;
+
+	// The column index for the group account type column
+	static public final int GROUP_ACCOUNT_TYPE = 4;
+
+	// G R O U P  M E M B E R  P R O J E C T I O N
+
+	static public final String[] GROUP_MEMBERS_PROJECTION = new String[]{ //
+			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+			ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID //
+	};
+
+	// The column index for the group member row id column
+	static public final int GROUP_MEMBERS_ROW_ID_INDEX = 0;
+
+	// The column index for the group member contact id column
+	static public final int GROUP_MEMBERS_CONTACTID_INDEX = 1;
+
 	// S E L E C T I O N
 
 	/**

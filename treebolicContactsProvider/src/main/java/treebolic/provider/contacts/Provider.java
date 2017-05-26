@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -305,14 +304,15 @@ public class Provider implements IProvider
 	 */
 	private List<TreeMutableNode> collectNodes(final String source)
 	{
+		collectGroups();
+
 		final String[] selectionArgs = {source};
 		final boolean nullSource = source == null || source.isEmpty();
 		selectionArgs[0] = nullSource ? null : "%" + source + "%";
 
-		final Uri uri = ContactsContract.Contacts.CONTENT_URI;
 		final ContentResolver contentResolver = this.context.getContentResolver();
-		final Cursor cursor = contentResolver.query(uri, // content URI of the words table
-				Settings.PROJECTION, // columns to return for each row
+		final Cursor cursor = contentResolver.query( //
+				ContactsContract.Contacts.CONTENT_URI, Settings.PROJECTION, // columns to return for each row
 				nullSource ? null : Settings.SELECTION_DN_LIKE, // selection criteria
 				nullSource ? null : selectionArgs, // selection criteria arguments to placeholders
 				Settings.sortOrder); // sort order for the returned rows
@@ -386,6 +386,64 @@ public class Provider implements IProvider
 		return null;
 	}
 
+	void collectGroupUsers(long groupID)
+	{
+		final ContentResolver contentResolver = this.context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				ContactsContract.Data.CONTENT_URI, Settings.GROUP_MEMBERS_PROJECTION,  //
+				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'", //
+				null,  //
+				null //
+		);
+		if (cursor != null)
+		{
+			if (cursor.getCount() > 0)
+			{
+				while (cursor.moveToNext())
+				{
+					final long id = cursor.getLong(Settings.GROUP_MEMBERS_ROW_ID_INDEX);
+					final long contactId = cursor.getLong(Settings.GROUP_MEMBERS_CONTACTID_INDEX);
+					Log.d("\tmember ", id + " " + contactId);
+				}
+			}
+			cursor.close();
+		}
+	}
+
+	void collectGroups()
+	{
+		final ContentResolver contentResolver = this.context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				ContactsContract.Groups.CONTENT_URI,  //
+				Settings.GROUP_PROJECTION,  //
+				null, //
+				null,  //
+				ContactsContract.Groups.TITLE //
+		);
+		if (cursor != null)
+		{
+			if (cursor.getCount() > 0)
+			{
+				while (cursor.moveToNext())
+				{
+					final long groupId = cursor.getLong(Settings.GROUP_ID_INDEX);
+					String title = cursor.getString(Settings.GROUP_TITLE_INDEX);
+					if (title.equals("Starred in Android"))
+					{
+						title = "Starred";
+					}
+					final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
+					final String accountName = cursor.getString(Settings.GROUP_ACCOUNT_NAME);
+					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
+					Log.d("group ", groupId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
+
+					collectGroupUsers(groupId);
+				}
+			}
+			cursor.close();
+		}
+	}
+
 	// H E L P E R S
 
 	/**
@@ -394,6 +452,7 @@ public class Provider implements IProvider
 	 * @param node node
 	 * @return label of node
 	 */
+
 	private String label(final TreeMutableNode node)
 	{
 		final String l = node.getLabel();
@@ -508,7 +567,7 @@ public class Provider implements IProvider
 	public void model()
 	{
 		//final Tree tree = buildTree(collectNodes());
-		final Tree tree = buildTree((String)null);
+		final Tree tree = buildTree((String) null);
 		final String dump = ModelDump.toString(tree);
 		System.out.println(dump);
 
