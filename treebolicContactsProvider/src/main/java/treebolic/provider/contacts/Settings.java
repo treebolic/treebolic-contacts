@@ -24,36 +24,20 @@ public class Settings
 			ContactsContract.Contacts.LOOKUP_KEY, //
 			ContactsContract.Contacts.DISPLAY_NAME, //
 			ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE, //
-			ContactsContract.Contacts.PHOTO_ID, // Reference to the row in the data table holding the photo.
-			ContactsContract.Contacts.PHOTO_FILE_ID, // Photo file ID of the full-size photo.
 			ContactsContract.Contacts.PHOTO_THUMBNAIL_URI, // A URI that can be used to retrieve a thumbnail of the contact's photo.
 			ContactsContract.Contacts.PHOTO_URI, // A URI that can be used to retrieve the contact's full-size photo.
+			ContactsContract.Contacts.PHOTO_ID, // Reference to the row in the data table holding the photo.
+			ContactsContract.Contacts.PHOTO_FILE_ID, // Photo file ID of the full-size photo.
 	};
 
-	// The column index for the _ID column
 	static public final int ID_INDEX = 0;
-
-	// The column index for the LOOKUP_KEY column
 	static public final int LOOKUP_KEY_INDEX = 1;
-
-	// The column index for the NAME column
 	static public final int NAME_INDEX = 2;
-
-	// The column index for the NAME column
 	static public final int ALT_NAME_INDEX = 3;
-
-	// The column index for the photo thumbnail id column
-	static public final int PHOTO_THUMBNAIL_ID_INDEX = 4;
-
-	// The column index for the photo id column
-	static public final int PHOTO_ID_INDEX = 5;
-
-	// The column index for the photo thumbnail uri column
-	static public final int PHOTO_THUMBNAIL_URI_INDEX = 6;
-
-	// The column index for the photo uri column
-	static public final int PHOTO_URI_INDEX = 7;
-
+	static public final int PHOTO_THUMBNAIL_URI_INDEX = 4;
+	static public final int PHOTO_URI_INDEX = 5;
+	static public final int PHOTO_THUMBNAIL_ID_INDEX = 6;
+	static public final int PHOTO_ID_INDEX = 7;
 
 	// G R O U P  P R O J E C T I O N
 
@@ -65,33 +49,33 @@ public class Settings
 			ContactsContract.Groups.ACCOUNT_TYPE, //
 	};
 
-	// The column index for the group id column
 	static public final int GROUP_ID_INDEX = 0;
-
-	// The column index for the group title column
 	static public final int GROUP_TITLE_INDEX = 1;
-
-	// The column index for the group title res column
 	static public final int GROUP_TITLE_RES_INDEX = 2;
-
-	// The column index for the group account name column
 	static public final int GROUP_ACCOUNT_NAME = 3;
-
-	// The column index for the group account type column
 	static public final int GROUP_ACCOUNT_TYPE = 4;
 
 	// G R O U P  M E M B E R  P R O J E C T I O N
 
 	static public final String[] GROUP_MEMBERS_PROJECTION = new String[]{ //
+			ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, //
+			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
+			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
+			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
+			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI, //
+			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID,
+			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID,
 			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID //
 	};
 
-	// The column index for the group member row id column
-	static public final int GROUP_MEMBERS_ROW_ID_INDEX = 0;
-
-	// The column index for the group member contact id column
-	static public final int GROUP_MEMBERS_CONTACTID_INDEX = 1;
+	static public final int GROUP_MEMBERS_CONTACTID_INDEX = 0;
+	static public final int GROUP_MEMBERS_DISPLAY_NAME_INDEX = 1;
+	static public final int GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX = 2;
+	static public final int GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX = 3;
+	static public final int GROUP_MEMBERS_PHOTO_URI_INDEX = 4;
+	static public final int GROUP_MEMBERS_PHOTO_ID_INDEX = 5;
+	static public final int GROUP_MEMBERS_PHOTO_FILE_ID_INDEX = 6;
+	static public final int GROUP_MEMBERS_GROUP_ROW_ID_INDEX = 7;
 
 	// S E L E C T I O N
 

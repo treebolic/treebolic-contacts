@@ -175,7 +175,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		final Cursor cursor = adapter.getCursor();
 
 		final String[] columns = cursor.getColumnNames();
-		Log.d(TAG, columns.toString());
+		Log.d(TAG, join(columns));
 
 		// Move to the selected contact
 		cursor.moveToPosition(position);

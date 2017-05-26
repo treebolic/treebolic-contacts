@@ -41,7 +41,7 @@ public class Provider implements IProvider
 	 */
 	public enum ImageIndices
 	{
-		ROOT, FOLDER, CONTACT,
+		ROOT, FOLDER, CONTACT, GROUP,
 	}
 
 	/**
@@ -51,6 +51,7 @@ public class Provider implements IProvider
 			Image.try_make(Provider.class.getResource("images/root.png")), // ROOT
 			Image.try_make(Provider.class.getResource("images/folder.png")), // FOLDER
 			Image.try_make(Provider.class.getResource("images/contact.png")), // CONTACT
+			Image.try_make(Provider.class.getResource("images/group.png")), // GROUP
 	};
 
 	private static final String NL = "<br>";
@@ -188,7 +189,8 @@ public class Provider implements IProvider
 	private Tree buildTree(final String source)
 	{
 		//return buildTree(collectNodes());
-		return buildTree(buildHierarchy(collectNodes(source), 0));
+		return buildTree(buildHierarchy(collectGroups(), 0));
+		//return buildTree(buildHierarchy(collectNodes(source), 0));
 	}
 
 	/**
@@ -299,136 +301,76 @@ public class Provider implements IProvider
 	/**
 	 * Collect contact nodes
 	 *
-	 * @param source selectiion
+	 * @param source selection
 	 * @return list of contact nodes
 	 */
 	private List<TreeMutableNode> collectNodes(final String source)
 	{
-		collectGroups();
-
 		final String[] selectionArgs = {source};
 		final boolean nullSource = source == null || source.isEmpty();
 		selectionArgs[0] = nullSource ? null : "%" + source + "%";
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Contacts.CONTENT_URI, Settings.PROJECTION, // columns to return for each row
+				ContactsContract.Contacts.CONTENT_URI, //
+				Settings.PROJECTION, // columns to return for each row
 				nullSource ? null : Settings.SELECTION_DN_LIKE, // selection criteria
 				nullSource ? null : selectionArgs, // selection criteria arguments to placeholders
 				Settings.sortOrder); // sort order for the returned rows
+		List<TreeMutableNode> nodes = null;
 		if (cursor != null)
 		{
 			if (cursor.moveToFirst())
 			{
-				final List<TreeMutableNode> nodes = new ArrayList<>();
-				// final List<Image> images = new ArrayList<>();
+				nodes = new ArrayList<>();
 				do
 				{
 					// row values
 					final String id = cursor.getString(Settings.ID_INDEX);
-					final String lookup = cursor.getString(Settings.LOOKUP_KEY_INDEX);
 					final String name = cursor.getString(Settings.NAME_INDEX);
 					final String altName = cursor.getString(Settings.ALT_NAME_INDEX);
-					//final Long photoThumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
 					final String photoThumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
+					//final String photoUri = cursor.getString(Settings.PHOTO_URI_INDEX);
+					//final Long photoThumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
+					//final Long photoId = cursor.getLong(Settings.PHOTO_ID_INDEX);
+					//final String lookup = cursor.getString(Settings.LOOKUP_KEY_INDEX);
 
-					// makeLabel
-					final String[] fields = altName.split(", *");
-					String label = fields[0];
-					if (fields.length > 1 && fields[1].charAt(0) != '#')
-					{
-						label += '\n';
-						label += fields[1];
-					}
-					//final String makeLabel = altName.replace(',','\n');
-
-					// node
-					final TreeMutableNode node = new TreeMutableNode(null, id);
-					node.setLabel(label);
-					node.setContent(name + NL + altName);
-					node.setLink(URLSCHEME + id);
-
-					// image
-					if (photoThumbnailUri != null)
-					{
-						final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoUri(this.context, photoThumbnailUri);
-						final Bitmap roundBitmap = Utils.roundCrop(bitmap);
-						final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
-						final Bitmap scaleddownBitmap = Utils.scale(roundBitmap, 50, 50);
-						final Image image = new Image(scaledupBitmap);
-						node.setImage(image);
-
-						final String data = Utils.bitmapToUrl(scaleddownBitmap);
-						node.setContent("<table><tr><td valign='top'><img src='" + data + "'/></td><td>" + node.getContent() + "</tr></table>");
-					}
-					else
-					{
-						node.setImageIndex(ImageIndices.CONTACT.ordinal());
-					}
-
-					/*
-					if (photoThumbnailId != 0)
-					{
-						final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoId(this.context, photoThumbnailId);
-						final Bitmap roundBitmap = Utils.roundCrop(bitmap);
-						final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
-						final Image image = new Image(scaledupBitmap);
-						node.setImage(image);
-					}
-					*/
+					final TreeMutableNode node = makeContactNode(id, name, altName, photoThumbnailUri);
 					nodes.add(node);
 				}
 				while (cursor.moveToNext());
-				Log.d(TAG, "collected nodes " + nodes.size());
-				return nodes;
-			}
-		}
-		return null;
-	}
 
-	void collectGroupUsers(long groupID)
-	{
-		final ContentResolver contentResolver = this.context.getContentResolver();
-		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Data.CONTENT_URI, Settings.GROUP_MEMBERS_PROJECTION,  //
-				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'", //
-				null,  //
-				null //
-		);
-		if (cursor != null)
-		{
-			if (cursor.getCount() > 0)
-			{
-				while (cursor.moveToNext())
-				{
-					final long id = cursor.getLong(Settings.GROUP_MEMBERS_ROW_ID_INDEX);
-					final long contactId = cursor.getLong(Settings.GROUP_MEMBERS_CONTACTID_INDEX);
-					Log.d("\tmember ", id + " " + contactId);
-				}
+				Log.d(TAG, "collected nodes " + nodes.size());
 			}
 			cursor.close();
 		}
+		return nodes;
 	}
 
-	void collectGroups()
+	private List<TreeMutableNode> collectGroups()
 	{
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Groups.CONTENT_URI,  //
-				Settings.GROUP_PROJECTION,  //
+				ContactsContract.Groups.CONTENT_URI, //
+				Settings.GROUP_PROJECTION, //
 				null, //
-				null,  //
+				null, //
 				ContactsContract.Groups.TITLE //
 		);
+		List<TreeMutableNode> nodes = null;
 		if (cursor != null)
 		{
-			if (cursor.getCount() > 0)
+			//final String[] columns = cursor.getColumnNames();
+			//Log.d(TAG, "GROUPS " + join(columns));
+
+			if (cursor.moveToFirst())
 			{
-				while (cursor.moveToNext())
+				nodes = new ArrayList<>();
+				do
 				{
-					final long groupId = cursor.getLong(Settings.GROUP_ID_INDEX);
+					final String groupId = cursor.getString(Settings.GROUP_ID_INDEX);
 					String title = cursor.getString(Settings.GROUP_TITLE_INDEX);
-					if (title.equals("Starred in Android"))
+					if ("Starred in Android".equals(title))
 					{
 						title = "Starred";
 					}
@@ -437,11 +379,115 @@ public class Provider implements IProvider
 					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
 					Log.d("group ", groupId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
 
-					collectGroupUsers(groupId);
+					final TreeMutableNode node = makeGroupNode(groupId, title, titleRes, accountName, accountType);
+					nodes.add(node);
+
+					//collectGroupUsers(groupId);
 				}
+				while (cursor.moveToNext());
 			}
 			cursor.close();
 		}
+		return nodes;
+	}
+
+	private List<TreeMutableNode> collectGroupUsers(final String groupID)
+	{
+		final ContentResolver contentResolver = this.context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				ContactsContract.Data.CONTENT_URI, //
+				Settings.GROUP_MEMBERS_PROJECTION, //
+				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'", //
+				null,  //
+				null //
+		);
+		List<TreeMutableNode> nodes = null;
+		if (cursor != null)
+		{
+			//final String[] columns = cursor.getColumnNames();
+			//Log.d(TAG, "MEMBERS " + join(columns));
+
+			if (cursor.moveToFirst())
+			{
+				nodes = new ArrayList<>();
+				do
+				{
+					final String contactId = cursor.getString(Settings.GROUP_MEMBERS_CONTACTID_INDEX);
+					final String name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX);
+					final String altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX);
+					final String photoThumbnailUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX);
+					//final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
+					//final Long thumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
+					//final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_FILE_ID_INDEX);
+					final Long groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ROW_ID_INDEX);
+					Log.d("\tmember ", groupId + " " + contactId + " " + name + " " + altName + " " + photoThumbnailUri);
+
+					final TreeMutableNode node = makeContactNode(contactId, name, altName, photoThumbnailUri);
+					nodes.add(node);
+				}
+				while (cursor.moveToNext());
+			}
+			cursor.close();
+		}
+		return nodes;
+	}
+
+	private TreeMutableNode makeContactNode(final String id, final String name, final String altName, final String photoThumbnailUri/*, final long photoThumbnailId*/)
+	{
+		// makeLabel
+		final String[] fields = altName.split(", *");
+		String label = fields[0];
+		if (fields.length > 1 && fields[1].charAt(0) != '#')
+		{
+			label += '\n';
+			label += fields[1];
+		}
+		//final String makeLabel = altName.replace(',','\n');
+
+		// node
+		final TreeMutableNode node = new TreeMutableNode(null, id);
+		node.setLabel(label);
+		node.setContent(name + NL + altName);
+		node.setLink(URLSCHEME + id);
+
+		// image
+		if (photoThumbnailUri != null)
+		{
+			final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoUri(this.context, photoThumbnailUri);
+			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
+			final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
+			final Bitmap scaleddownBitmap = Utils.scale(roundBitmap, 50, 50);
+			final Image image = new Image(scaledupBitmap);
+			node.setImage(image);
+
+			final String data = Utils.bitmapToUrl(scaleddownBitmap);
+			node.setContent("<table><tr><td valign='top'><img src='" + data + "'/></td><td>" + node.getContent() + "</tr></table>");
+		}
+		/*
+		else if (photoThumbnailId != 0)
+		{
+			final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoId(this.context, photoThumbnailId);
+			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
+			final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
+			final Image image = new Image(scaledupBitmap);
+			node.setImage(image);
+		}
+		*/
+		else
+		{
+			node.setImageIndex(ImageIndices.CONTACT.ordinal());
+		}
+		return node;
+	}
+
+	private TreeMutableNode makeGroupNode(String groupId, String title, String titleRes, String accountName, String accountType)
+	{
+		final TreeMutableNode node = new TreeMutableNode(null, groupId);
+		node.setLabel(title);
+		node.setContent(title + NL + accountName + ' ' + accountType);
+		node.setLink(URLSCHEME + groupId);
+		node.setImageIndex(ImageIndices.GROUP.ordinal());
+		return node;
 	}
 
 	// H E L P E R S
@@ -560,6 +606,27 @@ public class Provider implements IProvider
 		settings.theTreeEdgeStyle = (int) IEdge.DOT;
 		//settings.theDefaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
 		return settings;
+	}
+
+	private String join(final String[] strs)
+	{
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		sb.append('{');
+		for (String str : strs)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				sb.append(',');
+			}
+			sb.append(str);
+		}
+		sb.append('}');
+		return sb.toString();
 	}
 
 	// T E S T
