@@ -92,6 +92,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 
 		// bind
 		bind(findPreference(TreebolicIface.PREF_SOURCE));
+		bind(findPreference(Settings.PREF_DISPLAY));
+		bind(findPreference(Settings.PREF_SORT));
 	}
 
 	@Override
@@ -186,6 +188,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 
 			// bind
 			SettingsActivity.bind(findPreference(TreebolicIface.PREF_SOURCE));
+			SettingsActivity.bind(findPreference(Settings.PREF_DISPLAY));
+			SettingsActivity.bind(findPreference(Settings.PREF_SORT));
 		}
 	}
 }

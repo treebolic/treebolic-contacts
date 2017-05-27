@@ -143,6 +143,10 @@ public class Provider implements IProvider
 	 */
 	static int LABEL_TRUNCATE_AT = 3;
 
+	private int displayCode = 0;
+
+	private int sortCode = 0;
+
 	// C O N T E X T
 
 	/**
@@ -207,11 +211,32 @@ public class Provider implements IProvider
 	 */
 	private Tree buildTree(final String source, final Properties theseParameters)
 	{
-		final String doGroups = theseParameters.getProperty(Settings.PARAM_DO_GROUPS, "false");
-		if ("true".equals(doGroups))
+		final String display = theseParameters.getProperty(Settings.PARAM_DISPLAY);
+		if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
+		{
+			this.displayCode = 1;
+		}
+		else if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
+		{
+			this.displayCode = 2;
+		}
+
+		final String sort = theseParameters.getProperty(Settings.PARAM_SORT);
+		if (Settings.VALUE_SORT_FIRST.equals(sort))
+		{
+			this.sortCode = 1;
+		}
+		else if (Settings.VALUE_SORT_LAST.equals(sort))
+		{
+			this.sortCode = 2;
+		}
+
+		final String groups = theseParameters.getProperty(Settings.PARAM_GROUPS, "false");
+		if ("true".equals(groups))
 		{
 			return buildTree(buildHierarchy(collectGroups(), 0));
 		}
+
 		return buildTree(buildHierarchy(collectContacts(source), 0));
 	}
 
@@ -286,12 +311,13 @@ public class Provider implements IProvider
 			TreeMutableNode first = nodes.get(i);
 			TreeMutableNode last = nodes.get(b - 1);
 
-			final String startLabel = left(label(first), LABEL_TRUNCATE_AT);
-			final String rangeLabel = makeLabel(first, last);
+			final String startLabel = left(first.getTarget(), LABEL_TRUNCATE_AT);
 			root.setEdgeLabel(startLabel);
+			final String rangeLabel = makeRangeLabel(first, last);
+			root.setTarget(rangeLabel);
 			// root.setLabel(rangeLabel);
-			// root.setContent(/* "root" + level + "-" + i + NL  + */ rangeLabel + NL + label(first) + NL + label(last));
-			root.setContent(rangeLabel + /* NL + (b - i) + " elements" + */ NL + "<small>" + label(first) + NL + label(last) + "</small>");
+			// root.setContent(/* "root" + level + "-" + i + NL  + */ rangeLabel + NL + getNodeLabel(first) + NL + getNodeLabel(last));
+			root.setContent(rangeLabel + /* NL + (b - i) + " elements" + */ NL + "<small>" + first.getTarget() + NL + last.getTarget() + "</small>");
 
 			for (int k = i; k < b; k++)
 			{
@@ -339,17 +365,17 @@ public class Provider implements IProvider
 	 */
 	private List<TreeMutableNode> collectContacts(final String source)
 	{
-		final String[] selectionArgs = {source};
 		final boolean nullSource = source == null || source.isEmpty();
-		selectionArgs[0] = nullSource ? null : "%" + source + "%";
+		final String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+		final String sort = this.sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
 				ContactsContract.Contacts.CONTENT_URI, //
 				Settings.PROJECTION, // columns to return for each row
-				nullSource ? null : Settings.SELECTION_DN_LIKE, // selection criteria
-				nullSource ? null : selectionArgs, // selection criteria arguments to placeholders
-				Settings.sortOrder); // sort order for the returned rows
+				selection, selectionArgs, // selection criteria arguments to placeholders
+				sort); // sort order for the returned rows
 		List<TreeMutableNode> nodes = null;
 		if (cursor != null)
 		{
@@ -393,7 +419,7 @@ public class Provider implements IProvider
 				Settings.GROUP_PROJECTION, //
 				null, //
 				null, //
-				ContactsContract.Groups.TITLE //
+				ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC" //
 		);
 		List<TreeMutableNode> nodes = null;
 		if (cursor != null)
@@ -407,22 +433,29 @@ public class Provider implements IProvider
 				do
 				{
 					final String groupId = cursor.getString(Settings.GROUP_ID_INDEX);
-					String title = cursor.getString(Settings.GROUP_TITLE_INDEX);
+					CharSequence title = cursor.getString(Settings.GROUP_TITLE_INDEX);
+					final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
+					if (titleRes != null)
+					{
+						int resId = Integer.parseInt(titleRes);
+						final String resPackage = cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX);
+						title = this.context.getPackageManager().getText(resPackage, resId, null);
+					}
 					if ("Starred in Android".equals(title))
 					{
 						title = "Starred";
 					}
-					final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
 					final String accountName = cursor.getString(Settings.GROUP_ACCOUNT_NAME);
 					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
 					Log.d("group ", groupId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
+
 
 					// members
 					final List<TreeMutableNode> memberNodes = collectGroupMembers(groupId);
 					if (memberNodes != null && memberNodes.size() > 0)
 					{
 						// group
-						final TreeMutableNode node = makeGroupNode(groupId, title, titleRes, accountName, accountType);
+						final TreeMutableNode node = makeGroupNode(groupId, title.toString(), titleRes, accountName, accountType);
 						nodes.add(node);
 
 						final List<TreeMutableNode> subNodes = buildHierarchy(memberNodes, 0);
@@ -444,13 +477,16 @@ public class Provider implements IProvider
 	 */
 	private List<TreeMutableNode> collectGroupMembers(final String groupID)
 	{
+		final String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+		final String sort = this.sortCode == 1 ? ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME : ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
 				ContactsContract.Data.CONTENT_URI, //
 				Settings.GROUP_MEMBERS_PROJECTION, //
-				ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'", //
+				selection, //
 				null,  //
-				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE //
+				sort //
 		);
 		List<TreeMutableNode> nodes = null;
 		if (cursor != null)
@@ -494,21 +530,50 @@ public class Provider implements IProvider
 	 */
 	private TreeMutableNode makeContactNode(final String id, final String name, final String altName, final String photoThumbnailUri/*, final long photoThumbnailId*/)
 	{
-		// makeLabel
+		// make label from alt
 		final String[] fields = altName.split(", *");
-		String label = fields[0];
+		String last = fields[0];
+		String first = null;
 		if (fields.length > 1 && fields[1].charAt(0) != '#')
 		{
-			label += '\n';
-			label += fields[1];
+			first = fields[1];
 		}
-		//final String makeLabel = altName.replace(',','\n');
+
+		String label = null;
+		if (this.displayCode == 1) //first last
+		{
+			label = first;
+			if (first == null)
+			{
+				label = last;
+			}
+			else if (last != null)
+			{
+				label += '\n' + last;
+			}
+		}
+		else // last first
+		{
+			label = last;
+			if (last == null)
+			{
+				label = first;
+			}
+			else if (first != null)
+			{
+				label += '\n' + first;
+			}
+		}
+		//final String makeRangeLabel = altName.replace(',','\n');
+
+		final String target = left((this.sortCode == 1 ? name : altName).replaceFirst("^[@# ]*", ""), LABEL_TRUNCATE_AT);
 
 		// node
 		final TreeMutableNode node = new TreeMutableNode(null, id);
 		node.setLabel(label);
 		node.setContent(name + NL + altName);
 		node.setLink(URLSCHEME + id);
+		node.setTarget(target);
 
 		// image
 		if (photoThumbnailUri != null)
@@ -554,7 +619,7 @@ public class Provider implements IProvider
 	{
 		final TreeMutableNode node = new TreeMutableNode(null, groupId);
 		node.setLabel(title);
-		node.setContent(title + NL + accountName + ' ' + accountType);
+		node.setContent(title + NL + "account: " + accountName + NL + "type: " + accountType);
 		node.setLink(URLSCHEME + groupId);
 		node.setImageIndex(ImageIndices.GROUP.ordinal());
 		node.setBackColor(groupBackColor);
@@ -568,37 +633,20 @@ public class Provider implements IProvider
 	/**
 	 * Label factory of non-leave nodes
 	 *
-	 * @param node node
-	 * @return label of node
-	 */
-
-	private String label(final TreeMutableNode node)
-	{
-		final String l = node.getLabel();
-		if (l != null)
-		{
-			return l;
-		}
-		return node.getContent().split(NL)[0];
-	}
-
-	/**
-	 * Label factory of non-leave nodes
-	 *
 	 * @param first first child node
 	 * @param last  lst child node
-	 * @return makeLabel of parent node
+	 * @return makeRangeLabel of parent node
 	 */
-	private String makeLabel(final TreeMutableNode first, final TreeMutableNode last)
+	private String makeRangeLabel(final TreeMutableNode first, final TreeMutableNode last)
 	{
-		String label1 = label(first);
-		String label2 = label(last);
+		String label1 = first.getTarget();
+		String label2 = last.getTarget();
 		if (label1 == null || label2 == null)
 		{
 			return null;
 		}
-		label1 = label1.replaceFirst("^[@#]*", "").toLowerCase();
-		label2 = label2.replaceFirst("^[@#]*", "").toLowerCase();
+		label1 = label1.toLowerCase();
+		label2 = label2.toLowerCase();
 		final StringBuilder sb = new StringBuilder();
 		sb.append(left(label1, LABEL_TRUNCATE_AT)) //
 				.append('-');

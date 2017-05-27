@@ -18,14 +18,29 @@ import org.treebolic.TreebolicIface;
 public class Settings
 {
 	/**
-	 * Initialized preference name
+	 * Initialized preference key
 	 */
 	public static final String PREF_INITIALIZED = "pref_initialized";
 
 	/**
-	 * First preference name
+	 * First preference key
 	 */
 	public static final String PREF_FIRSTRUN = "pref_first_run";
+
+	/**
+	 * Groups preference key
+	 */
+	public static final String PREF_GROUPS = "pref_groups";
+
+	/**
+	 * Display preference key
+	 */
+	public static final String PREF_DISPLAY = "pref_display";
+
+	/**
+	 * Sort preference key
+	 */
+	public static final String PREF_SORT = "pref_sort";
 
 	/**
 	 * Default CSS
@@ -40,8 +55,7 @@ public class Settings
 	/**
 	 * Set default initial settings
 	 *
-	 * @param context
-	 *            context
+	 * @param context context
 	 */
 	static public void setDefaults(final Context context)
 	{
@@ -50,26 +64,20 @@ public class Settings
 	/**
 	 * Save source and base to preferences
 	 *
-	 * @param context
-	 *            context
-	 * @param source
-	 *            source
-	 * @param base
-	 *            base
+	 * @param context context
+	 * @param source  source
+	 * @param base    base
 	 */
 	public static void save(final Context context, final String source, final String base)
 	{
 		Settings.putStringPref(context, TreebolicIface.PREF_SOURCE, source);
-		Settings.putStringPref(context, TreebolicIface.PREF_BASE, base);
 	}
 
 	/**
 	 * Get string preference
 	 *
-	 * @param context
-	 *            context
-	 * @param key
-	 *            key
+	 * @param context context
+	 * @param key     key
 	 * @return value
 	 */
 	static public String getStringPref(final Context context, final String key)
@@ -81,12 +89,9 @@ public class Settings
 	/**
 	 * Put string preference
 	 *
-	 * @param context
-	 *            context
-	 * @param key
-	 *            key
-	 * @param value
-	 *            value
+	 * @param context context
+	 * @param key     key
+	 * @param value   value
 	 */
 	@SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
 	static public void putStringPref(final Context context, final String key, final String value)
@@ -100,10 +105,8 @@ public class Settings
 	/**
 	 * Application settings
 	 *
-	 * @param context
-	 *            context
-	 * @param pkgName
-	 *            package name
+	 * @param context context
+	 * @param pkgName package name
 	 */
 	static public void applicationSettings(final Context context, final String pkgName)
 	{

@@ -44,16 +44,18 @@ public class Settings
 	static public final String[] GROUP_PROJECTION = new String[]{ //
 			ContactsContract.Groups._ID, //
 			ContactsContract.Groups.TITLE, //
-			ContactsContract.Groups.TITLE_RES, //
 			ContactsContract.Groups.ACCOUNT_NAME, //
 			ContactsContract.Groups.ACCOUNT_TYPE, //
+			ContactsContract.Groups.TITLE_RES, //
+			ContactsContract.Groups.RES_PACKAGE, //
 	};
 
 	static public final int GROUP_ID_INDEX = 0;
 	static public final int GROUP_TITLE_INDEX = 1;
-	static public final int GROUP_TITLE_RES_INDEX = 2;
-	static public final int GROUP_ACCOUNT_NAME = 3;
-	static public final int GROUP_ACCOUNT_TYPE = 4;
+	static public final int GROUP_ACCOUNT_NAME = 2;
+	static public final int GROUP_ACCOUNT_TYPE = 3;
+	static public final int GROUP_TITLE_RES_INDEX = 4;
+	static public final int GROUP_RES_PACKAGE_INDEX = 5;
 
 	// G R O U P  M E M B E R  P R O J E C T I O N
 
@@ -63,9 +65,7 @@ public class Settings
 			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
 			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
 			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI, //
-			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID,
-			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID,
-			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID, ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID, ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
 	};
 
 	static public final int GROUP_MEMBERS_CONTACTID_INDEX = 0;
@@ -83,10 +83,6 @@ public class Settings
 	 * Selection expressions
 	 */
 	static public final String SELECTION_DN_LIKE = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?";
-
-	// S O R T
-
-	static public String sortOrder = ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
 
 	// H E L P E R
 
@@ -118,6 +114,13 @@ public class Settings
 
 	// P A R A M E T E R S
 
-	static public String PARAM_DO_GROUPS = "dogroups";
+	static public String PARAM_GROUPS = "groups";
+	static public String PARAM_DISPLAY = "display";
+	static public String PARAM_SORT = "sort";
+
+	static public String VALUE_DISPLAY_FIRST_LAST = "first,last";
+	static public String VALUE_DISPLAY_LAST_FIRST = "last,first";
+	static public String VALUE_SORT_FIRST = "first";
+	static public String VALUE_SORT_LAST = "last";
 }
 

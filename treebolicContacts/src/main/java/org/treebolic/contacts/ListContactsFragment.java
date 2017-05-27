@@ -28,8 +28,6 @@ import android.widget.TextView;
 
 import org.treebolic.TreebolicIface;
 
-import treebolic.provider.contacts.Settings;
-
 /**
  * Fragment with list of contacts
  *
@@ -45,6 +43,11 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
 	private final static String[] FROM_COLUMNS = {ContactsContract.Contacts.DISPLAY_NAME};
+
+	/**
+	 * Column names in the Cursor mapping to the ListView ids
+	 */
+	private final static String[] FROM_COLUMNS_ALT = {ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE};
 
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
@@ -80,8 +83,13 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		// Gets the ListView from the View list of the parent activity
 		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
 
+		final String displayPref = Settings.getStringPref(getContext(), Settings.PREF_DISPLAY);
+		final String firstLastValue = getString(R.string.pref_display_value_first_last);
+		final int displayCode = firstLastValue.equals(displayPref) ? 1 : 2;
+		final String[] from = displayCode == 1 ? FROM_COLUMNS : FROM_COLUMNS_ALT;
+
 		// Gets a CursorAdapter
-		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact, null, FROM_COLUMNS, TO_IDS, 0);
+		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact, null, from, TO_IDS, 0);
 
 		// Sets the adapter for the ListView
 
@@ -97,19 +105,23 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
 		final String source = Settings.getStringPref(getContext(), TreebolicIface.PREF_SOURCE);
-		final String[] selectionArgs = {source};
-		final boolean nullSource = source == null || source.isEmpty();
-		selectionArgs[0] = nullSource ? null : "%" + source + "%";
 
-		selectionArgs[0] = source == null || source.isEmpty() ? null : "%" + source + "%";
+		final String sortPref = Settings.getStringPref(getContext(), Settings.PREF_SORT);
+		final String firstValue = getString(R.string.pref_sort_value_first);
+		final int sortCode = firstValue.equals(sortPref) ? 1 : 2;
+
+		final boolean nullSource = source == null || source.isEmpty();
+		final String selection = nullSource ? null : treebolic.provider.contacts.Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+		final String sort = sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
 
 		// Starts the query
 		return new CursorLoader(getActivity(), //
 				ContactsContract.Contacts.CONTENT_URI, //
-				Settings.PROJECTION, //
-				nullSource ? null : Settings.SELECTION_DN_LIKE, //
-				nullSource ? null : selectionArgs, //
-				Settings.sortOrder);
+				treebolic.provider.contacts.Settings.PROJECTION, //
+				selection, //
+				selectionArgs, //
+				sort);
 	}
 
 	@Override
@@ -143,9 +155,9 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
 
 			// Photo Uri
-			final String name = cursor.getString(Settings.NAME_INDEX);
-			final String photoUriString = cursor.getString(Settings.PHOTO_URI_INDEX);
-			final String photoThumbnailUriString = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
+			final String name = cursor.getString(treebolic.provider.contacts.Settings.NAME_INDEX);
+			final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
+			final String photoThumbnailUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
 			if (photoThumbnailUriString != null)
 			{
 				final Uri photoUri = Uri.parse(photoThumbnailUriString);
@@ -181,7 +193,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		cursor.moveToPosition(position);
 
 		// Get the _ID value
-		final long contactId = cursor.getLong(Settings.ID_INDEX);
+		final long contactId = cursor.getLong(treebolic.provider.contacts.Settings.ID_INDEX);
 
 		// Get the selected LOOKUP KEY
 		// final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
@@ -195,16 +207,16 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		// IMAGES
 
 		// Get the selected thumbnail Uri
-		final String thumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
+		final String thumbnailUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
 
 		// Get the selected photo Uri
-		final String photoUri = cursor.getString(Settings.PHOTO_URI_INDEX);
+		final String photoUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
 
 		// Get the selected photo index
-		final long photoId = cursor.getLong(Settings.PHOTO_ID_INDEX);
+		final long photoId = cursor.getLong(treebolic.provider.contacts.Settings.PHOTO_ID_INDEX);
 
 		// Get the selected thumbnail index
-		final long thumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
+		final long thumbnailId = cursor.getLong(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_ID_INDEX);
 
 		// Photo Uri
 		//final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
@@ -345,14 +357,23 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 				while (cursor.moveToNext())
 				{
 					final String given = cursor.getString(idxGiven);
+					if (given != null && !given.isEmpty())
+					{
+						sb.append(given) //
+								.append('\n');
+					}
 					final String family = cursor.getString(idxFamily);
+					if (family != null && !family.isEmpty())
+					{
+						sb.append(family) //
+								.append('\n');
+					}
 					final String display = cursor.getString(idxDisplay);
-					sb.append(given) //
-							.append('\n');
-					sb.append(family) //
-							.append('\n');
-					sb.append(display) //
-							.append('\n');
+					if (display != null && !display.isEmpty())
+					{
+						sb.append(display) //
+								.append('\n');
+					}
 				}
 			}
 			cursor.close();
@@ -380,31 +401,31 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 							.append('\n');
 
 					final String formatted = cursor.getString(idxFormatted);
-					if (formatted != null)
+					if (formatted != null && !formatted.isEmpty())
 					{
 						sb.append(formatted) //
 								.append(" (formatted)\n");
 					}
 					final String street = cursor.getString(idxStreet);
-					if (street != null)
+					if (street != null && !street.isEmpty())
 					{
 						sb.append(street) //
 								.append(" (street)\n");
 					}
 					final String city = cursor.getString(idxCity);
-					if (city != null)
+					if (city != null && !city.isEmpty())
 					{
 						sb.append(city) //
 								.append(" (city)\n");
 					}
 					final String postCode = cursor.getString(idxPostCode);
-					if (postCode != null)
+					if (postCode != null && !postCode.isEmpty())
 					{
 						sb.append(postCode) //
 								.append(" (postcode)\n");
 					}
 					final String country = cursor.getString(idxCountry);
-					if (country != null)
+					if (country != null && !country.isEmpty())
 					{
 						sb.append(country) //
 								.append(" (country)\n");
@@ -431,9 +452,12 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 
 				while (cursor.moveToNext())
 				{
-					String email = cursor.getString(idxEmail);
-					sb.append(email) //
-							.append('\n');
+					final String email = cursor.getString(idxEmail);
+					if (email != null && !email.isEmpty())
+					{
+						sb.append(email) //
+								.append('\n');
+					}
 				}
 			}
 			cursor.close();
@@ -458,27 +482,29 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 				{
 					final String phoneNumber = idxPhoneNumber == -1 ? "" : cursor.getString(idxPhoneNumber);
 					final int phoneType = idxPhoneNumber == -1 ? -1 : cursor.getInt(idxPhoneType);
-
-					// phone
-					switch (phoneType)
+					if (phoneNumber != null && !phoneNumber.isEmpty())
 					{
-						case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-							sb.append(phoneNumber) //
-									.append(" (home)\n");
-							break;
-						case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-							sb.append(phoneNumber) //
-									.append(" (mobile)\n");
-							break;
-						case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-							sb.append(phoneNumber) //
-									.append(" (work)\n");
-							break;
-						default:
-						case -1:
-							sb.append(phoneNumber) //
-									.append(" (other)\n");
-							break;
+						// phone
+						switch (phoneType)
+						{
+							case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+								sb.append(phoneNumber) //
+										.append(" (home)\n");
+								break;
+							case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+								sb.append(phoneNumber) //
+										.append(" (mobile)\n");
+								break;
+							case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+								sb.append(phoneNumber) //
+										.append(" (work)\n");
+								break;
+							default:
+							case -1:
+								sb.append(phoneNumber) //
+										.append(" (other)\n");
+								break;
+						}
 					}
 				}
 			}

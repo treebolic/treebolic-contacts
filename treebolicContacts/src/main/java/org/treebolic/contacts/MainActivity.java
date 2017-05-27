@@ -185,9 +185,13 @@ public class MainActivity extends AppCompatActivity
 	static public Intent makeTreebolicIntent(final Context context)
 	{
 		final String source = treebolic.provider.contacts.Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
-		final boolean doGroups = treebolic.provider.contacts.Settings.getBooleanPref(context, treebolic.provider.contacts.Settings.PARAM_DO_GROUPS);
+		final boolean groups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_GROUPS);
+		final String display = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_DISPLAY);
+		final String sort = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_SORT);
 		final Bundle bundle = new Bundle();
-		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_DO_GROUPS, doGroups);
+		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups);
+		bundle.putString(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
+		bundle.putString(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
 
 		// parent activity to return to
 		final Intent parentIntent = new Intent();

@@ -17,7 +17,24 @@
 	<string name="error_link">Error with link</string>
 
 	<string name="pref_header_general">General</string>
+
 	<string name="pref_title_source">Source</string>
 	<string name="pref_description_source">Source for Contacts</string>
-	<string name="pref_default_source"></string>
+
+	<string name="pref_title_groups">Groups</string>
+
+	<string name="pref_title_display">Display</string>
+	<string name="pref_description_display">Displayed label</string>
+	<string-array name="pref_display_labels">
+		<item>First name, last name</item>
+		<item>Last name, first name</item>
+	</string-array>
+
+	<string name="pref_title_sort">Sort</string>
+	<string name="pref_description_sort">Sort by</string>
+	<string-array name="pref_sort_labels">
+		<item>First name</item>
+		<item>Last name</item>
+	</string-array>
+
 </resources>
