@@ -17,7 +17,13 @@
 		android:key="pref_groups"
 		android:title="@string/pref_title_groups"/>
 
+	<CheckBoxPreference
+		android:defaultValue="true"
+		android:key="pref_merge_groups"
+		android:title="@string/pref_title_merge_groups"/>
+
 	<ListPreference
+		android:defaultValue="@string/pref_display_value_first_last"
 		android:entries="@array/pref_display_labels"
 		android:entryValues="@array/pref_display_values"
 		android:key="pref_display"
@@ -27,6 +33,7 @@
 		android:title="@string/pref_title_display"/>
 
 	<ListPreference
+		android:defaultValue="@string/pref_sort_value_last"
 		android:entries="@array/pref_sort_labels"
 		android:entryValues="@array/pref_sort_values"
 		android:key="pref_sort"

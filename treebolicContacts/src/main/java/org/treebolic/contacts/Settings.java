@@ -43,6 +43,11 @@ public class Settings
 	public static final String PREF_SORT = "pref_sort";
 
 	/**
+	 * Sort preference key
+	 */
+	public static final String PREF_MERGE_GROUPS = "pref_merge_groups";
+
+	/**
 	 * Default CSS
 	 */
 	public static final String STYLE_DEFAULT = ".content { }\n" + //

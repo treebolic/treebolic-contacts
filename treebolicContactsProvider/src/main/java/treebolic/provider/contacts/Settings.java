@@ -43,6 +43,7 @@ public class Settings
 
 	static public final String[] GROUP_PROJECTION = new String[]{ //
 			ContactsContract.Groups._ID, //
+			ContactsContract.Groups.SYSTEM_ID, //
 			ContactsContract.Groups.TITLE, //
 			ContactsContract.Groups.ACCOUNT_NAME, //
 			ContactsContract.Groups.ACCOUNT_TYPE, //
@@ -51,11 +52,12 @@ public class Settings
 	};
 
 	static public final int GROUP_ID_INDEX = 0;
-	static public final int GROUP_TITLE_INDEX = 1;
-	static public final int GROUP_ACCOUNT_NAME = 2;
-	static public final int GROUP_ACCOUNT_TYPE = 3;
-	static public final int GROUP_TITLE_RES_INDEX = 4;
-	static public final int GROUP_RES_PACKAGE_INDEX = 5;
+	static public final int GROUP_SYSTEM_ID_INDEX = 1;
+	static public final int GROUP_TITLE_INDEX = 2;
+	static public final int GROUP_ACCOUNT_NAME = 3;
+	static public final int GROUP_ACCOUNT_TYPE = 4;
+	static public final int GROUP_TITLE_RES_INDEX = 5;
+	static public final int GROUP_RES_PACKAGE_INDEX = 6;
 
 	// G R O U P  M E M B E R  P R O J E C T I O N
 
@@ -117,6 +119,7 @@ public class Settings
 	static public String PARAM_GROUPS = "groups";
 	static public String PARAM_DISPLAY = "display";
 	static public String PARAM_SORT = "sort";
+	static public String PARAM_MERGE_GROUPS = "merge_groups";
 
 	static public String VALUE_DISPLAY_FIRST_LAST = "first,last";
 	static public String VALUE_DISPLAY_LAST_FIRST = "last,first";

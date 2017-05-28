@@ -22,6 +22,7 @@
 	<string name="pref_description_source">Source pour Contacts</string>
 
 	<string name="pref_title_groups">Groupes</string>
+	<string name="pref_title_merge_groups">Fusionner groupes</string>
 
 	<string name="pref_title_display">Affichage</string>
 	<string name="pref_description_display">Affiché dans l\'étiquette</string>

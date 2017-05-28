@@ -188,10 +188,12 @@ public class MainActivity extends AppCompatActivity
 		final boolean groups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_GROUPS);
 		final String display = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_DISPLAY);
 		final String sort = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_SORT);
+		final String mergeGroups = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_MERGE_GROUPS);
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups);
 		bundle.putString(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
 		bundle.putString(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
+		bundle.putString(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups);
 
 		// parent activity to return to
 		final Intent parentIntent = new Intent();

@@ -147,6 +147,8 @@ public class Provider implements IProvider
 
 	private int sortCode = 0;
 
+	private boolean mergeGroups = true;
+
 	// C O N T E X T
 
 	/**
@@ -230,6 +232,11 @@ public class Provider implements IProvider
 		{
 			this.sortCode = 2;
 		}
+
+		final String mergeGroups = theseParameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
+		this.mergeGroups = "true".equals(mergeGroups);
+
+		// start
 
 		final String groups = theseParameters.getProperty(Settings.PARAM_GROUPS, "false");
 		if ("true".equals(groups))
@@ -433,6 +440,7 @@ public class Provider implements IProvider
 				do
 				{
 					final String groupId = cursor.getString(Settings.GROUP_ID_INDEX);
+					final String groupSystemId = cursor.getString(Settings.GROUP_SYSTEM_ID_INDEX);
 					CharSequence title = cursor.getString(Settings.GROUP_TITLE_INDEX);
 					final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
 					if (titleRes != null)
@@ -447,15 +455,14 @@ public class Provider implements IProvider
 					}
 					final String accountName = cursor.getString(Settings.GROUP_ACCOUNT_NAME);
 					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
-					Log.d("group ", groupId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
-
+					Log.d("group ", groupId + " " + groupSystemId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
 
 					// members
 					final List<TreeMutableNode> memberNodes = collectGroupMembers(groupId);
 					if (memberNodes != null && memberNodes.size() > 0)
 					{
 						// group
-						final TreeMutableNode node = makeGroupNode(groupId, title.toString(), titleRes, accountName, accountType);
+						final TreeMutableNode node = makeGroupNode(groupId, groupSystemId, title.toString(), titleRes, accountName, accountType);
 						nodes.add(node);
 
 						final List<TreeMutableNode> subNodes = buildHierarchy(memberNodes, 0);
@@ -466,7 +473,48 @@ public class Provider implements IProvider
 			}
 			cursor.close();
 		}
-		return nodes;
+		if (! this.mergeGroups || nodes == null)
+		{
+			return nodes;
+		}
+
+		// merge
+		final List<TreeMutableNode> nodes2 = new ArrayList<>();
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			final TreeMutableNode node = nodes.get(i);
+			final String label = node.getLabel();
+
+			// kin nodes
+			List<TreeMutableNode> kinNodes = new ArrayList<>();
+			for (int j = i + 1; j < nodes.size(); j++)
+			{
+				TreeMutableNode node2 = nodes.get(j);
+				if (label.equals(node2.getLabel()))
+				{
+					kinNodes.add(node2);
+				}
+			}
+
+			// merge
+			int k = kinNodes.size();
+			i += k;
+			if (k == 0)
+			{
+				nodes2.add(node);
+			}
+			else
+			{
+				final TreeMutableNode superNode = makeSuperGroupNode(label, label);
+				nodes2.add(superNode);
+				node.addToParent(superNode);
+				for (TreeMutableNode node3 : kinNodes)
+				{
+					node3.addToParent(superNode);
+				}
+			}
+		}
+		return nodes2;
 	}
 
 	/**
@@ -608,19 +656,40 @@ public class Provider implements IProvider
 	/**
 	 * Make group node
 	 *
-	 * @param groupId     group id
-	 * @param title       group title
-	 * @param titleRes    group title res
-	 * @param accountName account name
-	 * @param accountType account type
+	 * @param groupId       group id
+	 * @param groupSystemId group system id
+	 * @param title         group title
+	 * @param titleRes      group title res
+	 * @param accountName   account name
+	 * @param accountType   account type
 	 * @return group node
 	 */
-	private TreeMutableNode makeGroupNode(final String groupId, final String title, final String titleRes, final String accountName, final String accountType)
+	private TreeMutableNode makeGroupNode(final String groupId, final String groupSystemId, final String title, final String titleRes, final String accountName, final String accountType)
 	{
 		final TreeMutableNode node = new TreeMutableNode(null, groupId);
 		node.setLabel(title);
-		node.setContent(title + NL + "account: " + accountName + NL + "type: " + accountType);
+		node.setContent(title + NL + "account: " + accountName + NL + "type: " + accountType + NL + "system: " + groupSystemId);
 		node.setLink(URLSCHEME + groupId);
+		node.setImageIndex(ImageIndices.GROUP.ordinal());
+		node.setBackColor(groupBackColor);
+		node.setForeColor(groupForeColor);
+		node.setEdgeColor(groupEdgeColor);
+		return node;
+	}
+
+	/**
+	 * Make super group node
+	 *
+	 * @param title   group title
+	 * @param groupId group id
+	 * @return super group node
+	 */
+	private TreeMutableNode makeSuperGroupNode(final String title, final String groupId)
+	{
+		final TreeMutableNode node = new TreeMutableNode(null, null);
+		node.setLabel(title);
+		node.setContent(title);
+		node.setLink(null);
 		node.setImageIndex(ImageIndices.GROUP.ordinal());
 		node.setBackColor(groupBackColor);
 		node.setForeColor(groupForeColor);
