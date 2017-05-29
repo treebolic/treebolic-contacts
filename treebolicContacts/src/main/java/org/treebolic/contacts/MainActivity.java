@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,6 +21,8 @@ import android.widget.ImageButton;
 
 import org.treebolic.TreebolicIface;
 
+import treebolic.model.Model;
+import treebolic.model.ModelDump;
 import treebolic.provider.contacts.Permissions;
 import treebolic.provider.contacts.Provider;
 
@@ -125,7 +128,12 @@ public class MainActivity extends AppCompatActivity
 			{
 				final Provider provider = new Provider();
 				provider.setHandle(this);
-				provider.model();
+				final Model model = provider.makeModel(null, null, null);
+				final String dump = ModelDump.toString(model);
+				//System.out.println(dump);
+				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(dump);
+				builder.show();
 				return true;
 			}
 

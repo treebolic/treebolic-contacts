@@ -6,7 +6,8 @@ thisdir="$(readlink -m ${thisdir})"
 d="../src/main/resources/treebolic/provider/contacts/images"
 
 leaf_icons="*"
-rooroot_t="root"
+root_icons="root"
+
 #echo $leaf_icons
 #echo $root_icons
 
@@ -21,7 +22,7 @@ for f in ${leaf_icons}.svg; do
 done
 
 # 2
-res=128
+res=256
 for f in ${root_icons}.svg; do
 	img=${f%.*}
 	echo "make ${img}.svg -> ${d}/${img}.png @ resolution ${res}"

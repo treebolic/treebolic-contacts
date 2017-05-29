@@ -92,7 +92,6 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact, null, from, TO_IDS, 0);
 
 		// Sets the adapter for the ListView
-
 		contactsListView.setAdapter(this.adapter);
 
 		// Set the item click listener to be the current fragment.

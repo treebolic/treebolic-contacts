@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import treebolic.model.Model;
+import treebolic.model.ModelDump;
 import treebolic.provider.contacts.Provider;
 
 /**
@@ -66,7 +69,12 @@ public class ListContactsActivity extends AppCompatActivity
 			{
 				final Provider provider = new Provider();
 				provider.setHandle(this);
-				provider.model();
+				final Model model = provider.makeModel(null, null, null);
+				final String dump = ModelDump.toString(model);
+				//System.out.println(dump);
+				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(dump);
+				builder.show();
 				return true;
 			}
 

@@ -17,7 +17,6 @@ import treebolic.glue.Color;
 import treebolic.glue.Image;
 import treebolic.model.IEdge;
 import treebolic.model.Model;
-import treebolic.model.ModelDump;
 import treebolic.model.Tree;
 import treebolic.model.TreeMutableNode;
 import treebolic.provider.IProvider;
@@ -213,38 +212,45 @@ public class Provider implements IProvider
 	 */
 	private Tree buildTree(final String source, final Properties theseParameters)
 	{
-		final String display = theseParameters.getProperty(Settings.PARAM_DISPLAY);
-		if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
+		if (theseParameters != null)
 		{
-			this.displayCode = 1;
-		}
-		else if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
-		{
-			this.displayCode = 2;
-		}
+			final String display = theseParameters.getProperty(Settings.PARAM_DISPLAY);
+			if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
+			{
+				this.displayCode = 1;
+			}
+			else if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
+			{
+				this.displayCode = 2;
+			}
 
-		final String sort = theseParameters.getProperty(Settings.PARAM_SORT);
-		if (Settings.VALUE_SORT_FIRST.equals(sort))
-		{
-			this.sortCode = 1;
+			final String sort = theseParameters.getProperty(Settings.PARAM_SORT);
+			if (Settings.VALUE_SORT_FIRST.equals(sort))
+			{
+				this.sortCode = 1;
+			}
+			else if (Settings.VALUE_SORT_LAST.equals(sort))
+			{
+				this.sortCode = 2;
+			}
+
+			final String mergeGroups = theseParameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
+			this.mergeGroups = "true".equals(mergeGroups);
+
+			// start
+
+			final String groups = theseParameters.getProperty(Settings.PARAM_GROUPS, "false");
+			if ("true".equals(groups))
+			{
+				return buildTree(buildHierarchy(collectGroups(), 0));
+			}
+
+			return buildTree(buildHierarchy(collectContacts(source), 0));
 		}
-		else if (Settings.VALUE_SORT_LAST.equals(sort))
-		{
-			this.sortCode = 2;
-		}
-
-		final String mergeGroups = theseParameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
-		this.mergeGroups = "true".equals(mergeGroups);
-
-		// start
-
-		final String groups = theseParameters.getProperty(Settings.PARAM_GROUPS, "false");
-		if ("true".equals(groups))
+		else
 		{
 			return buildTree(buildHierarchy(collectGroups(), 0));
 		}
-
-		return buildTree(buildHierarchy(collectContacts(source), 0));
 	}
 
 	/**
@@ -256,7 +262,7 @@ public class Provider implements IProvider
 	private Tree buildTree(final List<TreeMutableNode> nodes)
 	{
 		final TreeMutableNode topRoot = new TreeMutableNode(null, "root");
-		topRoot.setLabel("contacts");
+		//topRoot.setLabel("contacts");
 		topRoot.setBackColor(Provider.rootBackColor);
 		topRoot.setForeColor(Provider.rootForeColor);
 		topRoot.setEdgeColor(Provider.rootEdgeColor);
@@ -473,7 +479,7 @@ public class Provider implements IProvider
 			}
 			cursor.close();
 		}
-		if (! this.mergeGroups || nodes == null)
+		if (!this.mergeGroups || nodes == null)
 		{
 			return nodes;
 		}
@@ -823,23 +829,5 @@ public class Provider implements IProvider
 		}
 		sb.append('}');
 		return sb.toString();
-	}
-
-	// T E S T
-
-	public void model()
-	{
-		//final Tree tree = buildTree(collectContacts());
-		final Tree tree = buildTree(null, null);
-		final String dump = ModelDump.toString(tree);
-		System.out.println(dump);
-
-		/*
-		final List<MutableNode> contacts = collectContacts();
-		for (INode node : contacts)
-		{
-			Log.d(TAG, node.getLabel());
-		}
-		*/
 	}
 }
