@@ -349,7 +349,7 @@ public class Provider implements IProvider
 	 *
 	 * @param nodes nodes at level
 	 * @param level level
-	 * @return
+	 * @return list of tree nodes
 	 */
 	private List<TreeMutableNode> buildHierarchy(final List<TreeMutableNode> nodes, final int level)
 	{
@@ -587,6 +587,9 @@ public class Provider implements IProvider
 		// make label from alt
 		final String[] fields = altName.split(", *");
 		String last = fields[0];
+		// obfuscate
+		// last = last.substring(0, 2) + last.substring(2).replaceAll(".", "*");
+
 		String first = null;
 		if (fields.length > 1 && fields[1].charAt(0) != '#')
 		{
@@ -626,6 +629,13 @@ public class Provider implements IProvider
 		final TreeMutableNode node = new TreeMutableNode(null, id);
 		node.setLabel(label);
 		node.setContent(name + NL + altName);
+
+		// obfuscate
+		// String name2 = name.substring(0, 2) + name.substring(2).replaceAll("[A-Z]", "*");
+		// int comma = altName.lastIndexOf(',');
+		// String altName2 = comma ==-1 ? "" : altName.substring(0, comma).replaceAll("[A-Z]", "*") + altName.substring(comma);
+		// node.setContent(name2 + NL + altName2);
+
 		node.setLink(URLSCHEME + id);
 		node.setTarget(target);
 
