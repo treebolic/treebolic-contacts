@@ -21,6 +21,7 @@ import treebolic.model.Tree;
 import treebolic.model.TreeMutableNode;
 import treebolic.provider.IProvider;
 import treebolic.provider.IProviderContext;
+import treebolic.provider.LoadBalancer;
 
 import static treebolic.provider.contacts.Settings.URLSCHEME;
 
@@ -142,11 +143,25 @@ public class Provider implements IProvider
 	 */
 	static int LABEL_TRUNCATE_AT = 3;
 
+	/**
+	 * Sort code 1=first name-last name, 2=last name, first name
+	 */
 	private int displayCode = 0;
 
+	/**
+	 * Sort code 1=first name, 2=last name
+	 */
 	private int sortCode = 0;
 
+	/**
+	 * Whether to merge same-name groups
+	 */
 	private boolean mergeGroups = true;
+
+	/**
+	 * Load balancer
+	 */
+	private LoadBalancer loadBalancer;
 
 	// C O N T E X T
 
@@ -162,6 +177,7 @@ public class Provider implements IProvider
 	 */
 	public Provider()
 	{
+		this.loadBalancer = new LoadBalancer(TREE_MAX_NODES_AT_LEVEL, LABEL_TRUNCATE_AT, this.folderBackColor, this.folderForeColor, this.folderEdgeColor, -1 /*ImageIndices.FOLDER.ordinal() */, null);
 	}
 
 	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
@@ -242,14 +258,14 @@ public class Provider implements IProvider
 			final String groups = theseParameters.getProperty(Settings.PARAM_GROUPS, "false");
 			if ("true".equals(groups))
 			{
-				return buildTree(buildHierarchy(collectGroups(), 0));
+				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(), 0));
 			}
 
-			return buildTree(buildHierarchy(collectContacts(source), 0));
+			return buildTree(this.loadBalancer.buildHierarchy(collectContacts(source), 0));
 		}
 		else
 		{
-			return buildTree(buildHierarchy(collectGroups(), 0));
+			return buildTree(this.loadBalancer.buildHierarchy(collectGroups(), 0));
 		}
 	}
 
@@ -269,103 +285,8 @@ public class Provider implements IProvider
 		topRoot.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
 		topRoot.setImageIndex(ImageIndices.ROOT.ordinal());
 
-		attachToParent(topRoot, nodes);
+		LoadBalancer.attachToParent(topRoot, nodes);
 		return new Tree(topRoot, null);
-	}
-
-	/**
-	 * Attach to parent
-	 *
-	 * @param parent parent node
-	 * @param nodes  children nodes
-	 */
-	private void attachToParent(final TreeMutableNode parent, final List<TreeMutableNode> nodes)
-	{
-		if (nodes != null)
-		{
-			for (TreeMutableNode node : nodes)
-			{
-				node.addToParent(parent);
-			}
-		}
-	}
-
-	/**
-	 * Build a list of tree parent nodes
-	 *
-	 * @param nodes children nodes
-	 * @param level current level
-	 * @return list of parent nodes
-	 */
-	private List<TreeMutableNode> buildHierarchy1(final List<TreeMutableNode> nodes, final int level)
-	{
-		Log.d(TAG, ">" + level + " nodes " + nodes.size());
-		final List<TreeMutableNode> roots = new ArrayList<>();
-
-		int m = TREE_MAX_NODES_AT_LEVEL[level > TREE_MAX_NODES_AT_LEVEL.length - 1 ? TREE_MAX_NODES_AT_LEVEL.length - 1 : level];
-		int z = nodes.size();
-
-		// balance
-		if (z % m == 1)
-		{
-			m--;
-		}
-		for (int i = 0; i < z; i = i + m)
-		{
-			final TreeMutableNode root = new TreeMutableNode(null, "root" + level + "-" + i);
-			root.setLink("directory:"); //$NON-NLS-1$
-			root.setBackColor(Provider.folderBackColor);
-			root.setForeColor(Provider.folderForeColor);
-			root.setEdgeColor(Provider.folderEdgeColor);
-			root.setEdgeStyle(IEdge.SOLID | /*IEdge.FROMDEF | IEdge.FROMCIRCLE | */IEdge.TOTRIANGLE | IEdge.TOFILL | IEdge.TODEF);
-			//root.setImageIndex(ImageIndices.FOLDER.ordinal());
-
-			int b = Math.min(i + m, z);
-			TreeMutableNode first = nodes.get(i);
-			TreeMutableNode last = nodes.get(b - 1);
-
-			final String startLabel = left(first.getTarget(), LABEL_TRUNCATE_AT);
-			root.setEdgeLabel(startLabel);
-			final String rangeLabel = makeRangeLabel(first, last);
-			root.setTarget(rangeLabel);
-			// root.setLabel(rangeLabel);
-			// root.setContent(/* "root" + level + "-" + i + NL  + */ rangeLabel + NL + getNodeLabel(first) + NL + getNodeLabel(last));
-			root.setContent(rangeLabel + /* NL + (b - i) + " elements" + */ NL + "<small>" + first.getTarget() + NL + last.getTarget() + "</small>");
-
-			for (int k = i; k < b; k++)
-			{
-				final TreeMutableNode node = nodes.get(k);
-				node.addToParent(root);
-			}
-
-			roots.add(root);
-		}
-		Log.d(TAG, "<" + level + " roots " + roots.size());
-		return roots;
-	}
-
-	/**
-	 * Recursive build hierarchy
-	 *
-	 * @param nodes nodes at level
-	 * @param level level
-	 * @return list of tree nodes
-	 */
-	private List<TreeMutableNode> buildHierarchy(final List<TreeMutableNode> nodes, final int level)
-	{
-		int m = TREE_MAX_NODES_AT_LEVEL[level > TREE_MAX_NODES_AT_LEVEL.length - 1 ? TREE_MAX_NODES_AT_LEVEL.length - 1 : level];
-		Log.d(TAG, "level=" + level + "  m=" + m);
-		if (nodes == null)
-		{
-			return null;
-		}
-		if (nodes.size() <= m)
-		{
-			return nodes;
-		}
-
-		List<TreeMutableNode> nodes2 = buildHierarchy1(nodes, level);
-		return buildHierarchy(nodes2, level + 1);
 	}
 
 	// L E A V E S
@@ -471,8 +392,8 @@ public class Provider implements IProvider
 						final TreeMutableNode node = makeGroupNode(groupId, groupSystemId, title.toString(), titleRes, accountName, accountType);
 						nodes.add(node);
 
-						final List<TreeMutableNode> subNodes = buildHierarchy(memberNodes, 0);
-						attachToParent(node, subNodes);
+						final List<TreeMutableNode> subNodes = this.loadBalancer.buildHierarchy(memberNodes, 0);
+						LoadBalancer.attachToParent(node, subNodes);
 					}
 				}
 				while (cursor.moveToNext());
@@ -814,12 +735,13 @@ public class Provider implements IProvider
 		return settings;
 	}
 
-	/**
+	/*
 	 * Join list
 	 *
 	 * @param strs array of strings
 	 * @return joined strings
 	 */
+	/*
 	private String join(final String[] strs)
 	{
 		final StringBuilder sb = new StringBuilder();
@@ -840,4 +762,5 @@ public class Provider implements IProvider
 		sb.append('}');
 		return sb.toString();
 	}
+	*/
 }

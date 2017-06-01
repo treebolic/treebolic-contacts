@@ -24,6 +24,9 @@ project(':treebolicIface').projectDir = new File('../TreebolicLib/treebolicIface
 include ':treebolicGraph'
 project(':treebolicGraph').projectDir = new File('../TreebolicLib/treebolicGraph/')
 
+include ':treebolicLoadBalancer'
+project(':treebolicLoadBalancer').projectDir = new File('../TreebolicLib/treebolicLoadBalancer/')
+
 // LIBS
 
 include ':searchLib'
