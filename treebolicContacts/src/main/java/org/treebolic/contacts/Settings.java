@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 
 import org.treebolic.TreebolicIface;
 
+import java.util.Set;
+
 /**
  * Settings
  *
@@ -43,9 +45,14 @@ public class Settings
 	public static final String PREF_SORT = "pref_sort";
 
 	/**
-	 * Sort preference key
+	 * Group merging preference key
 	 */
 	public static final String PREF_MERGE_GROUPS = "pref_merge_groups";
+
+	/**
+	 * Group filter preference key
+	 */
+	public static final String PREF_FILTER_GROUPS = "pref_filter_groups";
 
 	/**
 	 * Default CSS
@@ -103,6 +110,49 @@ public class Settings
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		sharedPref.edit().putString(key, value).commit();
+	}
+
+	/**
+	 * Get strings preference
+	 *
+	 * @param context context
+	 * @param key     key
+	 * @return value
+	 */
+	static public String getStringsPref(final Context context, final String key)
+	{
+		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		final Set<String> values = sharedPref.getStringSet(key, null);
+		if(values == null)
+			return null;
+		return joinForIn(values);
+	}
+
+	/**
+	 * Join for 'in' selection clause
+	 *
+	 * @param strs values
+	 * @return 'in' clause
+	 */
+	static private String joinForIn(final Iterable<String> strs)
+	{
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		sb.append('(');
+		for (String str : strs)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				sb.append(',');
+			}
+			sb.append(str);
+		}
+		sb.append(')');
+		return sb.toString();
 	}
 
 	// U T I L S

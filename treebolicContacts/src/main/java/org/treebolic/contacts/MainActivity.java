@@ -117,6 +117,13 @@ public class MainActivity extends AppCompatActivity
 				return true;
 			}
 
+			case R.id.action_list_groups:
+			{
+				final Intent intent = new Intent(this, ListGroupsActivity.class);
+				startActivity(intent);
+				return true;
+			}
+
 			case R.id.action_settings:
 			{
 				final Intent intent = new Intent(this, SettingsActivity.class);
@@ -197,11 +204,13 @@ public class MainActivity extends AppCompatActivity
 		final boolean mergeGroups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_MERGE_GROUPS);
 		final String display = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_DISPLAY);
 		final String sort = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_SORT);
+		final String filterGroups = Settings.getStringsPref(context, Settings.PREF_FILTER_GROUPS);
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups);
 		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups);
 		bundle.putString(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
 		bundle.putString(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
+		bundle.putString(treebolic.provider.contacts.Settings.PARAM_FILTER_GROUPS, filterGroups);
 
 		// parent activity to return to
 		final Intent parentIntent = new Intent();

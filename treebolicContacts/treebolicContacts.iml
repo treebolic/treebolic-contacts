@@ -90,7 +90,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
@@ -136,6 +135,5 @@
     <orderEntry type="module" module-name="treebolicLoadBalancer" exported="" />
     <orderEntry type="module" module-name="preferenceLib" exported="" />
     <orderEntry type="module" module-name="treebolicIface" exported="" />
-    <orderEntry type="library" exported="" name="nineoldandroids-2.2.0" level="project" />
   </component>
 </module>

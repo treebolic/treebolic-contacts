@@ -16,5 +16,5 @@
 		<item>@string/pref_sort_value_first</item>
 		<item>@string/pref_sort_value_last</item>
 	</string-array>
-
+	
 </resources>

@@ -4,12 +4,14 @@
 
 	<string name="title_activity_main">@string/app_name</string>
 	<string name="title_activity_list_contacts">List contacts</string>
+	<string name="title_activity_list_groups">List groups</string>
 	<string name="title_activity_treebolic">Contacts</string>
 	<string name="title_activity_settings">Settings</string>
 	<string name="title_finish">Finish</string>
 
 	<string name="action_run">Run</string>
 	<string name="action_list_contacts">List contacts</string>
+	<string name="action_list_groups">List groups</string>
 	<string name="action_model">Model</string>
 	<string name="action_settings">Settings</string>
 
@@ -17,6 +19,7 @@
 	<string name="error_link">Error with link</string>
 
 	<string name="pref_header_general">General</string>
+	<string name="pref_header_filter">Filter</string>
 
 	<string name="pref_title_source">Source</string>
 	<string name="pref_description_source">Source for Contacts</string>
@@ -37,5 +40,8 @@
 		<item>First name</item>
 		<item>Last name</item>
 	</string-array>
+
+	<string name="pref_title_group_filter">Group filter</string>
+	<string name="pref_description_group_filter">Filter by group</string>
 
 </resources>

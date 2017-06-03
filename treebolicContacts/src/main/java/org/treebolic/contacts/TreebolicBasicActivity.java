@@ -249,7 +249,7 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 		});
 
 		// icon tint
-		Tint.tint(this, menu, R.id.action_search_run, R.id.action_search_reset);
+		Tint.tint(this, menu, R.id.action_search_run, R.id.action_search_reset, R.id.action_search_settings);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -293,6 +293,12 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 			case R.id.action_list_contacts:
 			{
 				final Intent intent = new Intent(this, ListContactsActivity.class);
+				startActivity(intent);
+				return true;
+			}
+			case R.id.action_list_groups:
+			{
+				final Intent intent = new Intent(this, ListGroupsActivity.class);
 				startActivity(intent);
 				return true;
 			}

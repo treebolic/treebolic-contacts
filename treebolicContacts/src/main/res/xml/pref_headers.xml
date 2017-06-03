@@ -5,5 +5,9 @@
     <header
         android:fragment="org.treebolic.contacts.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
-    
+
+    <header
+        android:fragment="org.treebolic.contacts.SettingsActivity$FilterPreferenceFragment"
+        android:title="@string/pref_header_filter" />
+
 </preference-headers>

@@ -3,6 +3,7 @@ package org.treebolic.contacts;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -15,7 +16,9 @@ import android.view.MenuItem;
 
 import org.treebolic.TreebolicIface;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Settings activity
@@ -89,11 +92,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 
 		// Add 'general' preferences.
 		addPreferencesFromResource(R.xml.pref_general);
+		addPreferencesFromResource(R.xml.pref_filter);
 
 		// bind
 		bind(findPreference(TreebolicIface.PREF_SOURCE));
 		bind(findPreference(Settings.PREF_DISPLAY));
 		bind(findPreference(Settings.PREF_SORT));
+		bindMulti((MultiSelectListPreference) findPreference(Settings.PREF_FILTER_GROUPS));
 	}
 
 	@Override
@@ -110,7 +115,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 	@Override
 	protected boolean isValidFragment(final String fragmentName)
 	{
-		return GeneralPreferenceFragment.class.getName().equals(fragmentName);
+		return GeneralPreferenceFragment.class.getName().equals(fragmentName) || FilterPreferenceFragment.class.getName().equals(fragmentName);
 	}
 
 	@Override
@@ -155,6 +160,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 		}
 	};
 
+	/**
+	 * A preference value change listener that updates the preference's summary to reflect its new value.
+	 */
+	private static final Preference.OnPreferenceChangeListener listenerMulti = new Preference.OnPreferenceChangeListener()
+	{
+		@Override
+		public boolean onPreferenceChange(final Preference preference, final Object value)
+		{
+			// set the summary to the value's simple string representation.
+			// final MultiSelectListPreference multiPreference = (MultiSelectListPreference) preference;
+			// final Set<String> values = multiPreference.getValues();
+			final Set<String> values = (Set<String>) value;
+
+			final String stringValue = values.toString();
+			preference.setSummary(stringValue);
+			return true;
+		}
+	};
+
 	// B I N D
 
 	/**
@@ -171,6 +195,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 
 		// Trigger the listener immediately with the preference's current value.
 		SettingsActivity.listener.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
+	}
+
+	/**
+	 * Binds a preference's summary to its value. More specifically, when the preference's value is changed, its summary (line of text below the preference
+	 * title) is updated to reflect the value. The summary is also immediately updated upon calling this method. The exact display format is dependent on the
+	 * type of preference.
+	 *
+	 * @see #listener
+	 */
+	private static void bindMulti(final Preference preference)
+	{
+		// Set the listener to watch for value changes.
+		preference.setOnPreferenceChangeListener(SettingsActivity.listener);
+
+		// Trigger the listener immediately with the preference's current value
+		SettingsActivity.listenerMulti.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getStringSet(preference.getKey(), new HashSet<String>()));
 	}
 
 	// F R A G M E N T S
@@ -190,6 +230,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 			SettingsActivity.bind(findPreference(TreebolicIface.PREF_SOURCE));
 			SettingsActivity.bind(findPreference(Settings.PREF_DISPLAY));
 			SettingsActivity.bind(findPreference(Settings.PREF_SORT));
+		}
+	}
+
+	public static class FilterPreferenceFragment extends PreferenceFragment
+	{
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public void onCreate(final Bundle savedInstanceState)
+		{
+			super.onCreate(savedInstanceState);
+
+			// inflate
+			addPreferencesFromResource(R.xml.pref_filter);
+
+			// bind
+			SettingsActivity.bindMulti(findPreference(Settings.PREF_FILTER_GROUPS));
 		}
 	}
 }

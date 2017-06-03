@@ -17,11 +17,12 @@
 		android:src="@drawable/ic_contact_default"/>
 
 	<TextView
-		android:id="@android:id/text1"
+		android:id="@+id/display_name"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center_vertical|left"
+		android:layout_gravity="center_vertical|start"
 		android:layout_marginLeft="10dp"
+		android:layout_marginStart="10dp"
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"/>

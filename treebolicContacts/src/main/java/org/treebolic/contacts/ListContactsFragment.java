@@ -52,7 +52,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
-	private final static int[] TO_IDS = {android.R.id.text1};
+	private final static int[] TO_IDS = {R.id.display_name};
 
 	/**
 	 * Adapter that binds the result Cursor to the ListView
@@ -104,20 +104,34 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
 		final String source = Settings.getStringPref(getContext(), TreebolicIface.PREF_SOURCE);
+		final boolean nullSource = source == null || source.isEmpty();
+
+		String selection = nullSource ? null : treebolic.provider.contacts.Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
 
 		final String sortPref = Settings.getStringPref(getContext(), Settings.PREF_SORT);
 		final String firstValue = getString(R.string.pref_sort_value_first);
 		final int sortCode = firstValue.equals(sortPref) ? 1 : 2;
-
-		final boolean nullSource = source == null || source.isEmpty();
-		final String selection = nullSource ? null : treebolic.provider.contacts.Settings.SELECTION_DN_LIKE;
-		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
 		final String sort = sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+
+		final String groups = Settings.getStringsPref(getActivity(), Settings.PREF_FILTER_GROUPS);
+		if (groups != null)
+		{
+			final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groups + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+			selection = selection == null ? extraSelection : " AND " + extraSelection;
+			Log.d(TAG, "selection=" + selection);
+			return new CursorLoader(getActivity(), //
+					ContactsContract.Data.CONTENT_URI, //
+					treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION, //
+					selection, //
+					selectionArgs, //
+					sort);
+		}
 
 		// Starts the query
 		return new CursorLoader(getActivity(), //
 				ContactsContract.Contacts.CONTENT_URI, //
-				treebolic.provider.contacts.Settings.PROJECTION, //
+				treebolic.provider.contacts.Settings.CONTACT_PROJECTION, //
 				selection, //
 				selectionArgs, //
 				sort);
@@ -126,6 +140,9 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
 	{
+		Log.d(TAG, "count=" + cursor.getCount());
+		// dumpCursor(cursor);
+
 		// Put the result Cursor in the adapter for the ListView
 		this.adapter.swapCursor(cursor);
 	}
@@ -135,6 +152,32 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 	{
 		// Delete the reference to the existing Cursor
 		this.adapter.swapCursor(null);
+	}
+
+	private void dumpCursor(final Cursor cursor)
+	{
+		if (cursor == null)
+		{
+			return;
+		}
+		final String[] columns = cursor.getColumnNames();
+		final int[] indexes = new int[columns.length];
+		for (int i = 0; i < indexes.length; i++)
+		{
+			indexes[i] = cursor.getColumnIndex(columns[i]);
+		}
+		cursor.moveToFirst();
+		do
+		{
+			for (int i = 0; i < indexes.length; i++)
+			{
+				String value = cursor.getString(indexes[i]);
+				Log.d(TAG, columns[i] + " " + value);
+			}
+			Log.d(TAG, "\n");
+		}
+		while (cursor.moveToNext());
+		cursor.moveToFirst();
 	}
 
 	// A D A P T E R
@@ -154,7 +197,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
 
 			// Photo Uri
-			final String name = cursor.getString(treebolic.provider.contacts.Settings.NAME_INDEX);
+			final String name = cursor.getString(treebolic.provider.contacts.Settings.DISPLAY_NAME_INDEX);
 			final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
 			final String photoThumbnailUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
 			if (photoThumbnailUriString != null)
@@ -185,8 +228,7 @@ public class ListContactsFragment extends Fragment implements LoaderManager.Load
 		final SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
 		final Cursor cursor = adapter.getCursor();
 
-		final String[] columns = cursor.getColumnNames();
-		Log.d(TAG, join(columns));
+		Log.d(TAG, join(cursor.getColumnNames()));
 
 		// Move to the selected contact
 		cursor.moveToPosition(position);
