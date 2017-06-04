@@ -2,6 +2,7 @@ package treebolic.provider.contacts;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 
@@ -19,6 +20,7 @@ public class Settings
 
 	// C O N T A C T   P R O J E C T I O N
 
+	static public final Uri CONTACT_URI = ContactsContract.Contacts.CONTENT_URI;
 	static public final String[] CONTACT_PROJECTION = {//
 			ContactsContract.Contacts._ID, //
 			ContactsContract.Contacts.DISPLAY_NAME, //
@@ -30,7 +32,7 @@ public class Settings
 			ContactsContract.Contacts.LOOKUP_KEY, //
 	};
 
-	static public final int ID_INDEX = 0;
+	static public final int CONTACT_ID_INDEX = 0;
 	static public final int DISPLAY_NAME_INDEX = 1;
 	static public final int DISPLAY_NAME_ALTERNATIVE_INDEX = 2;
 	static public final int PHOTO_THUMBNAIL_URI_INDEX = 3;
@@ -41,8 +43,9 @@ public class Settings
 
 	// G R O U P  M E M B E R  P R O J E C T I O N
 
+	static public final Uri GROUP_MEMBERS_URI = ContactsContract.Data.CONTENT_URI;
 	static public final String[] GROUP_MEMBERS_PROJECTION = new String[]{ //
-			ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, //
+			ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
 			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
 			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
 			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
@@ -50,10 +53,12 @@ public class Settings
 			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID, //
 			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID, //
 			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership._ID, //
+			ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, // raw contact id
+			ContactsContract.CommonDataKinds.GroupMembership._ID, // membership row
+			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET, // account
 	};
 
-	static public final int GROUP_MEMBERS_ID_INDEX = 0;
+	static public final int GROUP_MEMBERS_CONTACT_ID_INDEX = 0;
 	static public final int GROUP_MEMBERS_DISPLAY_NAME_INDEX = 1;
 	static public final int GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX = 2;
 	static public final int GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX = 3;
@@ -64,6 +69,7 @@ public class Settings
 
 	// G R O U P  P R O J E C T I O N
 
+	static public final Uri GROUP_URI = ContactsContract.Groups.CONTENT_URI;
 	static public final String[] GROUP_PROJECTION = new String[]{ //
 			ContactsContract.Groups._ID, //
 			ContactsContract.Groups.SYSTEM_ID, //

@@ -310,11 +310,11 @@ public class Provider implements IProvider
 		final boolean nullSource = source == null || source.isEmpty();
 		final String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
 		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
-		final String sort = this.sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+		final String sort = (this.sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC";
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Contacts.CONTENT_URI, //
+				Settings.CONTACT_URI, //
 				Settings.CONTACT_PROJECTION, // columns to return for each row
 				selection, // selection criteria
 				selectionArgs, // selection criteria arguments to placeholders
@@ -328,7 +328,7 @@ public class Provider implements IProvider
 				do
 				{
 					// row values
-					final String id = cursor.getString(Settings.ID_INDEX);
+					final String id = cursor.getString(Settings.CONTACT_ID_INDEX);
 					final String name = cursor.getString(Settings.DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.DISPLAY_NAME_ALTERNATIVE_INDEX);
 					final String photoThumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
@@ -352,7 +352,7 @@ public class Provider implements IProvider
 	/**
 	 * Collect contact nodes
 	 *
-	 * @param source selection
+	 * @param source      selection
 	 * @param groupFilter group filter
 	 * @return list of contact nodes
 	 */
@@ -361,16 +361,18 @@ public class Provider implements IProvider
 		final boolean nullSource = source == null || source.isEmpty();
 		String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
 		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
-		final String sort = this.sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+		final String sort = (this.sortCode == 1 ?
+				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME :
+				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID;
 
 		final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groupFilter + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
-		selection = selection == null ? extraSelection : " AND " + extraSelection;
+		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
 		Log.d(TAG, "selection=" + selection);
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Data.CONTENT_URI, //
-				treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION, // columns to return for each row
+				Settings.GROUP_MEMBERS_URI, //
+				Settings.GROUP_MEMBERS_PROJECTION, // columns to return for each row
 				selection, //
 				selectionArgs, // selection criteria arguments to placeholders
 				sort); // sort order for the returned rows
@@ -380,10 +382,17 @@ public class Provider implements IProvider
 			if (cursor.moveToFirst())
 			{
 				nodes = new ArrayList<>();
+				String contactIdCurrent = null;
 				do
 				{
+					final String contactId = cursor.getString(Settings.GROUP_MEMBERS_CONTACT_ID_INDEX);
+					if (contactId.equals(contactIdCurrent))
+					{
+						continue;
+					}
+					contactIdCurrent = contactId;
+
 					// row values
-					final String id = cursor.getString(Settings.GROUP_MEMBERS_ID_INDEX);
 					final String name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX);
 					final String photoThumbnailUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX);
@@ -391,7 +400,7 @@ public class Provider implements IProvider
 					//final Long photoThumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_ID_INDEX);
 					//final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
 
-					final TreeMutableNode node = makeContactNode(id, name, altName, photoThumbnailUri);
+					final TreeMutableNode node = makeContactNode(contactId, name, altName, photoThumbnailUri);
 					nodes.add(node);
 				}
 				while (cursor.moveToNext());
@@ -412,7 +421,7 @@ public class Provider implements IProvider
 	{
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Groups.CONTENT_URI, //
+				Settings.GROUP_URI, //
 				Settings.GROUP_PROJECTION, //
 				null, //
 				null, //
@@ -520,7 +529,7 @@ public class Provider implements IProvider
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Data.CONTENT_URI, //
+				Settings.GROUP_MEMBERS_URI, //
 				Settings.GROUP_MEMBERS_PROJECTION, //
 				selection, //
 				null,  //
@@ -537,7 +546,7 @@ public class Provider implements IProvider
 				nodes = new ArrayList<>();
 				do
 				{
-					final String contactId = cursor.getString(Settings.GROUP_MEMBERS_ID_INDEX);
+					final String contactId = cursor.getString(Settings.GROUP_MEMBERS_CONTACT_ID_INDEX);
 					final String name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX);
 					final String photoThumbnailUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX);
@@ -566,11 +575,13 @@ public class Provider implements IProvider
 	private List<INode> collectGroupsMembers(final String... groupIDs)
 	{
 		final String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + joinForIn(groupIDs) + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
-		final String sort = this.sortCode == 1 ? ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME : ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+		final String sort = (this.sortCode == 1 ?
+				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME :
+				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC, " + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID;
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Data.CONTENT_URI, //
+				Settings.GROUP_MEMBERS_URI, //
 				Settings.GROUP_MEMBERS_PROJECTION, //
 				selection, //
 				null,  //
@@ -585,9 +596,17 @@ public class Provider implements IProvider
 			if (cursor.moveToFirst())
 			{
 				nodes = new ArrayList<>();
+				String contactIdCurrent = null;
 				do
 				{
-					final String contactId = cursor.getString(Settings.GROUP_MEMBERS_ID_INDEX);
+					final String contactId = cursor.getString(Settings.GROUP_MEMBERS_CONTACT_ID_INDEX);
+					if (contactId.equals(contactIdCurrent))
+					{
+						continue;
+					}
+
+					contactIdCurrent = contactId;
+
 					final String name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX);
 					final String photoThumbnailUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX);

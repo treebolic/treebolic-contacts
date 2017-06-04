@@ -24,7 +24,7 @@ icon_list="ic_treebolic.svg ic_contact.svg ic_group.svg"
 
 declare -A photo_res
 photo_res=([mdpi]=256 [hdpi]=384 [xhdpi]=512 [xxhdpi]=768 [xxxhdpi]=1024)
-photo_list="ic_contact_default.svg"
+photo_list="ic_contact_default.svg ic_group_default.svg"
 
 for svg in ${launcher_list}; do
 	for r in ${!launcher_res[@]}; do 
