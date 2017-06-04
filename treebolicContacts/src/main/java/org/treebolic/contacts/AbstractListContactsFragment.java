@@ -1,7 +1,6 @@
 package org.treebolic.contacts;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -10,17 +9,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -28,7 +23,7 @@ import android.widget.TextView;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-abstract public class AbstractListContactsFragment extends Fragment implements AdapterView.OnItemClickListener
+abstract public class AbstractListContactsFragment extends Fragment
 {
 	static private final String TAG = "AListContactsF";
 
@@ -44,124 +39,22 @@ abstract public class AbstractListContactsFragment extends Fragment implements A
 		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
 	}
 
-	@Override
-	public void onActivityCreated(final Bundle savedInstanceState)
+	// D I A L O G
+
+	public void info(final XSpannableStringBuilder sb, final String contactId, final String contactContentUri, final String thumbnailUri, final String photoUri, final String thumbnailId, final String photoId)
 	{
-		// Always call the super method first
-		super.onActivityCreated(savedInstanceState);
-
-		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
-
-		// Set the item click listener to be the current fragment.
-		contactsListView.setOnItemClickListener(this);
-	}
-
-	// A D A P T E R
-
-	public class ImageCursorAdapter extends SimpleCursorAdapter
-	{
-		public ImageCursorAdapter(Context context, int layout, Cursor cursor, String[] from, int[] to, int flags)
-		{
-			super(context, layout, cursor, from, to, flags);
-		}
-
-		@Override
-		public void bindView(View view, Context context, Cursor cursor)
-		{
-			super.bindView(view, context, cursor);
-
-			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
-
-			// Photo Uri
-			final String name = cursor.getString(treebolic.provider.contacts.Settings.DISPLAY_NAME_INDEX);
-			final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
-			final String photoThumbnailUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
-			if (photoThumbnailUriString != null)
-			{
-				final Uri photoUri = Uri.parse(photoThumbnailUriString);
-				Log.d(TAG, "thumbnail of " + name + " is " + photoThumbnailUriString);
-				imageView.setImageURI(photoUri);
-			}
-			else if (photoUriString != null)
-			{
-				final Uri photoUri = Uri.parse(photoUriString);
-				Log.d(TAG, "photo of " + name + " is " + photoUriString);
-				imageView.setImageURI(photoUri);
-			}
-			else
-			{
-				imageView.setImageResource(R.drawable.ic_contact);
-			}
-		}
-	}
-
-	// C L I C K
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View item, int position, long rowID)
-	{
-		// Get the Cursor
-		final SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
-		final Cursor cursor = adapter.getCursor();
-
-		Log.d(TAG, join(cursor.getColumnNames()));
-
-		// Move to the selected contact
-		cursor.moveToPosition(position);
-
-		// Get the _ID value
-		final long contactId = cursor.getLong(treebolic.provider.contacts.Settings.CONTACT_ID_INDEX);
-
-		// Get the selected LOOKUP KEY
-		// final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
-
-		// Lookup Uri. You can use it as the content URI for retrieving the details for a contact
-		// final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
-
-		// Content Uri
-		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-
-		// IMAGES
-
-		// Get the selected thumbnail Uri
-		final String thumbnailUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
-
-		// Get the selected photo Uri
-		final String photoUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
-
-		// Get the selected photo index
-		final long photoId = cursor.getLong(treebolic.provider.contacts.Settings.PHOTO_ID_INDEX);
-
-		// Get the selected thumbnail index
-		final long thumbnailId = cursor.getLong(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_ID_INDEX);
-
-		// Photo Uri
-		//final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-		//final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
-
-		final XSpannableStringBuilder sb = new XSpannableStringBuilder();
+		// id
 		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
-				.append(Long.toString(contactId)).append('\n');
+				.append(contactId).append('\n');
 
-		// info
+		// extra info
 		getNames(contactId, sb);
 		getPhones(contactId, sb);
 		getEmails(contactId, sb);
 		getAddresses(contactId, sb);
 
-		/*
-		sb.append("key", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(contactKey) //
-				.append('\n');
-
-		sb.append("lookup Uri", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(contactLookupUri == null ? null : contactLookupUri.toString()) //
-				.append('\n');
-		*/
+		// info
 		sb.append("content Uri", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
 				.append(contactContentUri == null ? null : contactContentUri.toString()) //
@@ -183,33 +76,21 @@ abstract public class AbstractListContactsFragment extends Fragment implements A
 					.append('\n');
 		}
 
-		if (thumbnailId != 0)
+		if (thumbnailId != null)
 		{
 			sb.append("thumbnail id", new StyleSpan(Typeface.BOLD), 0) //
 					.append('\n') //
-					.append(Long.toString(thumbnailId)) //
+					.append(thumbnailId) //
 					.append('\n');
 		}
 
-		if (photoId != 0)
+		if (photoId != null)
 		{
 			sb.append("photo id", new StyleSpan(Typeface.BOLD), 0) //
 					.append('\n') //
-					.append(Long.toString(photoId)) //
+					.append(photoId) //
 					.append('\n');
 		}
-
-		/*
-		sb.append("photo Uri From Content Uri", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(photoUriFromContent == null ? "null" : photoUriFromContent.toString()) //
-				.append('\n');
-
-		sb.append("photo Uri From Photo Id", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(photoUriFromPhotoId == null ? "null" : photoUriFromPhotoId.toString()) //
-				.append('\n');
-		*/
 
 		// view
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -249,11 +130,11 @@ abstract public class AbstractListContactsFragment extends Fragment implements A
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getNames(final long contactId, final XSpannableStringBuilder sb)
+	private void getNames(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, Long.toString(contactId)}, null);
+		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
 			if (cursor.getCount() > 0)
@@ -297,11 +178,11 @@ abstract public class AbstractListContactsFragment extends Fragment implements A
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getAddresses(final long contactId, final XSpannableStringBuilder sb)
+	private void getAddresses(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, Long.toString(contactId)}, null);
+		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
 			if (cursor.getCount() > 0)
@@ -359,11 +240,11 @@ abstract public class AbstractListContactsFragment extends Fragment implements A
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getEmails(final long contactId, final XSpannableStringBuilder sb)
+	private void getEmails(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE, Long.toString(contactId)}, null);
+		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
 			if (cursor.getCount() > 0)
@@ -393,11 +274,11 @@ abstract public class AbstractListContactsFragment extends Fragment implements A
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getPhones(long contactId, final XSpannableStringBuilder sb)
+	private void getPhones(String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, Long.toString(contactId)}, null);
+		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
 			if (cursor.getCount() > 0)
@@ -439,34 +320,6 @@ abstract public class AbstractListContactsFragment extends Fragment implements A
 			}
 			cursor.close();
 		}
-	}
-
-	// C U R S O R
-
-	private void dumpCursor(final Cursor cursor)
-	{
-		if (cursor == null)
-		{
-			return;
-		}
-		final String[] columns = cursor.getColumnNames();
-		final int[] indexes = new int[columns.length];
-		for (int i = 0; i < indexes.length; i++)
-		{
-			indexes[i] = cursor.getColumnIndex(columns[i]);
-		}
-		cursor.moveToFirst();
-		do
-		{
-			for (int i = 0; i < indexes.length; i++)
-			{
-				String value = cursor.getString(indexes[i]);
-				Log.d(TAG, columns[i] + " " + value);
-			}
-			Log.d(TAG, "\n");
-		}
-		while (cursor.moveToNext());
-		cursor.moveToFirst();
 	}
 
 	// U T I L S

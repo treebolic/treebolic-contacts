@@ -20,7 +20,7 @@ import org.treebolic.TreebolicIface;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-public class ListContactsFragment extends AbstractListContactsFragment implements LoaderManager.LoaderCallbacks<Cursor>
+public class ListContactsFragment extends AbstractListContactsCursorFragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	static private final String TAG = "ListContactsF";
 
