@@ -13,7 +13,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
-import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -149,7 +148,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 
 		// IMAGES
 
-		final XSpannableStringBuilder sb = new XSpannableStringBuilder();
+		final AbstractListContactsFragment.XSpannableStringBuilder sb = new AbstractListContactsFragment.XSpannableStringBuilder();
 		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
 				.append(Long.toString(contactId)).append('\n');
@@ -192,18 +191,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 
 	// U T I L S
 
-	class XSpannableStringBuilder extends SpannableStringBuilder
-	{
-		public SpannableStringBuilder append(CharSequence text, Object what, int flags)
-		{
-			int start = length();
-			append(text);
-			setSpan(what, start, length(), flags);
-			return this;
-		}
-	}
-
-	private void str2sb(final String header, final String[] strs, final XSpannableStringBuilder sb)
+	private void str2sb(final String header, final String[] strs, final AbstractListContactsFragment.XSpannableStringBuilder sb)
 	{
 		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
 		sb.append(join(strs)).append('\n');

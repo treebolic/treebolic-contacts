@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Abstract fragment with list of contacts
+ * Abstract fragment for list of contacts
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
@@ -29,6 +29,9 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 	// C R E A T E
 
+	/**
+	 * Constructor
+	 */
 	public AbstractListContactsFragment()
 	{
 	}
@@ -41,7 +44,16 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 	// D I A L O G
 
-	public void info(final XSpannableStringBuilder sb, final String contactId, final String contactContentUri, final String thumbnailUri, final String photoUri, final String thumbnailId, final String photoId)
+	/**
+	 * Show dialog for contact info
+	 *
+	 * @param sb        string buffer
+	 * @param contactId contact id
+	 * @param photoUri  photo uri
+	 * @param labels    labels
+	 * @param values    values
+	 */
+	public void showDialog(final XSpannableStringBuilder sb, final String contactId, final Uri photoUri, final String[] labels, final String... values)
 	{
 		// id
 		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
@@ -55,40 +67,14 @@ abstract public class AbstractListContactsFragment extends Fragment
 		getAddresses(contactId, sb);
 
 		// info
-		sb.append("content Uri", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(contactContentUri == null ? null : contactContentUri.toString()) //
-				.append('\n');
-
-		if (thumbnailUri != null)
+		for (int i = 0; i < labels.length; i++)
 		{
-			sb.append("thumbnail Uri", new StyleSpan(Typeface.BOLD), 0) //
-					.append('\n') //
-					.append(thumbnailUri == null ? "null" : thumbnailUri.toString()) //
-					.append('\n');
-		}
+			String label = labels[i];
+			String value = values[i];
 
-		if (photoUri != null)
-		{
-			sb.append("photo Uri", new StyleSpan(Typeface.BOLD), 0) //
+			sb.append(label, new StyleSpan(Typeface.BOLD), 0) //
 					.append('\n') //
-					.append(photoUri == null ? "null" : photoUri.toString()) //
-					.append('\n');
-		}
-
-		if (thumbnailId != null)
-		{
-			sb.append("thumbnail id", new StyleSpan(Typeface.BOLD), 0) //
-					.append('\n') //
-					.append(thumbnailId) //
-					.append('\n');
-		}
-
-		if (photoId != null)
-		{
-			sb.append("photo id", new StyleSpan(Typeface.BOLD), 0) //
-					.append('\n') //
-					.append(photoId) //
+					.append(value == null ? "null" : value.toString()) //
 					.append('\n');
 		}
 
@@ -101,11 +87,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 		textView.setText(sb);
 		if (photoUri != null)
 		{
-			imageView.setImageURI(Uri.parse(photoUri));
-		}
-		else if (thumbnailUri != null)
-		{
-			imageView.setImageURI(Uri.parse(thumbnailUri));
+			imageView.setImageURI(photoUri);
 		}
 		else
 		{
@@ -324,7 +306,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 	// U T I L S
 
-	class XSpannableStringBuilder extends SpannableStringBuilder
+	static public class XSpannableStringBuilder extends SpannableStringBuilder
 	{
 		public SpannableStringBuilder append(CharSequence text, Object what, int flags)
 		{
@@ -343,6 +325,12 @@ abstract public class AbstractListContactsFragment extends Fragment
 		sb.append(join(strs)).append('\n');
 	}
 
+	/**
+	 * Join strings
+	 *
+	 * @param strs strings
+	 * @return joined strings
+	 */
 	private String join(final String[] strs)
 	{
 		final StringBuilder sb = new StringBuilder();

@@ -22,28 +22,9 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 {
 	static private final String TAG = "AListContactsF";
 
-	// C R E A T E
-
-	public AbstractListContactsCursorFragment()
-	{
-	}
-
-	@Override
-	public void onActivityCreated(final Bundle savedInstanceState)
-	{
-		// Always call the super method first
-		super.onActivityCreated(savedInstanceState);
-
-		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
-
-		// Set the item click listener to be the current fragment.
-		contactsListView.setOnItemClickListener(this);
-	}
-
 	// A D A P T E R
 
-	public class ImageCursorAdapter extends SimpleCursorAdapter
+	class ImageCursorAdapter extends SimpleCursorAdapter
 	{
 		public ImageCursorAdapter(Context context, int layout, Cursor cursor, String[] from, int[] to, int flags)
 		{
@@ -78,6 +59,27 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 			//	imageView.setImageResource(R.drawable.ic_contact);
 			//}
 		}
+	}
+
+	// C R E A T E
+
+	public AbstractListContactsCursorFragment()
+	{
+	}
+
+	// O V E R R I D E S
+
+	@Override
+	public void onActivityCreated(final Bundle savedInstanceState)
+	{
+		// Always call the super method first
+		super.onActivityCreated(savedInstanceState);
+
+		// Gets the ListView from the View list of the parent activity
+		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
+
+		// Set the item click listener to be the current fragment.
+		contactsListView.setOnItemClickListener(this);
 	}
 
 	// C L I C K
@@ -123,7 +125,16 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 		//final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
 
 		final XSpannableStringBuilder sb = new XSpannableStringBuilder();
-		info(sb, contactId, contactContentUri.toString(), thumbnailUri, photoUri, thumbnailId, photoId);
+		final String[] labels = new String[]{"content Uri", "thumbnail Uri", "photo Uri", "thumbnail id", "photo id"};
+		showDialog(sb, //
+				contactId, //
+				thumbnailUri != null ? Uri.parse(thumbnailUri) : (photoUri != null ? Uri.parse(photoUri) : null), //
+				labels, //
+				contactContentUri.toString(), //
+				thumbnailUri, //
+				photoUri, //
+				thumbnailId, //
+				photoId);
 	}
 
 	// C U R S O R

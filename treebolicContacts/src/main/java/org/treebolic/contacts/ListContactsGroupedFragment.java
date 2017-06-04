@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -33,7 +34,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 {
 	static private final String TAG = "ListContactsGroupedF";
 
-	// A D A P T E R
+	// C U R S O R  C O L U M N S
 
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
@@ -44,15 +45,17 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	};
 
 	/**
-	 * Column names in the Cursor mapping to the ListView ids
+	 * Column names in the Cursor mapping to the ListView ids (alternative)
 	 */
 	private final static String[] FROM_COLUMNS_ALT = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
 			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
 			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,//
 	};
 
-	/**
-	 * Column names in the Cursor mapping to the ListView ids
+	// A D A P T E R  K E Y S
+
+	/*
+	 * Key names in the row mapping to the ListView ids
 	 */
 	private final static String CONTACT_ID_KEY = "contact_id";
 	private final static String DISPLAY_NAME_KEY = "display_name";
@@ -63,38 +66,27 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	private final static String PHOTO_THUMBNAIL_ID_KEY = "thumbnail_photo_id";
 	private final static String PHOTO_ID_KEY = "photo_id";
 	private final static String[] FROM_KEYS = {DISPLAY_NAME_KEY, GROUP_KEY, ACCOUNT_KEY};
+
+	/*
+	 * Mapped-to ListView ids
+	 */
 	private final static int[] TO_IDS = {R.id.display_name, R.id.group, R.id.account};
 
 	/**
-	 * Adapter that binds the result Cursor to the ListView
+	 * Row of objects
+	 *
+	 * @param <T> object type
 	 */
-	private SimpleAdapter adapter;
-
-	/**
-	 * Data
-	 */
-	private final List<Row<String>> rows;
-
-	// C R E A T E
-
-	public ListContactsGroupedFragment()
-	{
-		this.rows = new ArrayList<>();
-	}
-
-	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
-	{
-		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
-	}
-
 	class Row<T> extends HashMap<String, T>
 	{
 	}
 
-	public class ImageSimpleAdapter extends SimpleAdapter
+	/**
+	 * Simple adapter with image
+	 */
+	class ImageSimpleAdapter extends SimpleAdapter
 	{
-		public ImageSimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to)
+		public ImageSimpleAdapter(final Context context, final List<? extends Map<String, ?>> data, final int resource, final String[] from, final int[] to)
 		{
 			super(context, data, resource, from, to);
 		}
@@ -119,6 +111,34 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			}
 			return view;
 		}
+	}
+
+	/**
+	 * Adapter that binds the result Cursor to the ListView
+	 */
+	private SimpleAdapter adapter;
+
+	/**
+	 * Data
+	 */
+	private final List<Row<String>> rows;
+
+	// C R E A T E
+
+	/**
+	 * Constructor
+	 */
+	public ListContactsGroupedFragment()
+	{
+		this.rows = new ArrayList<>();
+	}
+
+	// O V E R R I D E S
+
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+	{
+		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
 	}
 
 	@Override
@@ -259,6 +279,9 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		// Get the _ID value
 		final String contactId = row.get(CONTACT_ID_KEY);
 
+		// Content Uri
+		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.valueOf(contactId));
+
 		// IMAGES
 
 		// Get the selected thumbnail Uri
@@ -278,7 +301,15 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		//final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
 
 		final XSpannableStringBuilder sb = new XSpannableStringBuilder();
-		info(sb, contactId, "N/A", thumbnailUri, photoUri, thumbnailId, photoId);
+		final String[] labels = new String[]{"content Uri", "thumbnail Uri", "photo Uri", "thumbnail id", "photo id"};
+		showDialog(sb, //
+				contactId, //
+				thumbnailUri != null ? Uri.parse(thumbnailUri) : (photoUri != null ? Uri.parse(photoUri) : null), //
+				labels, //
+				contactContentUri.toString(), //
+				thumbnailUri, //
+				photoUri, //
+				thumbnailId, //
+				photoId);
 	}
-
 }

@@ -48,9 +48,14 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 
 	// C R E A T E
 
+	/**
+	 * Constructor
+	 */
 	public ListContactsFragment()
 	{
 	}
+
+	// O V E R R I D E S
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
