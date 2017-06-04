@@ -35,29 +35,27 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 		public void bindView(View view, Context context, Cursor cursor)
 		{
 			super.bindView(view, context, cursor);
-
-			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
-
+			
 			// Photo Uri
-			final String name = cursor.getString(treebolic.provider.contacts.Settings.DISPLAY_NAME_INDEX);
-			final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
 			final String photoThumbnailUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
 			if (photoThumbnailUriString != null)
 			{
 				final Uri photoUri = Uri.parse(photoThumbnailUriString);
-				Log.d(TAG, "thumbnail of " + name + " is " + photoThumbnailUriString);
+				Log.d(TAG, "thumbnail is " + photoThumbnailUriString);
+				final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
 				imageView.setImageURI(photoUri);
 			}
-			else if (photoUriString != null)
+			else
 			{
-				final Uri photoUri = Uri.parse(photoUriString);
-				Log.d(TAG, "photo of " + name + " is " + photoUriString);
-				imageView.setImageURI(photoUri);
+				final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
+				if (photoUriString != null)
+				{
+					final Uri photoUri = Uri.parse(photoUriString);
+					Log.d(TAG, "photo is " + photoUriString);
+					final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
+					imageView.setImageURI(photoUri);
+				}
 			}
-			//else
-			//{
-			//	imageView.setImageResource(R.drawable.ic_contact);
-			//}
 		}
 	}
 

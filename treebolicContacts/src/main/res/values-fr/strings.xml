@@ -11,7 +11,7 @@
 
 	<string name="action_run">Lancer</string>
 	<string name="action_list_contacts">Lister contacts</string>
-	<string name="action_list_groups">Lister groups</string>
+	<string name="action_list_groups">Lister groupes</string>
 	<string name="action_model">Modèle</string>
 	<string name="action_settings">Paramètres</string>
 

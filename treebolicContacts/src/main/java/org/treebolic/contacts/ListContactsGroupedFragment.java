@@ -95,7 +95,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
 			Log.d(TAG, "POS " + position);
-			HashMap<String, ?> item = (HashMap<String, ?>) this.getItem(position);
+			final HashMap<String, ?> item = (HashMap<String, ?>) this.getItem(position);
 			final View view = super.getView(position, convertView, parent);
 			if (item.containsKey(PHOTO_THUMBNAIL_URI_KEY))
 			{
