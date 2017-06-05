@@ -233,63 +233,65 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			{
 				columnIndexes[i] = cursor.getColumnIndex(columns[i]);
 			}
-			cursor.moveToFirst();
-			String contactIdCurrent = null;
-			Row<String> row = null;
-			do
+			if(cursor.moveToFirst())
 			{
-				final String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID));
-				final String groupId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID));
-				final String photoThumbnailUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI));
-				final String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI));
-
-				// contact id
-				if (!contactId.equals(contactIdCurrent))
+				String contactIdCurrent = null;
+				Row<String> row = null;
+				do
 				{
-					row = new Row<>();
-					this.rows.add(row);
-					contactIdCurrent = contactId;
-					row.put(CONTACT_ID_KEY, contactId);
-				}
+					final String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID));
+					final String groupId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID));
+					final String photoThumbnailUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI));
+					final String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI));
 
-				// photo
-				if (photoThumbnailUri != null && !row.containsKey(PHOTO_THUMBNAIL_URI_KEY))
-				{
-					row.put(PHOTO_THUMBNAIL_URI_KEY, photoThumbnailUri);
-				}
-				if (photoUri != null && !row.containsKey(PHOTO_URI_KEY))
-				{
-					row.put(PHOTO_URI_KEY, photoUri);
-				}
-
-				// group
-				final Utils.Group group = this.groups.get(groupId);
-
-				for (int i = 0; i < columnIndexes.length; i++)
-				{
-					final String key = FROM_KEYS[i];
-					String value = cursor.getString(columnIndexes[i]);
-					if (GROUP_KEY.equals(key))
+					// contact id
+					if (!contactId.equals(contactIdCurrent))
 					{
-						value = group.title;
+						row = new Row<>();
+						this.rows.add(row);
+						contactIdCurrent = contactId;
+						row.put(CONTACT_ID_KEY, contactId);
 					}
-					else if (ACCOUNT_KEY.equals(key))
+
+					// photo
+					if (photoThumbnailUri != null && !row.containsKey(PHOTO_THUMBNAIL_URI_KEY))
 					{
-						value = group.account;
+						row.put(PHOTO_THUMBNAIL_URI_KEY, photoThumbnailUri);
 					}
-					Log.d(TAG, key + " (" + columns[i] + ") " + value);
-					if (i > 0)
+					if (photoUri != null && !row.containsKey(PHOTO_URI_KEY))
 					{
-						String value0 = row.get(key);
-						if (value0 != null)
+						row.put(PHOTO_URI_KEY, photoUri);
+					}
+
+					// group
+					final Utils.Group group = this.groups.get(groupId);
+
+					for (int i = 0; i < columnIndexes.length; i++)
+					{
+						final String key = FROM_KEYS[i];
+						String value = cursor.getString(columnIndexes[i]);
+						if (GROUP_KEY.equals(key))
 						{
-							value = value0 + '\n' + value;
+							value = group.title;
 						}
+						else if (ACCOUNT_KEY.equals(key))
+						{
+							value = group.account;
+						}
+						Log.d(TAG, key + " (" + columns[i] + ") " + value);
+						if (i > 0)
+						{
+							String value0 = row.get(key);
+							if (value0 != null)
+							{
+								value = value0 + '\n' + value;
+							}
+						}
+						row.put(key, value);
 					}
-					row.put(key, value);
 				}
+				while (cursor.moveToNext());
 			}
-			while (cursor.moveToNext());
 			cursor.close();
 		}
 		this.adapter.notifyDataSetChanged();
