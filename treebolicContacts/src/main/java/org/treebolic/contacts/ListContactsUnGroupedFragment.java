@@ -90,7 +90,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		final String[] from = displayCode == 1 ? FROM_COLUMNS : FROM_COLUMNS_ALT;
 
 		// Gets a CursorAdapter
-		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact_group, null, from, TO_IDS, 0);
+		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact_ungrouped, null, from, TO_IDS, 0);
 
 		// Gets the ListView from the View list of the parent activity
 		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);

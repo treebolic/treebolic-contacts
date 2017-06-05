@@ -10,7 +10,7 @@
 		android:id="@+id/photo"
 		android:layout_width="48dp"
 		android:layout_height="48dp"
-		android:layout_gravity="center_vertical"
+		android:layout_gravity="center_vertical|start"
 		android:adjustViewBounds="true"
 		android:clickable="false"
 		android:contentDescription="@string/photo"
@@ -26,7 +26,7 @@
 		android:layout_gravity="center_vertical|start"
 		android:layout_marginLeft="10dp"
 		android:layout_marginStart="10dp"
-		android:layout_weight=".35"
+		android:layout_weight=".45"
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"/>
@@ -38,7 +38,7 @@
 		android:layout_gravity="center_vertical|start"
 		android:layout_marginLeft="10dp"
 		android:layout_marginStart="10dp"
-		android:layout_weight=".30"
+		android:layout_weight=".15"
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"/>
