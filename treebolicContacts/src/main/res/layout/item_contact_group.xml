@@ -12,6 +12,7 @@
 		android:layout_height="48dp"
 		android:adjustViewBounds="true"
 		android:clickable="false"
+		android:contentDescription="@string/photo"
 		android:focusable="false"
 		android:focusableInTouchMode="false"
 		android:scaleType="fitXY"

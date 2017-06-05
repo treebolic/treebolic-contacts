@@ -3,7 +3,6 @@ package org.treebolic.contacts;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -98,7 +97,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 		bind(findPreference(TreebolicIface.PREF_SOURCE));
 		bind(findPreference(Settings.PREF_DISPLAY));
 		bind(findPreference(Settings.PREF_SORT));
-		bindMulti((MultiSelectListPreference) findPreference(Settings.PREF_FILTER_GROUPS));
+		bindMulti(findPreference(Settings.PREF_FILTER_GROUPS));
 	}
 
 	@Override
@@ -171,7 +170,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 			// set the summary to the value's simple string representation.
 			// final MultiSelectListPreference multiPreference = (MultiSelectListPreference) preference;
 			// final Set<String> values = multiPreference.getValues();
-			final Set<String> values = (Set<String>) value;
+			@SuppressWarnings("unchecked") final Set<String> values = (Set<String>) value;
 
 			final String stringValue = values.toString();
 			preference.setSummary(stringValue);

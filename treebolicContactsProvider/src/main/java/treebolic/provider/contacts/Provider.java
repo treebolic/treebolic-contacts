@@ -48,7 +48,7 @@ public class Provider implements IProvider
 	/**
 	 * Image array
 	 */
-	static Image[] images = new Image[]{ //
+	private static final Image[] images = new Image[]{ //
 			Image.try_make(Provider.class.getResource("images/root.png")), // ROOT
 			Image.try_make(Provider.class.getResource("images/folder.png")), // FOLDER
 			Image.try_make(Provider.class.getResource("images/contact.png")), // CONTACT
@@ -62,19 +62,19 @@ public class Provider implements IProvider
 	/**
 	 * Background color
 	 */
-	static private Color backgroundColor = new Color(0x004C41);
+	static private final Color backgroundColor = new Color(0x004C41);
 
 	// contact
 
 	/**
 	 * Contact background color
 	 */
-	public static final Color contactBackColor = new Color(0x00968C);
+	private static final Color contactBackColor = new Color(0x00968C);
 
 	/**
 	 * Contact foreground color
 	 */
-	public static final Color contactForeColor = Color.LIGHT_GRAY;
+	private static final Color contactForeColor = Color.LIGHT_GRAY;
 
 	/**
 	 * Contact treeedge color
@@ -86,12 +86,12 @@ public class Provider implements IProvider
 	/**
 	 * Group background color
 	 */
-	public static final Color groupBackColor = Color.LIGHT_GRAY;
+	private static final Color groupBackColor = Color.LIGHT_GRAY;
 
 	/**
 	 * Group foreground color
 	 */
-	public static final Color groupForeColor = new Color(0x00968C);
+	private static final Color groupForeColor = new Color(0x00968C);
 
 	/**
 	 * Group treeedge color
@@ -108,7 +108,7 @@ public class Provider implements IProvider
 	/**
 	 * Folder foreground color
 	 */
-	public static final Color folderForeColor = contactBackColor;
+	private static final Color folderForeColor = contactBackColor;
 
 	/**
 	 * Folder treeedge color
@@ -137,12 +137,12 @@ public class Provider implements IProvider
 	/**
 	 * Max children nodes at level 0, 1 .. n. Level is just above leaves. Last value i holds for level i to n.
 	 */
-	public static int[] TREE_MAX_NODES_AT_LEVEL = {10, 3};
+	private static final int[] TREE_MAX_NODES_AT_LEVEL = {10, 3};
 
 	/**
 	 * Truncation threshold
 	 */
-	static int LABEL_TRUNCATE_AT = 3;
+	private static final int LABEL_TRUNCATE_AT = 3;
 
 	/**
 	 * Sort code 1=first name-last name, 2=last name, first name
@@ -160,14 +160,9 @@ public class Provider implements IProvider
 	private boolean mergeGroups = true;
 
 	/**
-	 * Filter group directive, format = "(g1,g2,...gn)" or null if no filter
-	 */
-	private String filterGroups = null;
-
-	/**
 	 * Load balancer
 	 */
-	private LoadBalancer loadBalancer;
+	private final LoadBalancer loadBalancer;
 
 	// C O N T E X T
 
@@ -183,7 +178,7 @@ public class Provider implements IProvider
 	 */
 	public Provider()
 	{
-		this.loadBalancer = new LoadBalancer(TREE_MAX_NODES_AT_LEVEL, LABEL_TRUNCATE_AT, this.folderBackColor, this.folderForeColor, this.folderEdgeColor, -1 /*ImageIndices.FOLDER.ordinal() */, null);
+		this.loadBalancer = new LoadBalancer(TREE_MAX_NODES_AT_LEVEL, LABEL_TRUNCATE_AT, folderBackColor, folderForeColor, folderEdgeColor, -1 /*ImageIndices.FOLDER.ordinal() */, null);
 	}
 
 	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
@@ -259,7 +254,7 @@ public class Provider implements IProvider
 			final String mergeGroups = theseParameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
 			this.mergeGroups = "true".equals(mergeGroups);
 
-			this.filterGroups = theseParameters.getProperty(Settings.PARAM_FILTER_GROUPS);
+			final String filterGroups = theseParameters.getProperty(Settings.PARAM_FILTER_GROUPS);
 
 			// start
 
@@ -269,7 +264,7 @@ public class Provider implements IProvider
 				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(), 0));
 			}
 
-			return buildTree(this.loadBalancer.buildHierarchy(this.filterGroups == null ? collectContacts(source) : collectContacts(source, this.filterGroups), 0));
+			return buildTree(this.loadBalancer.buildHierarchy(filterGroups == null ? collectContacts(source) : collectContacts(source, filterGroups), 0));
 		}
 		else
 		{
@@ -652,7 +647,7 @@ public class Provider implements IProvider
 			first = fields[1];
 		}
 
-		String label = null;
+		@SuppressWarnings("UnusedAssignment") String label = null;
 		if (this.displayCode == 1) //first last
 		{
 			label = first;
@@ -700,12 +695,12 @@ public class Provider implements IProvider
 		{
 			final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoUri(this.context, photoThumbnailUri);
 			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
-			final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
-			final Bitmap scaleddownBitmap = Utils.scale(roundBitmap, 50, 50);
-			final Image image = new Image(scaledupBitmap);
+			final Bitmap scaledUpBitmap = Utils.scale(roundBitmap, 200, 200);
+			final Bitmap scaledDownBitmap = Utils.scale(roundBitmap, 50, 50);
+			final Image image = new Image(scaledUpBitmap);
 			node.setImage(image);
 
-			final String data = Utils.bitmapToUrl(scaleddownBitmap);
+			final String data = Utils.bitmapToUrl(scaledDownBitmap);
 			node.setContent("<table><tr><td valign='top'><img src='" + data + "'/></td><td>" + node.getContent() + "</tr></table>");
 		}
 		/*
@@ -713,8 +708,8 @@ public class Provider implements IProvider
 		{
 			final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoId(this.context, photoThumbnailId);
 			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
-			final Bitmap scaledupBitmap = Utils.scale(roundBitmap, 200, 200);
-			final Image image = new Image(scaledupBitmap);
+			final Bitmap scaledUpBitmap = Utils.scale(roundBitmap, 200, 200);
+			final Image image = new Image(scaledUpBitmap);
 			node.setImage(image);
 		}
 		*/
@@ -790,15 +785,15 @@ public class Provider implements IProvider
 	/**
 	 * Join for 'in' selection clause
 	 *
-	 * @param strs values
+	 * @param strings values
 	 * @return 'in' clause
 	 */
-	private String joinForIn(final String[] strs)
+	private String joinForIn(final String[] strings)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		sb.append('(');
-		for (String str : strs)
+		for (String str : strings)
 		{
 			if (first)
 			{
@@ -821,7 +816,7 @@ public class Provider implements IProvider
 	 *
 	 * @return settings
 	 */
-	treebolic.model.Settings makeSettings()
+	private treebolic.model.Settings makeSettings()
 	{
 		final treebolic.model.Settings settings = new treebolic.model.Settings();
 		settings.theBackColor = Provider.backgroundColor;

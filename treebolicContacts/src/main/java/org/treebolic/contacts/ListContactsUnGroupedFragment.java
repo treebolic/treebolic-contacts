@@ -15,10 +15,6 @@ import android.widget.ListView;
 
 import org.treebolic.TreebolicIface;
 
-import java.util.Map;
-
-import treebolic.provider.contacts.Utils;
-
 /**
  * Fragment with list of contacts
  *
@@ -26,7 +22,7 @@ import treebolic.provider.contacts.Utils;
  */
 public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
-	static private final String TAG = "ListContactsGroupedF";
+	static private final String TAG = "ListContactsUnGroupedF";
 
 	// A D A P T E R
 
@@ -56,10 +52,10 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 	 */
 	private SimpleCursorAdapter adapter;
 
-	/**
+	/*
 	 * Groups
 	 */
-	private Map<String, Utils.Group> groups;
+	// private Map<String, Utils.Group> groups;
 
 	// C R E A T E
 
@@ -103,7 +99,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		contactsListView.setAdapter(this.adapter);
 
 		// Get groups
-		this.groups = treebolic.provider.contacts.Utils.queryGroups(getActivity());
+		// this.groups = treebolic.provider.contacts.Utils.queryGroups(getActivity());
 	}
 
 	// L O A D E R
@@ -126,7 +122,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groups + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
 		final String extraSort = ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID;
 		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
-		sort = sort == null ? extraSort : sort + "," + extraSort;
+		sort = sort + "," + extraSort;
 
 		Log.d(TAG, "selection=" + selection);
 		return new CursorLoader(getActivity(), //

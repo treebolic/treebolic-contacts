@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 	private void updateButton()
 	{
 		final ImageButton button = (ImageButton) findViewById(R.id.queryButton);
-		final String source = Settings.getStringPref(this, TreebolicIface.PREF_SOURCE);
+		// final String source = Settings.getStringPref(this, TreebolicIface.PREF_SOURCE);
 		button.setVisibility(View.VISIBLE);
 	}
 
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity
 	 *
 	 * @param context context
 	 */
-	static public void tryStartTreebolic(final Context context)
+	private static void tryStartTreebolic(final Context context)
 	{
 		final Intent intent = MainActivity.makeTreebolicIntent(context);
 		Log.d(MainActivity.TAG, "Start treebolic");
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 	 * @param context context
 	 * @return intent
 	 */
-	static public Intent makeTreebolicIntent(final Context context)
+	private static Intent makeTreebolicIntent(final Context context)
 	{
 		final String source = treebolic.provider.contacts.Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
 		final boolean groups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_GROUPS);
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
 
 		// model passing
 		intent.putExtra(TreebolicIface.ARG_PROVIDER, "treebolic.provider.contacts.Provider");
-		intent.putExtra(TreebolicIface.ARG_SOURCE, (String) source);
+		intent.putExtra(TreebolicIface.ARG_SOURCE, source);
 
 		// other parameters passing
 		intent.putExtra(TreebolicIface.ARG_BASE, (String) null);
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity
 	 *
 	 * @param view view
 	 */
-	public void onClick(final View view)
+	public void onClick(@SuppressWarnings("UnusedParameters") final View view)
 	{
 		query();
 	}

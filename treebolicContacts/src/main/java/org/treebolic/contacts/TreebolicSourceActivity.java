@@ -2,7 +2,6 @@ package org.treebolic.contacts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import org.treebolic.TreebolicIface;
 
@@ -46,25 +45,6 @@ public abstract class TreebolicSourceActivity extends TreebolicBasicActivity
 
 		// restoring status
 		this.restoring = savedInstanceState != null;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem item)
-	{
-		/* TODO
-		int itemId = item.getItemId();
-		if (itemId == R.id.action_save_narrowing)
-		{
-			saveWhere();
-			return true;
-		}
-		else if (itemId == R.id.action_clear_narrowing)
-		{
-			clearWhere();
-			return true;
-		}
-		*/
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -126,39 +106,5 @@ public abstract class TreebolicSourceActivity extends TreebolicBasicActivity
 
 		// super
 		super.unmarshalArgs(intent);
-	}
-
-	// S A V E / C L E A R W H E R E
-
-	/**
-	 * Save truncate
-	 */
-	private void saveWhere()
-	{
-		/* TODO
-		// System.out.println("source " + this.source);
-		String[] fields = this.source.split(",");
-		if (fields.length > 1)
-		{
-			String where = fields[1];
-			if (where.startsWith("where:"))
-			{
-				where = where.substring(6);
-				// System.out.println("narrowing:" + restrict);
-				Settings.putStringPref(this, Settings.PREF_TRUNCATE, where);
-			}
-		}
-		*/
-	}
-
-	/**
-	 * Clear truncate
-	 */
-	private void clearWhere()
-	{
-		/* TODO
-		// System.out.println("clearing narrowing");
-		Settings.clearPref(this, Settings.PREF_TRUNCATE);
-		*/
 	}
 }

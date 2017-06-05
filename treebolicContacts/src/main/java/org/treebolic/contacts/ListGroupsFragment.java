@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -169,7 +170,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		// view
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
-		final View dialogView = inflater.inflate(R.layout.detail_contact, null);
+		@SuppressLint("InflateParams") final View dialogView = inflater.inflate(R.layout.detail_contact, null);
 		final TextView textView = (TextView) dialogView.findViewById(android.R.id.text1);
 		final ImageView imageView = (ImageView) dialogView.findViewById(R.id.photo);
 		textView.setText(sb);
@@ -187,18 +188,18 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 
 	// U T I L S
 
-	private void str2sb(final String header, final String[] strs, final AbstractListContactsFragment.XSpannableStringBuilder sb)
+	private void str2sb(final String header, final String[] strings, final AbstractListContactsFragment.XSpannableStringBuilder sb)
 	{
 		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
-		sb.append(join(strs)).append('\n');
+		sb.append(join(strings)).append('\n');
 	}
 
-	private String join(final String[] strs)
+	private String join(final String[] strings)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		sb.append('{');
-		for (String str : strs)
+		for (String str : strings)
 		{
 			if (first)
 			{

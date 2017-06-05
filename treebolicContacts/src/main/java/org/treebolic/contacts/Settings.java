@@ -17,7 +17,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-public class Settings
+class Settings
 {
 	/**
 	 * Initialized preference key
@@ -69,18 +69,18 @@ public class Settings
 	 *
 	 * @param context context
 	 */
-	static public void setDefaults(final Context context)
+	@SuppressWarnings("EmptyMethod")
+	static public void setDefaults(@SuppressWarnings("UnusedParameters") final Context context)
 	{
+		//
 	}
 
 	/**
 	 * Save source and base to preferences
-	 *
-	 * @param context context
+	 *  @param context context
 	 * @param source  source
-	 * @param base    base
 	 */
-	public static void save(final Context context, final String source, final String base)
+	public static void save(final Context context, final String source)
 	{
 		Settings.putStringPref(context, TreebolicIface.PREF_SOURCE, source);
 	}
@@ -106,7 +106,7 @@ public class Settings
 	 * @param value   value
 	 */
 	@SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
-	static public void putStringPref(final Context context, final String key, final String value)
+	private static void putStringPref(final Context context, final String key, final String value)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		sharedPref.edit().putString(key, value).commit();
@@ -131,15 +131,15 @@ public class Settings
 	/**
 	 * Join for 'in' selection clause
 	 *
-	 * @param strs values
+	 * @param strings values
 	 * @return 'in' clause
 	 */
-	static private String joinForIn(final Iterable<String> strs)
+	static private String joinForIn(final Iterable<String> strings)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		sb.append('(');
-		for (String str : strs)
+		for (String str : strings)
 		{
 			if (first)
 			{

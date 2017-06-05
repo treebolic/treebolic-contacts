@@ -26,7 +26,6 @@
     <item name="accent" type="color">@color/orange_color</item>
 
     <!-- button and snackbar -->
-    <item name="button_color" type="color">@color/orange_color</item>
     <item name="snackbar_color" type="color">@color/teal_color</item>
 
 </resources>

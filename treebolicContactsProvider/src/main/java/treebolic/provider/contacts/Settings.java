@@ -125,15 +125,15 @@ public class Settings
 
 	// P A R A M E T E R S
 
-	static public String PARAM_GROUPS = "groups";
-	static public String PARAM_DISPLAY = "display";
-	static public String PARAM_SORT = "sort";
-	static public String PARAM_MERGE_GROUPS = "merge_groups";
-	static public String PARAM_FILTER_GROUPS = "filter_groups";
+	static public final String PARAM_GROUPS = "groups";
+	static public final String PARAM_DISPLAY = "display";
+	static public final String PARAM_SORT = "sort";
+	static public final String PARAM_MERGE_GROUPS = "merge_groups";
+	static public final String PARAM_FILTER_GROUPS = "filter_groups";
 
-	static public String VALUE_DISPLAY_FIRST_LAST = "first,last";
+	static public final String VALUE_DISPLAY_FIRST_LAST = "first,last";
 	static public String VALUE_DISPLAY_LAST_FIRST = "last,first";
-	static public String VALUE_SORT_FIRST = "first";
-	static public String VALUE_SORT_LAST = "last";
+	static public final String VALUE_SORT_FIRST = "first";
+	static public final String VALUE_SORT_LAST = "last";
 }
 

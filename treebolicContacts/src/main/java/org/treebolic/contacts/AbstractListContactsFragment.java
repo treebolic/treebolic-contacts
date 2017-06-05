@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -53,7 +54,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	 * @param labels    labels
 	 * @param values    values
 	 */
-	public void showDialog(final XSpannableStringBuilder sb, final String contactId, final Uri photoUri, final String[] labels, final String... values)
+	void showDialog(final XSpannableStringBuilder sb, final String contactId, final Uri photoUri, final String[] labels, final String... values)
 	{
 		// id
 		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
@@ -74,14 +75,14 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 			sb.append(label, new StyleSpan(Typeface.BOLD), 0) //
 					.append('\n') //
-					.append(value == null ? "null" : value.toString()) //
+					.append(value == null ? "null" : value) //
 					.append('\n');
 		}
 
 		// view
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
-		final View dialogView = inflater.inflate(R.layout.detail_contact, null);
+		@SuppressLint("InflateParams") final View dialogView = inflater.inflate(R.layout.detail_contact, null);
 		final TextView textView = (TextView) dialogView.findViewById(android.R.id.text1);
 		final ImageView imageView = (ImageView) dialogView.findViewById(R.id.photo);
 		textView.setText(sb);
@@ -319,24 +320,24 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 	// H E L P E R S
 
-	private void str2sb(final String header, final String[] strs, final XSpannableStringBuilder sb)
+	private void str2sb(final String header, final String[] strings, final XSpannableStringBuilder sb)
 	{
 		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
-		sb.append(join(strs)).append('\n');
+		sb.append(join(strings)).append('\n');
 	}
 
 	/**
 	 * Join strings
 	 *
-	 * @param strs strings
+	 * @param strings strings
 	 * @return joined strings
 	 */
-	private String join(final String[] strs)
+	private String join(final String[] strings)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		sb.append('{');
-		for (String str : strs)
+		for (String str : strings)
 		{
 			if (first)
 			{

@@ -79,7 +79,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	 *
 	 * @param <T> object type
 	 */
-	class Row<T> extends HashMap<String, T>
+	private class Row<T> extends HashMap<String, T>
 	{
 	}
 
@@ -100,7 +100,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			final View view = super.getView(position, convertView, parent);
 			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
 
-			final HashMap<String, ?> item = (HashMap<String, ?>) this.getItem(position);
+			@SuppressWarnings("unchecked") final HashMap<String, ?> item = (HashMap<String, ?>) this.getItem(position);
 			if (item.containsKey(PHOTO_THUMBNAIL_URI_KEY))
 			{
 				final String thumbnailPhotoUri = (String) item.get(PHOTO_THUMBNAIL_URI_KEY);
@@ -197,7 +197,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groups + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
 		final String extraSort = ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID;
 		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
-		sort = sort == null ? extraSort : sort + "," + extraSort;
+		sort = sort + "," + extraSort;
 
 		Log.d(TAG, "selection=" + selection);
 		return new CursorLoader(getActivity(), //
@@ -215,6 +215,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 
 		// dumpCursor(cursor);
 		this.rows.clear();
+		//noinspection ConstantConditions
 		if (cursor != null)
 		{
 			// Gets adapter's source columns
@@ -304,7 +305,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	{
 		// Get the Cursor
 		final SimpleAdapter adapter = (SimpleAdapter) parent.getAdapter();
-		final Row<String> row = (Row<String>) adapter.getItem(position);
+		@SuppressWarnings("unchecked") final Row<String> row = (Row<String>) adapter.getItem(position);
 
 		// Get the _ID value
 		final String contactId = row.get(CONTACT_ID_KEY);
