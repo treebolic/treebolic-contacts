@@ -15,12 +15,16 @@ import android.widget.ListView;
 
 import org.treebolic.TreebolicIface;
 
+import java.util.Map;
+
+import treebolic.provider.contacts.Utils;
+
 /**
  * Fragment with list of contacts
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-public class ListContactsWithGroupFragment extends AbstractListContactsCursorFragment implements LoaderManager.LoaderCallbacks<Cursor>
+public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	static private final String TAG = "ListContactsGroupedF";
 
@@ -52,12 +56,17 @@ public class ListContactsWithGroupFragment extends AbstractListContactsCursorFra
 	 */
 	private SimpleCursorAdapter adapter;
 
+	/**
+	 * Groups
+	 */
+	private Map<String, Utils.Group> groups;
+
 	// C R E A T E
 
 	/**
 	 * Constructor
 	 */
-	public ListContactsWithGroupFragment()
+	public ListContactsUnGroupedFragment()
 	{
 	}
 
@@ -66,7 +75,7 @@ public class ListContactsWithGroupFragment extends AbstractListContactsCursorFra
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
+		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
 
 	@Override
@@ -92,6 +101,9 @@ public class ListContactsWithGroupFragment extends AbstractListContactsCursorFra
 
 		// Sets the adapter for the ListView
 		contactsListView.setAdapter(this.adapter);
+
+		// Get groups
+		this.groups = treebolic.provider.contacts.Utils.queryGroups(getActivity());
 	}
 
 	// L O A D E R

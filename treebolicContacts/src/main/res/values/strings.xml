@@ -4,6 +4,8 @@
 
 	<string name="title_activity_main">@string/app_name</string>
 	<string name="title_activity_list_contacts">List contacts</string>
+	<string name="title_activity_list_grouped_contacts">List grouped contacts</string>
+	<string name="title_activity_list_ungrouped_contacts">List ungrouped contacts</string>
 	<string name="title_activity_list_groups">List groups</string>
 	<string name="title_activity_treebolic">Contacts</string>
 	<string name="title_activity_settings">Settings</string>
@@ -11,6 +13,8 @@
 
 	<string name="action_run">Run</string>
 	<string name="action_list_contacts">List contacts</string>
+	<string name="action_list_grouped_contacts">List grouped contacts</string>
+	<string name="action_list_ungrouped_contacts">List ungrouped contacts</string>
 	<string name="action_list_groups">List groups</string>
 	<string name="action_model">Model</string>
 	<string name="action_settings">Settings</string>

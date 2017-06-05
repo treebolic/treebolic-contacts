@@ -32,6 +32,16 @@
 		android:title="@string/action_list_contacts"
 		app:showAsAction="never"/>
 	<item
+		android:id="@+id/action_list_grouped_contacts"
+		android:orderInCategory="100"
+		android:title="@string/action_list_grouped_contacts"
+		app:showAsAction="never"/>
+	<item
+		android:id="@+id/action_list_ungrouped_contacts"
+		android:orderInCategory="100"
+		android:title="@string/action_list_ungrouped_contacts"
+		app:showAsAction="never"/>
+	<item
 		android:id="@+id/action_list_groups"
 		android:orderInCategory="100"
 		android:title="@string/action_list_groups"

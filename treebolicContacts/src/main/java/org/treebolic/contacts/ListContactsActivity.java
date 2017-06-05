@@ -12,7 +12,8 @@ public class ListContactsActivity extends AbstractActivity
 	@Override
 	protected Fragment makeFragment()
 	{
-		final String groups = Settings.getStringsPref(this, Settings.PREF_FILTER_GROUPS);
-		return groups != null ? new ListContactsGroupedFragment() : new ListContactsFragment();
+		//final String groups = Settings.getStringsPref(this, Settings.PREF_FILTER_GROUPS);
+		//return groups == null || groups.isEmpty() ? new ListContactsFragment() : new ListContactsGroupedFragment();
+		return new ListContactsFragment();
 	}
 }

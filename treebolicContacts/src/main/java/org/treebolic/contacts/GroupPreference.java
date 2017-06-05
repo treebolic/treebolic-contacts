@@ -75,7 +75,10 @@ public class GroupPreference extends MultiSelectListPreference
 					{
 						int resId = Integer.parseInt(titleRes);
 						final String resPackage = cursor.getString(treebolic.provider.contacts.Settings.GROUP_RES_PACKAGE_INDEX);
-						title = context.getPackageManager().getText(resPackage, resId, null);
+						if (resPackage != null)
+						{
+							title = context.getPackageManager().getText(resPackage, resId, null);
+						}
 					}
 					if ("Starred in Android".equals(title))
 					{

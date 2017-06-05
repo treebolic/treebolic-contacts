@@ -39,7 +39,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
+		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
 
 	// D I A L O G
@@ -91,7 +91,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 		}
 		else
 		{
-			imageView.setImageResource(R.drawable.ic_contact_default);
+			imageView.setImageResource(R.drawable.ic_contact_large);
 		}
 
 		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
@@ -115,11 +115,11 @@ abstract public class AbstractListContactsFragment extends Fragment
 	private void getNames(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
-		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, contactId}, null);
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
-			if (cursor.getCount() > 0)
+			if (cursor.moveToFirst())
 			{
 				final int idxGiven = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME); // first
 				final int idxFamily = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME); // last
@@ -127,8 +127,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 				sb.append("names", new StyleSpan(Typeface.BOLD), 0) //
 						.append('\n');
-
-				while (cursor.moveToNext())
+				do
 				{
 					final String given = cursor.getString(idxGiven);
 					if (given != null && !given.isEmpty())
@@ -149,6 +148,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 								.append('\n');
 					}
 				}
+				while (cursor.moveToNext());
 			}
 			cursor.close();
 		}
@@ -163,19 +163,18 @@ abstract public class AbstractListContactsFragment extends Fragment
 	private void getAddresses(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
-		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, contactId}, null);
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
-			if (cursor.getCount() > 0)
+			if (cursor.moveToFirst())
 			{
 				final int idxFormatted = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS);
 				final int idxStreet = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET);
 				final int idxCity = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY);
 				final int idxPostCode = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE);
 				final int idxCountry = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY);
-
-				while (cursor.moveToNext())
+				do
 				{
 					sb.append("address", new StyleSpan(Typeface.BOLD), 0) //
 							.append('\n');
@@ -211,6 +210,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 								.append(" (country)\n");
 					}
 				}
+				while (cursor.moveToNext());
 			}
 			cursor.close();
 		}
@@ -229,14 +229,13 @@ abstract public class AbstractListContactsFragment extends Fragment
 		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
-			if (cursor.getCount() > 0)
+			if (cursor.moveToFirst())
 			{
 				final int idxEmail = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
 
 				sb.append("email", new StyleSpan(Typeface.BOLD), 0) //
 						.append('\n');
-
-				while (cursor.moveToNext())
+				do
 				{
 					final String email = cursor.getString(idxEmail);
 					if (email != null && !email.isEmpty())
@@ -245,6 +244,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 								.append('\n');
 					}
 				}
+				while (cursor.moveToNext());
 			}
 			cursor.close();
 		}
@@ -263,14 +263,13 @@ abstract public class AbstractListContactsFragment extends Fragment
 		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
 		{
-			if (cursor.getCount() > 0)
+			if (cursor.moveToFirst())
 			{
 				final int idxPhoneNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
 				final int idxPhoneType = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
 				sb.append("phone", new StyleSpan(Typeface.BOLD), 0) //
 						.append('\n');
-
-				while (cursor.moveToNext())
+				do
 				{
 					final String phoneNumber = idxPhoneNumber == -1 ? "" : cursor.getString(idxPhoneNumber);
 					final int phoneType = idxPhoneNumber == -1 ? -1 : cursor.getInt(idxPhoneType);
@@ -299,6 +298,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 						}
 					}
 				}
+				while (cursor.moveToNext());
 			}
 			cursor.close();
 		}

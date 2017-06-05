@@ -15,7 +15,7 @@
 		android:focusable="false"
 		android:focusableInTouchMode="false"
 		android:scaleType="fitXY"
-		android:src="@drawable/ic_contact_default"/>
+		android:src="@drawable/ic_contact"/>
 
 	<TextView
 		android:id="@+id/display_name"
@@ -24,7 +24,7 @@
 		android:layout_gravity="center_vertical|start"
 		android:layout_marginLeft="10dp"
 		android:layout_marginStart="10dp"
-		android:layout_weight=".4"
+		android:layout_weight=".35"
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"/>
@@ -36,7 +36,7 @@
 		android:layout_gravity="center_vertical|start"
 		android:layout_marginLeft="10dp"
 		android:layout_marginStart="10dp"
-		android:layout_weight=".2"
+		android:layout_weight=".30"
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"/>
@@ -48,7 +48,7 @@
 		android:layout_gravity="center_vertical|start"
 		android:layout_marginLeft="10dp"
 		android:layout_marginStart="10dp"
-		android:layout_weight=".3"
+		android:layout_weight=".30"
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"/>

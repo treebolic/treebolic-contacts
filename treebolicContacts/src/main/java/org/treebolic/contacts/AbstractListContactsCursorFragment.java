@@ -35,27 +35,28 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 		public void bindView(View view, Context context, Cursor cursor)
 		{
 			super.bindView(view, context, cursor);
-			
+
 			// Photo Uri
+			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
 			final String photoThumbnailUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
 			if (photoThumbnailUriString != null)
 			{
-				final Uri photoUri = Uri.parse(photoThumbnailUriString);
 				Log.d(TAG, "thumbnail is " + photoThumbnailUriString);
-				final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
+				final Uri photoUri = Uri.parse(photoThumbnailUriString);
 				imageView.setImageURI(photoUri);
+				return;
 			}
-			else
+
+			final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
+			if (photoUriString != null)
 			{
-				final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
-				if (photoUriString != null)
-				{
-					final Uri photoUri = Uri.parse(photoUriString);
-					Log.d(TAG, "photo is " + photoUriString);
-					final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
-					imageView.setImageURI(photoUri);
-				}
+				Log.d(TAG, "photo is " + photoUriString);
+				final Uri photoUri = Uri.parse(photoUriString);
+				imageView.setImageURI(photoUri);
+				return;
 			}
+
+			imageView.setImageResource(R.drawable.ic_contact);
 		}
 	}
 

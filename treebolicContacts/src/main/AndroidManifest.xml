@@ -30,6 +30,24 @@
 		</activity>
 
 		<activity
+			android:name=".ListContactsGroupedActivity"
+			android:label="@string/title_activity_list_grouped_contacts"
+			android:parentActivityName=".MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="org.treebolic.contacts.MainActivity"/>
+		</activity>
+
+		<activity
+			android:name=".ListContactsUnGroupedActivity"
+			android:label="@string/title_activity_list_ungrouped_contacts"
+			android:parentActivityName=".MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="org.treebolic.contacts.MainActivity"/>
+		</activity>
+
+		<activity
 			android:name=".ListGroupsActivity"
 			android:label="@string/title_activity_list_groups"
 			android:parentActivityName=".MainActivity">

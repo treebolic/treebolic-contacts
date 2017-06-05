@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import treebolic.provider.contacts.Utils;
+
 /**
  * Fragment with list of contacts
  *
@@ -95,19 +97,23 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
 			Log.d(TAG, "POS " + position);
-			final HashMap<String, ?> item = (HashMap<String, ?>) this.getItem(position);
 			final View view = super.getView(position, convertView, parent);
+			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
+
+			final HashMap<String, ?> item = (HashMap<String, ?>) this.getItem(position);
 			if (item.containsKey(PHOTO_THUMBNAIL_URI_KEY))
 			{
 				final String thumbnailPhotoUri = (String) item.get(PHOTO_THUMBNAIL_URI_KEY);
-				final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
 				imageView.setImageURI(Uri.parse(thumbnailPhotoUri));
 			}
 			else if (item.containsKey(PHOTO_URI_KEY))
 			{
 				final String photoUri = (String) item.get(PHOTO_URI_KEY);
-				final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
 				imageView.setImageURI(Uri.parse(photoUri));
+			}
+			else
+			{
+				imageView.setImageResource(R.drawable.ic_contact);
 			}
 			return view;
 		}
@@ -122,6 +128,11 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	 * Data
 	 */
 	private final List<Row<String>> rows;
+
+	/**
+	 * Groups
+	 */
+	private Map<String, Utils.Group> groups;
 
 	// C R E A T E
 
@@ -138,7 +149,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
+		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
 
 	@Override
@@ -161,6 +172,9 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 
 		// Sets the adapter for the ListView
 		contactsListView.setAdapter(this.adapter);
+
+		// Get groups
+		this.groups = treebolic.provider.contacts.Utils.queryGroups(getActivity());
 	}
 
 	// L O A D E R
@@ -220,9 +234,11 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			do
 			{
 				final String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID));
+				final String groupId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID));
 				final String photoThumbnailUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI));
 				final String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI));
 
+				// contact id
 				if (!contactId.equals(contactIdCurrent))
 				{
 					row = new Row<>();
@@ -230,6 +246,8 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 					contactIdCurrent = contactId;
 					row.put(CONTACT_ID_KEY, contactId);
 				}
+
+				// photo
 				if (photoThumbnailUri != null && !row.containsKey(PHOTO_THUMBNAIL_URI_KEY))
 				{
 					row.put(PHOTO_THUMBNAIL_URI_KEY, photoThumbnailUri);
@@ -238,17 +256,29 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 				{
 					row.put(PHOTO_URI_KEY, photoUri);
 				}
+
+				// group
+				final Utils.Group group = this.groups.get(groupId);
+
 				for (int i = 0; i < columnIndexes.length; i++)
 				{
 					final String key = FROM_KEYS[i];
 					String value = cursor.getString(columnIndexes[i]);
+					if (GROUP_KEY.equals(key))
+					{
+						value = group.title;
+					}
+					else if (ACCOUNT_KEY.equals(key))
+					{
+						value = group.account;
+					}
 					Log.d(TAG, key + " (" + columns[i] + ") " + value);
 					if (i > 0)
 					{
 						String value0 = row.get(key);
 						if (value0 != null)
 						{
-							value = value0 + ',' + value;
+							value = value0 + '\n' + value;
 						}
 					}
 					row.put(key, value);

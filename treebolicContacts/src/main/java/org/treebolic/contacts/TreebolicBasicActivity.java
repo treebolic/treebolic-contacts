@@ -296,6 +296,18 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 				startActivity(intent);
 				return true;
 			}
+			case R.id.action_list_grouped_contacts:
+			{
+				final Intent intent = new Intent(this, ListContactsGroupedActivity.class);
+				startActivity(intent);
+				return true;
+			}
+			case R.id.action_list_ungrouped_contacts:
+			{
+				final Intent intent = new Intent(this, ListContactsUnGroupedActivity.class);
+				startActivity(intent);
+				return true;
+			}
 			case R.id.action_list_groups:
 			{
 				final Intent intent = new Intent(this, ListGroupsActivity.class);

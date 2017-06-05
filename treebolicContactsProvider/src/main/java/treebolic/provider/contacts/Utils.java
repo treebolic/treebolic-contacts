@@ -1,5 +1,6 @@
 package treebolic.provider.contacts;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,6 +18,8 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Photo utilities
@@ -25,6 +28,72 @@ import java.io.IOException;
  */
 public class Utils
 {
+	static public class Group
+	{
+		public final String groupId;
+		public final String systemId;
+		public final String title;
+		public final String account;
+		public final String accountType;
+		public final String titleRes;
+		public final String resPackage;
+
+		public Group(String groupId, String systemId, String title, String account, String accountType, String titleRes, String resPackage)
+		{
+			this.groupId = groupId;
+			this.systemId = systemId;
+			this.title = title;
+			this.account = account;
+			this.accountType = accountType;
+			this.titleRes = titleRes;
+			this.resPackage = resPackage;
+		}
+	}
+
+	/**
+	 * Get groups
+	 *
+	 * @param context context
+	 * @return group id to group map
+	 */
+	static public Map<String, Group> queryGroups(final Context context)
+	{
+		final ContentResolver cr = context.getContentResolver();
+		final Cursor cursor = cr.query(treebolic.provider.contacts.Settings.GROUP_URI, //
+				treebolic.provider.contacts.Settings.GROUP_PROJECTION, //
+				null, //
+				null, //
+				null);
+		if (cursor != null)
+		{
+			final Map<String, Group> map = new HashMap<>();
+			if (cursor.moveToFirst())
+			{
+				do
+				{
+					final String groupId = cursor.getString(Settings.GROUP_ID_INDEX);
+					final String systemId = cursor.getString(Settings.GROUP_SYSTEM_ID_INDEX);
+					String title = cursor.getString(Settings.GROUP_TITLE_INDEX);
+					if ("Starred in Android".equals(title))
+					{
+						title = "Starred";
+					}
+					final String account = cursor.getString(Settings.GROUP_ACCOUNT_NAME);
+					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
+					final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
+					final String resPackage = cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX);
+
+					final Group group = new Group(groupId, systemId, title, account, accountType, titleRes, resPackage);
+					map.put(groupId, group);
+				}
+				while (cursor.moveToNext());
+			}
+			cursor.close();
+			return map;
+		}
+		return null;
+	}
+
 	/**
 	 * Get thumbnail photo from photoId
 	 *

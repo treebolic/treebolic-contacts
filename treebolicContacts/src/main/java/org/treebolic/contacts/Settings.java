@@ -123,7 +123,7 @@ public class Settings
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		final Set<String> values = sharedPref.getStringSet(key, null);
-		if(values == null)
+		if(values == null || values.isEmpty())
 			return null;
 		return joinForIn(values);
 	}

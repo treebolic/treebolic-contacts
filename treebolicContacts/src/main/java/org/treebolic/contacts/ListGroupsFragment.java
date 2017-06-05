@@ -1,10 +1,8 @@
 package org.treebolic.contacts;
 
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -58,7 +56,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_list_contacts, container, false);
+		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
 
 	@Override
@@ -135,40 +133,38 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		cursor.moveToPosition(position);
 
 		// Get the _ID value
-		final long contactId = cursor.getLong(treebolic.provider.contacts.Settings.CONTACT_ID_INDEX);
-
-		// Get the selected LOOKUP KEY
-		// final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
-
-		// Lookup Uri. You can use it as the content URI for retrieving the details for a contact
-		// final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
+		final String groupId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ID_INDEX);
 
 		// Content Uri
-		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+		final String systemId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_SYSTEM_ID_INDEX);
+		final String title = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_INDEX);
+		final String account = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_NAME);
+		final String accountType = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_TYPE);
+		// final String titleRes = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_RES_INDEX);
+		// final String resPackage = cursor.getString(treebolic.provider.contacts.Settings.GROUP_RES_PACKAGE_INDEX);
 
-		// IMAGES
-
+		// Buffer
 		final AbstractListContactsFragment.XSpannableStringBuilder sb = new AbstractListContactsFragment.XSpannableStringBuilder();
-		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
+		sb.append("Group ID", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
-				.append(Long.toString(contactId)).append('\n');
-
-		/*
-		sb.append("key", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(contactKey) //
+				.append(groupId) //
 				.append('\n');
-
-		sb.append("lookup Uri", new StyleSpan(Typeface.BOLD), 0) //
+		sb.append("systemId ID", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
-				.append(contactLookupUri == null ? null : contactLookupUri.toString()) //
+				.append(systemId == null ? "null" : systemId) //
 				.append('\n');
-		*/
-		sb.append("content Uri", new StyleSpan(Typeface.BOLD), 0) //
+		sb.append("Title", new StyleSpan(Typeface.BOLD), 0) //
 				.append('\n') //
-				.append(contactContentUri == null ? null : contactContentUri.toString()) //
+				.append(title == null ? "null" : title) //
 				.append('\n');
-
+		sb.append("Account", new StyleSpan(Typeface.BOLD), 0) //
+				.append('\n') //
+				.append(account == null ? "null" : account) //
+				.append('\n');
+		sb.append("Account type", new StyleSpan(Typeface.BOLD), 0) //
+				.append('\n') //
+				.append(accountType == null ? "null" : accountType) //
+				.append('\n');
 
 		// view
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -177,7 +173,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		final TextView textView = (TextView) dialogView.findViewById(android.R.id.text1);
 		final ImageView imageView = (ImageView) dialogView.findViewById(R.id.photo);
 		textView.setText(sb);
-		imageView.setImageResource(R.drawable.ic_group_default);
+		imageView.setImageResource(R.drawable.ic_group_large);
 
 		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
 		{

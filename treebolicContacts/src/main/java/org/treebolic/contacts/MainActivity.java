@@ -109,28 +109,36 @@ public class MainActivity extends AppCompatActivity
 				query();
 				return true;
 			}
-
 			case R.id.action_list_contacts:
 			{
 				final Intent intent = new Intent(this, ListContactsActivity.class);
 				startActivity(intent);
 				return true;
 			}
-
+			case R.id.action_list_grouped_contacts:
+			{
+				final Intent intent = new Intent(this, ListContactsGroupedActivity.class);
+				startActivity(intent);
+				return true;
+			}
+			case R.id.action_list_ungrouped_contacts:
+			{
+				final Intent intent = new Intent(this, ListContactsUnGroupedActivity.class);
+				startActivity(intent);
+				return true;
+			}
 			case R.id.action_list_groups:
 			{
 				final Intent intent = new Intent(this, ListGroupsActivity.class);
 				startActivity(intent);
 				return true;
 			}
-
 			case R.id.action_settings:
 			{
 				final Intent intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
 				return true;
 			}
-
 			case R.id.action_model:
 			{
 				final Provider provider = new Provider();
@@ -143,7 +151,6 @@ public class MainActivity extends AppCompatActivity
 				builder.show();
 				return true;
 			}
-
 			default:
 				return super.onOptionsItemSelected(item);
 		}

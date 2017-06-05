@@ -446,7 +446,10 @@ public class Provider implements IProvider
 					{
 						int resId = Integer.parseInt(titleRes);
 						final String resPackage = cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX);
-						title = this.context.getPackageManager().getText(resPackage, resId, null);
+						if (resPackage != null)
+						{
+							title = this.context.getPackageManager().getText(resPackage, resId, null);
+						}
 					}
 					if ("Starred in Android".equals(title))
 					{
