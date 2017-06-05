@@ -182,21 +182,25 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
+		// selection
 		final String source = Settings.getStringPref(getContext(), TreebolicIface.PREF_SOURCE);
 		final boolean nullSource = source == null || source.isEmpty();
-
 		String selection = nullSource ? null : treebolic.provider.contacts.Settings.SELECTION_DN_LIKE;
 		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+		String extraSelection = ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+		final String groups = Settings.getStringsPref(getContext(), Settings.PREF_FILTER_GROUPS);
+		if (groups != null)
+		{
+			extraSelection += " AND " + ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groups;
+		}
+		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
 
+		// sort
 		final String sortPref = Settings.getStringPref(getContext(), Settings.PREF_SORT);
 		final String firstValue = getString(R.string.pref_sort_value_first);
 		final int sortCode = firstValue.equals(sortPref) ? 1 : 2;
 		String sort = sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
-
-		final String groups = Settings.getStringsPref(getContext(), Settings.PREF_FILTER_GROUPS);
-		final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groups + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
 		final String extraSort = ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID;
-		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
 		sort = sort + "," + extraSort;
 
 		Log.d(TAG, "selection=" + selection);

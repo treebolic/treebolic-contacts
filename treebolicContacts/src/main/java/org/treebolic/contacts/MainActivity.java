@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import org.treebolic.TreebolicIface;
+import org.treebolic.guide.HelpActivity;
+import org.treebolic.guide.Tip;
 
 import treebolic.model.Model;
 import treebolic.model.ModelDump;
@@ -107,6 +109,16 @@ public class MainActivity extends AppCompatActivity
 			case R.id.action_run:
 			{
 				query();
+				return true;
+			}
+			case R.id.action_tips:
+			{
+				Tip.show(getSupportFragmentManager());
+				return true;
+			}
+			case R.id.action_help:
+			{
+				HelpActivity.start(this);
 				return true;
 			}
 			case R.id.action_list_contacts:
