@@ -95,17 +95,17 @@ public class Utils
 	}
 
 	/**
-	 * Get thumbnail photo from photoId
+	 * Get bitmap from Uri
 	 *
-	 * @param context  context
-	 * @param photoUri id as per ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+	 * @param context context
+	 * @param uri     image uri
 	 * @return bitmap
 	 */
-	static public Bitmap queryThumbnailPhotoFromPhotoUri(final Context context, final String photoUri)
+	static public Bitmap queryBitmapFromUri(final Context context, final String uri)
 	{
 		try
 		{
-			return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(photoUri));
+			return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(uri));
 		}
 		catch (IOException e)
 		{
@@ -115,15 +115,15 @@ public class Utils
 	}
 
 	/**
-	 * Get thumbnail photo from photoId
+	 * Get bitmap from id
 	 *
 	 * @param context context
-	 * @param photoId id as per ContactsContract.Contacts.PHOTO_ID
+	 * @param id      id as per ContactsContract.Contacts.PHOTO_ID
 	 * @return bitmap
 	 */
-	static public Bitmap queryThumbnailPhotoFromPhotoId(final Context context, final long photoId)
+	static public Bitmap queryBitmapFromId(final Context context, final long id)
 	{
-		final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
+		final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, id);
 		final String[] projection = new String[]{ContactsContract.Contacts.Photo.PHOTO};
 		final String selection = null;
 		final String[] selectionArgs = null;

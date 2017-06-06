@@ -3,6 +3,7 @@ package org.treebolic.contacts;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import treebolic.provider.contacts.Utils;
 
 /**
  * Abstract fragment with list of contacts
@@ -38,25 +41,31 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 			// Photo Uri
 			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
-			final String photoThumbnailUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
-			if (photoThumbnailUriString != null)
+			final String photoThumbnailUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
+			if (photoThumbnailUri != null)
 			{
-				Log.d(TAG, "thumbnail is " + photoThumbnailUriString);
-				final Uri photoUri = Uri.parse(photoThumbnailUriString);
-				imageView.setImageURI(photoUri);
+				Log.d(TAG, "thumbnail is " + photoThumbnailUri);
+				//imageView.setImageURI(Uri.parse(photoThumbnailUri));
+				imageView.setImageBitmap(uri2CircularBitmap(context, photoThumbnailUri));
 				return;
 			}
 
-			final String photoUriString = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
-			if (photoUriString != null)
+			final String photoUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
+			if (photoUri != null)
 			{
-				Log.d(TAG, "photo is " + photoUriString);
-				final Uri photoUri = Uri.parse(photoUriString);
-				imageView.setImageURI(photoUri);
+				Log.d(TAG, "photo is " + photoUri);
+				//imageView.setImageURI(Uri.parse(photoUri));
+				imageView.setImageBitmap(uri2CircularBitmap(context, photoUri));
 				return;
 			}
 
 			imageView.setImageResource(R.drawable.ic_contact);
+		}
+
+		private Bitmap uri2CircularBitmap(final Context context, final String photoUriString)
+		{
+			final Bitmap bitmap = Utils.queryBitmapFromUri(context, photoUriString);
+			return Utils.roundCrop(bitmap);
 		}
 	}
 

@@ -693,7 +693,7 @@ public class Provider implements IProvider
 		// image
 		if (photoThumbnailUri != null)
 		{
-			final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoUri(this.context, photoThumbnailUri);
+			final Bitmap bitmap = Utils.queryBitmapFromUri(this.context, photoThumbnailUri);
 			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
 			final Bitmap scaledUpBitmap = Utils.scale(roundBitmap, 200, 200);
 			final Bitmap scaledDownBitmap = Utils.scale(roundBitmap, 50, 50);
@@ -706,7 +706,7 @@ public class Provider implements IProvider
 		/*
 		else if (photoThumbnailId != 0)
 		{
-			final Bitmap bitmap = Utils.queryThumbnailPhotoFromPhotoId(this.context, photoThumbnailId);
+			final Bitmap bitmap = Utils.queryBitmapFromId(this.context, photoThumbnailId);
 			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
 			final Bitmap scaledUpBitmap = Utils.scale(roundBitmap, 200, 200);
 			final Image image = new Image(scaledUpBitmap);

@@ -3,6 +3,7 @@ package org.treebolic.contacts;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -86,9 +87,9 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	/**
 	 * Simple adapter with image
 	 */
-	class ImageSimpleAdapter extends SimpleAdapter
+	class ImageAdapter extends SimpleAdapter
 	{
-		public ImageSimpleAdapter(final Context context, final List<? extends Map<String, ?>> data, final int resource, final String[] from, final int[] to)
+		public ImageAdapter(final Context context, final List<? extends Map<String, ?>> data, final int resource, final String[] from, final int[] to)
 		{
 			super(context, data, resource, from, to);
 		}
@@ -104,18 +105,26 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			if (item.containsKey(PHOTO_THUMBNAIL_URI_KEY))
 			{
 				final String thumbnailPhotoUri = (String) item.get(PHOTO_THUMBNAIL_URI_KEY);
-				imageView.setImageURI(Uri.parse(thumbnailPhotoUri));
+				//imageView.setImageURI(Uri.parse(thumbnailPhotoUri));
+				imageView.setImageBitmap(uri2CircularBitmap(thumbnailPhotoUri));
 			}
 			else if (item.containsKey(PHOTO_URI_KEY))
 			{
 				final String photoUri = (String) item.get(PHOTO_URI_KEY);
-				imageView.setImageURI(Uri.parse(photoUri));
+				//imageView.setImageURI(Uri.parse(photoUri));
+				imageView.setImageBitmap(uri2CircularBitmap(photoUri));
 			}
 			else
 			{
 				imageView.setImageResource(R.drawable.ic_contact);
 			}
 			return view;
+		}
+
+		private Bitmap uri2CircularBitmap(final String photoUriString)
+		{
+			final Bitmap bitmap = Utils.queryBitmapFromUri(getContext(), photoUriString);
+			return Utils.roundCrop(bitmap);
 		}
 	}
 
@@ -168,7 +177,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		getLoaderManager().initLoader(0, null, this);
 
 		// Gets a CursorAdapter
-		this.adapter = new ImageSimpleAdapter(getActivity(), this.rows, R.layout.item_contact_grouped, FROM_KEYS, TO_IDS);
+		this.adapter = new ImageAdapter(getActivity(), this.rows, R.layout.item_contact_grouped, FROM_KEYS, TO_IDS);
 
 		// Sets the adapter for the ListView
 		contactsListView.setAdapter(this.adapter);
@@ -233,7 +242,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			{
 				columnIndexes[i] = cursor.getColumnIndex(columns[i]);
 			}
-			if(cursor.moveToFirst())
+			if (cursor.moveToFirst())
 			{
 				String contactIdCurrent = null;
 				Row<String> row = null;
