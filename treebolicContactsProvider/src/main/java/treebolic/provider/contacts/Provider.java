@@ -40,7 +40,7 @@ public class Provider implements IProvider
 	/**
 	 * Ordinals used as indexes of images
 	 */
-	public enum ImageIndices
+	private enum ImageIndices
 	{
 		ROOT, FOLDER, CONTACT, GROUP,
 	}
@@ -261,14 +261,14 @@ public class Provider implements IProvider
 			final String groups = theseParameters.getProperty(Settings.PARAM_GROUPS, "false");
 			if ("true".equals(groups))
 			{
-				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(), 0));
+				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(source), 0));
 			}
 
 			return buildTree(this.loadBalancer.buildHierarchy(filterGroups == null ? collectContacts(source) : collectContacts(source, filterGroups), 0));
 		}
 		else
 		{
-			return buildTree(this.loadBalancer.buildHierarchy(collectGroups(), 0));
+			return buildTree(this.loadBalancer.buildHierarchy(collectGroups(source), 0));
 		}
 	}
 
@@ -410,9 +410,10 @@ public class Provider implements IProvider
 	/**
 	 * Collect groups
 	 *
+	 * @param source source
 	 * @return list of groups (with members)
 	 */
-	private List<INode> collectGroups()
+	private List<INode> collectGroups(final String source)
 	{
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
@@ -455,11 +456,11 @@ public class Provider implements IProvider
 					Log.d("group ", groupId + " " + groupSystemId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
 
 					// members
-					final List<INode> memberNodes = collectGroupMembers(groupId);
+					final List<INode> memberNodes = collectGroupMembers(groupId, source);
 					if (memberNodes != null && memberNodes.size() > 0)
 					{
 						// group
-						final TreeMutableNode node = makeGroupNode(groupId, groupSystemId, title.toString(), titleRes, accountName, accountType);
+						final TreeMutableNode node = makeGroupNode(groupId, groupSystemId, title.toString(), accountName, accountType);
 						nodes.add(node);
 
 						final List<INode> subNodes = this.loadBalancer.buildHierarchy(memberNodes, 0);
@@ -502,7 +503,7 @@ public class Provider implements IProvider
 			}
 			else
 			{
-				final TreeMutableNode superNode = makeSuperGroupNode(label, label);
+				final TreeMutableNode superNode = makeSuperGroupNode(label, "groups:" + label);
 				nodes2.add(superNode);
 				LoadBalancer.addToParent(node, superNode);
 				for (INode node3 : kinNodes)
@@ -518,19 +519,32 @@ public class Provider implements IProvider
 	 * Collect group members
 	 *
 	 * @param groupID group id
+	 * @param source  source
 	 * @return list of members
 	 */
-	private List<INode> collectGroupMembers(final String groupID)
+	private List<INode> collectGroupMembers(final String groupID, final String source)
 	{
-		final String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
-		final String sort = this.sortCode == 1 ? ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME : ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
+		// selection
+		String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+		final boolean nullSource = source == null || source.isEmpty();
+		String extraSelection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		if (extraSelection != null)
+		{
+			selection += " AND " + extraSelection;
+		}
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+
+		// sort
+		final String sort = (this.sortCode == 1 ?
+				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME :
+				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID;
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
 				Settings.GROUP_MEMBERS_URI, //
 				Settings.GROUP_MEMBERS_PROJECTION, //
 				selection, //
-				null,  //
+				selectionArgs,  //
 				sort //
 		);
 		List<INode> nodes = null;
@@ -726,12 +740,11 @@ public class Provider implements IProvider
 	 * @param groupId       group id
 	 * @param groupSystemId group system id
 	 * @param title         group title
-	 * @param titleRes      group title res
 	 * @param accountName   account name
 	 * @param accountType   account type
 	 * @return group node
 	 */
-	private TreeMutableNode makeGroupNode(final String groupId, final String groupSystemId, final String title, final String titleRes, final String accountName, final String accountType)
+	private TreeMutableNode makeGroupNode(final String groupId, final String groupSystemId, final String title, final String accountName, final String accountType)
 	{
 		final TreeMutableNode node = new TreeMutableNode(null, groupId);
 		node.setLabel(title);
@@ -755,7 +768,7 @@ public class Provider implements IProvider
 	{
 		final TreeMutableNode node = new TreeMutableNode(null, null);
 		node.setLabel(title);
-		node.setContent(title);
+		node.setContent(groupId);
 		node.setLink(null);
 		node.setImageIndex(ImageIndices.GROUP.ordinal());
 		node.setBackColor(groupBackColor);
