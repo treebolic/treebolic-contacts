@@ -151,6 +151,11 @@ public class MainActivity extends AppCompatActivity
 				startActivity(intent);
 				return true;
 			}
+			case R.id.action_app_settings:
+			{
+				Settings.applicationSettings(this, "org.treebolic.contacts");
+				return true;
+			}
 			case R.id.action_model:
 			{
 				final Provider provider = new Provider();

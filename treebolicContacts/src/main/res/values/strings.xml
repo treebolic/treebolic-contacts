@@ -19,6 +19,7 @@
 	<string name="action_list_groups">List groups</string>
 	<string name="action_model">Model</string>
 	<string name="action_settings">Settings</string>
+	<string name="action_app_settings">Application</string>
 
 	<string name="error_null_data">Null data</string>
 	<string name="error_link">Error with link</string>
