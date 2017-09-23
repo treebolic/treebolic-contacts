@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import org.treebolic.TreebolicIface;
+import org.treebolic.guide.AboutActivity;
 import org.treebolic.guide.HelpActivity;
 import org.treebolic.guide.Tip;
 
@@ -118,7 +119,12 @@ public class MainActivity extends AppCompatActivity
 			}
 			case R.id.action_help:
 			{
-				HelpActivity.start(this);
+				startActivity(new Intent(this, HelpActivity.class));
+				return true;
+			}
+			case R.id.action_about:
+			{
+				startActivity(new Intent(this, AboutActivity.class));
 				return true;
 			}
 			case R.id.action_list_contacts:
