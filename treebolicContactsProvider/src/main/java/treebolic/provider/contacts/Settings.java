@@ -3,8 +3,10 @@ package treebolic.provider.contacts;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
 
 /**
  * Settings
@@ -44,6 +46,7 @@ public class Settings
 	// G R O U P  M E M B E R  P R O J E C T I O N
 
 	static public final Uri GROUP_MEMBERS_URI = ContactsContract.Data.CONTENT_URI;
+	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 	static public final String[] GROUP_MEMBERS_PROJECTION = new String[]{ //
 			ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
 			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
@@ -70,6 +73,7 @@ public class Settings
 	// G R O U P  P R O J E C T I O N
 
 	static public final Uri GROUP_URI = ContactsContract.Groups.CONTENT_URI;
+	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 	static public final String[] GROUP_PROJECTION = new String[]{ //
 			ContactsContract.Groups._ID, //
 			ContactsContract.Groups.SYSTEM_ID, //

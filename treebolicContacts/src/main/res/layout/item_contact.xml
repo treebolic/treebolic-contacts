@@ -28,7 +28,7 @@
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"
-		android:text="Name"
+		android:text="@string/name"
 		android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </LinearLayout>

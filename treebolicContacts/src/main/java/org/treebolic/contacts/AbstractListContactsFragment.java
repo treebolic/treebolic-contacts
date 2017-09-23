@@ -26,7 +26,7 @@ import android.widget.TextView;
  */
 abstract public class AbstractListContactsFragment extends Fragment
 {
-	static private final String TAG = "AListContactsF";
+	// --Commented out by Inspection (9/23/17 5:48 PM):static private final String TAG = "AListContactsF";
 
 	// C R E A T E
 
@@ -320,36 +320,40 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 	// H E L P E R S
 
-	private void str2sb(final String header, final String[] strings, final XSpannableStringBuilder sb)
-	{
-		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
-		sb.append(join(strings)).append('\n');
-	}
+// --Commented out by Inspection START (9/23/17 5:48 PM):
+//	private void str2sb(final String header, final String[] strings, final XSpannableStringBuilder sb)
+//	{
+//		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
+//		sb.append(join(strings)).append('\n');
+//	}
+// --Commented out by Inspection STOP (9/23/17 5:48 PM)
 
-	/**
-	 * Join strings
-	 *
-	 * @param strings strings
-	 * @return joined strings
-	 */
-	private String join(final String[] strings)
-	{
-		final StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		sb.append('{');
-		for (String str : strings)
-		{
-			if (first)
-			{
-				first = false;
-			}
-			else
-			{
-				sb.append(',');
-			}
-			sb.append(str);
-		}
-		sb.append('}');
-		return sb.toString();
-	}
+// --Commented out by Inspection START (9/23/17 5:56 PM):
+//	/**
+//	 * Join strings
+//	 *
+//	 * @param strings strings
+//	 * @return joined strings
+//	 */
+//	private String join(final String[] strings)
+//	{
+//		final StringBuilder sb = new StringBuilder();
+//		boolean first = true;
+//		sb.append('{');
+//		for (String str : strings)
+//		{
+//			if (first)
+//			{
+//				first = false;
+//			}
+//			else
+//			{
+//				sb.append(',');
+//			}
+//			sb.append(str);
+//		}
+//		sb.append('}');
+//		return sb.toString();
+//	}
+// --Commented out by Inspection STOP (9/23/17 5:56 PM)
 }

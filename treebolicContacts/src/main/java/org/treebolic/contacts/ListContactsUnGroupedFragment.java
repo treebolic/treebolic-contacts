@@ -1,8 +1,10 @@
 package org.treebolic.contacts;
 
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -20,6 +22,7 @@ import org.treebolic.TreebolicIface;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	static private final String TAG = "ListContactsUnGroupedF";
@@ -37,6 +40,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
+	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 	private final static String[] FROM_COLUMNS_ALT = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
 			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
 			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,//

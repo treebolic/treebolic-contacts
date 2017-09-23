@@ -106,7 +106,7 @@ class Settings
 	 * @param value   value
 	 */
 	@SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
-	private static void putStringPref(final Context context, final String key, final String value)
+	private static void putStringPref(final Context context, @SuppressWarnings("SameParameterValue") final String key, final String value)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		sharedPref.edit().putString(key, value).commit();
@@ -119,7 +119,7 @@ class Settings
 	 * @param key     key
 	 * @return value
 	 */
-	static public String getStringsPref(final Context context, final String key)
+	static public String getStringsPref(final Context context, @SuppressWarnings("SameParameterValue") final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		final Set<String> values = sharedPref.getStringSet(key, null);
@@ -163,7 +163,7 @@ class Settings
 	 * @param context context
 	 * @param pkgName package name
 	 */
-	static public void applicationSettings(final Context context, final String pkgName)
+	static public void applicationSettings(final Context context, @SuppressWarnings("SameParameterValue") final String pkgName)
 	{
 		final int apiLevel = Build.VERSION.SDK_INT;
 		final Intent intent = new Intent();

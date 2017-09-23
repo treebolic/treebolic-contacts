@@ -19,9 +19,6 @@
 
         <!-- T R E E B O L I C -->
 
-        <!-- treebolic action bar colors -->
-        <item name="treebolic_actionbar_icon_color">@android:color/white</item>
-
         <!-- treebolic colors -->
         <item name="treebolic_toolbar_background">@color/primary_dark</item>
         <item name="treebolic_toolbar_icon_color">@android:color/white</item>
@@ -39,6 +36,14 @@
         <item name="treebolic_splitbar_color">@color/primary</item>
         <item name="treebolic_splitbar_drag_color">@color/accent</item>
 
+    </style>
+
+    <style name="CompatAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>item>
+    </style>
+
+    <style name="CompatAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:background">?attr/colorPrimaryDark</item>item>
     </style>
 
 </resources>

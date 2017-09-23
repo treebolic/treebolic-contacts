@@ -1,7 +1,10 @@
 <resources>
 	<string name="app_name">Treebolic Contacts</string>
 	<string name="contacts">Contacts</string>
+	<string name="name">Name</string>
 	<string name="photo">Photo</string>
+	<string name="account">Account</string>
+	<string name="group">Group</string>
 
 	<string name="title_activity_main">@string/app_name</string>
 	<string name="title_activity_list_contacts">List contacts</string>

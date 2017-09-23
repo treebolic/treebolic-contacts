@@ -42,7 +42,7 @@ public class Provider implements IProvider
 	 */
 	private enum ImageIndices
 	{
-		ROOT, FOLDER, CONTACT, GROUP,
+		ROOT, @SuppressWarnings("unused")FOLDER, CONTACT, GROUP,
 	}
 
 	/**
@@ -285,6 +285,7 @@ public class Provider implements IProvider
 		topRoot.setBackColor(Provider.rootBackColor);
 		topRoot.setForeColor(Provider.rootForeColor);
 		topRoot.setEdgeColor(Provider.rootEdgeColor);
+		//noinspection PointlessBitwiseExpression
 		topRoot.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
 		topRoot.setImageIndex(ImageIndices.ROOT.ordinal());
 
@@ -584,6 +585,7 @@ public class Provider implements IProvider
 	 * @param groupIDs group ids
 	 * @return list of members
 	 */
+	@SuppressWarnings("unused")
 	private List<INode> collectGroupsMembers(final String... groupIDs)
 	{
 		final String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + joinForIn(groupIDs) + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
@@ -786,7 +788,7 @@ public class Provider implements IProvider
 	 * @param n   n first characters
 	 * @return left of string
 	 */
-	private String left(final String str, final int n)
+	private String left(final String str, @SuppressWarnings("SameParameterValue") final int n)
 	{
 		if (str == null)
 		{

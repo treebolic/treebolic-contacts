@@ -29,7 +29,7 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 	class ImageCursorAdapter extends SimpleCursorAdapter
 	{
-		public ImageCursorAdapter(Context context, int layout, Cursor cursor, String[] from, int[] to, int flags)
+		public ImageCursorAdapter(Context context, int layout, @SuppressWarnings("SameParameterValue") Cursor cursor, String[] from, int[] to, @SuppressWarnings("SameParameterValue") int flags)
 		{
 			super(context, layout, cursor, from, to, flags);
 		}

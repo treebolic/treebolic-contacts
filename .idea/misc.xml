@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+    <entry_points version="2.0">
+      <entry_point TYPE="method" FQNAME="org.treebolic.contacts.AbstractListContactsCursorFragment void dumpCursor(android.database.Cursor cursor)" />
+      <entry_point TYPE="method" FQNAME="org.treebolic.contacts.Settings void save(android.content.Context context, java.lang.String source)" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Settings VALUE_DISPLAY_LAST_FIRST" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Settings GROUP_MEMBERS_PHOTO_FILE_ID_INDEX" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Settings GROUP_MEMBERS_PHOTO_ID_INDEX" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Settings GROUP_MEMBERS_PHOTO_URI_INDEX" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Settings LOOKUP_KEY_INDEX" />
+      <entry_point TYPE="implicit.constructor" FQNAME="treebolic.provider.contacts.Settings" />
+      <entry_point TYPE="method" FQNAME="org.treebolic.contacts.TreebolicActivity android.content.Intent makeTreebolicIntent(android.content.Context context, java.lang.String providerName, java.lang.String source, java.lang.String base, java.lang.String imageBase, java.lang.String settings, java.lang.String style, java.lang.String urlScheme, android.os.Bundle more)" />
+      <entry_point TYPE="method" FQNAME="treebolic.provider.contacts.Utils android.graphics.Bitmap queryBitmapFromId(android.content.Context context, long id)" />
+    </entry_points>
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
@@ -62,5 +73,5 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8 (1)" project-jdk-type="JavaSDK" />
 </project>

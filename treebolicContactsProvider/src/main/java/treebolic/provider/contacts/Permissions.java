@@ -17,6 +17,7 @@ public class Permissions
 {
 	static private final int PERMISSIONS_REQUEST_READ_CONTACTS = 1313;
 
+	@SuppressWarnings("UnusedReturnValue")
 	static public boolean check(final Activity activity)
 	{
 		if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)

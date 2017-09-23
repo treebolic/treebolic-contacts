@@ -9,10 +9,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.contrib.AppCompatPreferenceActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import org.treebolic.AppCompatCommonPreferenceActivity;
 import org.treebolic.TreebolicIface;
 
 import java.util.HashSet;
@@ -24,7 +23,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-public class SettingsActivity extends AppCompatPreferenceActivity
+public class SettingsActivity extends AppCompatCommonPreferenceActivity
 {
 	/**
 	 * Determines whether to always show the simplified settings UI, where settings are presented in a single list. When false, settings are shown as a
@@ -42,10 +41,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity
 
 		// toolbar
 		setupToolbar(R.layout.toolbar, R.id.toolbar);
-
-		// toolbar
-		final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
 
 		// set up the action bar
 		final ActionBar actionBar = getSupportActionBar();

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  */
 public class MainActivityFragment extends Fragment
 {
-	static private final String TAG = "MainF";
+	// --Commented out by Inspection (9/23/17 5:48 PM):static private final String TAG = "MainF";
 
 	// C R E A T E
 

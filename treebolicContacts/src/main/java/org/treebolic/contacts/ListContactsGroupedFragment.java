@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -42,6 +44,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
+	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 	private final static String[] FROM_COLUMNS = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
 			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
 			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET, //
@@ -50,6 +53,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	/**
 	 * Column names in the Cursor mapping to the ListView ids (alternative)
 	 */
+	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 	private final static String[] FROM_COLUMNS_ALT = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
 			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
 			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,//
@@ -89,7 +93,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	 */
 	class ImageAdapter extends SimpleAdapter
 	{
-		public ImageAdapter(final Context context, final List<? extends Map<String, ?>> data, final int resource, final String[] from, final int[] to)
+		public ImageAdapter(final Context context, final List<? extends Map<String, ?>> data, @SuppressWarnings("SameParameterValue") final int resource, @SuppressWarnings("SameParameterValue") final String[] from, @SuppressWarnings("SameParameterValue") final int[] to)
 		{
 			super(context, data, resource, from, to);
 		}
