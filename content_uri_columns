@@ -1,0 +1,37 @@
+contact_chat_capability
+contact_last_updated_timestamp
+contact_presence
+contact_status
+contact_status_icon
+contact_status_label
+contact_status_res_package
+contact_status_ts
+custom_ringtone
+display_name *
+display_name_alt * 
+display_name_source
+has_phone_number
+_id *
+in_default_directory
+in_visible_group
+is_user_profile
+last_time_contacted
+lookup *
+name_raw_contact_id
+phonebook_bucket
+phonebook_bucket_alt
+phonebook_label
+phonebook_label_alt
+phonetic_name
+phonetic_name_style
+photo_file_id *
+photo_id *
+photo_thumb_uri *
+photo_uri *
+pinned
+send_to_voicemail
+sort_key
+sort_key_alt
+starred
+times_contacted
+
