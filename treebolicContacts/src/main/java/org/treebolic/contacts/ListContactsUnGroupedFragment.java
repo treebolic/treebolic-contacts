@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -22,7 +21,6 @@ import org.treebolic.TreebolicIface;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	static private final String TAG = "ListContactsUnGroupedF";
@@ -32,24 +30,39 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
-	private final static String[] FROM_COLUMNS = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
-			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET, //
-	};
+	private static String[] FROM_COLUMNS;
 
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
-	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-	private final static String[] FROM_COLUMNS_ALT = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
-			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,//
-	};
+	private static String[] FROM_COLUMNS_ALT;
 
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
-	private final static int[] TO_IDS = {R.id.display_name, R.id.group, R.id.account};
+	private static int[] TO_IDS;
+
+	static
+	{
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)
+		{
+			FROM_COLUMNS = new String[]{ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET};
+			FROM_COLUMNS_ALT = new String[]{ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET};
+			TO_IDS = new int[]{R.id.display_name, R.id.group, R.id.account};
+		}
+		else
+		{
+			FROM_COLUMNS = new String[]{ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID};
+			FROM_COLUMNS_ALT = new String[]{ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID};
+			TO_IDS = new int[]{R.id.display_name, R.id.group};
+		}
+	}
 
 	/**
 	 * Adapter that binds the result Cursor to the ListView

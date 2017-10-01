@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- R A W -->
+	<color name="default_primaryColor">#FF009688</color>
+	<color name="default_primaryDarkColor">#FF004d40</color>
+	<color name="default_secondaryColor">#FFffA500</color>
 
-    <!-- orange -->
-    <item name="orange_color" type="color">#FFffA500</item>
-
-    <!-- lt_blue -->
-    <item name="dark_teal_color" type="color">#FF004d40</item>
-    <item name="teal_color" type="color">#FF009688</item>
-    <item name="light_green_color" type="color">#FF98FB98</item>
-
-	<!-- gray -->
-	<color name="light_gray">#ffb0b0b0</color>
-
-	<!-- MAIN -->
-
-    <!-- app branding color for the app bar -->
-    <item name="primary" type="color">@color/teal_color</item>
-
-    <!-- darker variant for the status bar and contextual app bars -->
-    <item name="primary_dark" type="color">@color/dark_teal_color</item>
-
-    <!-- theme UI controls like checkboxes and text fields -->
-    <item name="accent" type="color">@color/orange_color</item>
-
-    <!-- button and snackbar -->
-    <item name="snackbar_color" type="color">@color/teal_color</item>
+	<!-- snackbar and splash -->
+	<color name="snackbar_color">#FF009688</color>
+	<color name="splash_color">#FF98FB98</color>
 
 </resources>

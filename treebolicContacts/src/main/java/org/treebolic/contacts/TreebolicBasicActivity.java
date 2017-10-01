@@ -14,7 +14,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,12 +25,13 @@ import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.treebolic.AppCompatCommonActivity;
+import org.treebolic.ColorUtils;
 import org.treebolic.TreebolicIface;
 import org.treebolic.guide.AboutActivity;
 import org.treebolic.guide.HelpActivity;
 import org.treebolic.guide.Tip;
 import org.treebolic.search.SearchSettings;
-import org.treebolic.search.Tint;
 
 import java.net.URL;
 import java.util.Properties;
@@ -47,7 +47,7 @@ import treebolic.view.View;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
-abstract public class TreebolicBasicActivity extends AppCompatActivity implements IContext
+abstract public class TreebolicBasicActivity extends AppCompatCommonActivity implements IContext
 {
 	/**
 	 * Log tag
@@ -265,8 +265,8 @@ abstract public class TreebolicBasicActivity extends AppCompatActivity implement
 		});
 
 		// icon tint
-		final int iconTint = Tint.getActionBarForegroundColorFromTheme(this);
-		Tint.tint(iconTint, menu, R.id.action_search_run, R.id.action_search_reset, R.id.action_search_settings);
+		final int iconTint = ColorUtils.getActionBarForegroundColorFromTheme(this);
+		ColorUtils.tint(iconTint, menu, R.id.action_search_run, R.id.action_search_reset, R.id.action_search_settings);
 
 		return super.onCreateOptionsMenu(menu);
 	}

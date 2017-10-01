@@ -9,12 +9,12 @@
 
 	<application
 		android:allowBackup="true"
+		android:fullBackupContent="@xml/backup_descriptor"
 		android:icon="@mipmap/ic_launcher"
-		android:roundIcon="@mipmap/ic_launcher_round"
 		android:label="@string/app_name"
+		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
-		android:theme="@style/CompatAppTheme"
-		android:fullBackupContent="@xml/backup_descriptor">
+		android:theme="@style/MyTheme">
 
 		<activity
 			android:name=".MainActivity"
@@ -26,13 +26,18 @@
 		</activity>
 
 		<activity
+			android:name="org.treebolic.contacts.TreebolicActivity"
+			android:hardwareAccelerated="true"
+			android:label="@string/title_activity_treebolic"
+			android:parentActivityName=".MainActivity"
+			tools:targetApi="jelly_bean">
+		</activity>
+
+		<activity
 			android:name=".ListContactsActivity"
 			android:label="@string/title_activity_list_contacts"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.treebolic.contacts.MainActivity"/>
 		</activity>
 
 		<activity
@@ -40,9 +45,6 @@
 			android:label="@string/title_activity_list_grouped_contacts"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.treebolic.contacts.MainActivity"/>
 		</activity>
 
 		<activity
@@ -50,9 +52,6 @@
 			android:label="@string/title_activity_list_ungrouped_contacts"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.treebolic.contacts.MainActivity"/>
 		</activity>
 
 		<activity
@@ -60,41 +59,19 @@
 			android:label="@string/title_activity_list_groups"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.treebolic.contacts.MainActivity"/>
 		</activity>
 
 		<activity
-			android:name="org.treebolic.contacts.TreebolicActivity"
-			android:hardwareAccelerated="true"
-			android:label="@string/title_activity_treebolic"
+			android:name=".SettingsActivity"
+			android:label="@string/title_activity_settings"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.treebolic.contacts.MainActivity"/>
 		</activity>
 
 		<activity
 			android:name="org.treebolic.guide.HelpActivity"
-			android:exported="true"
-			android:label="@string/title_activity_help"
-			android:parentActivityName=".MainActivity"
-			tools:ignore="UnusedAttribute">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.treebolic.contacts.MainActivity"/>
-		</activity>
-
-		<activity
-			android:name="org.treebolic.contacts.SettingsActivity"
-			android:label="@string/title_activity_settings"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.treebolic.contacts.MainActivity"/>
 		</activity>
 
 	</application>

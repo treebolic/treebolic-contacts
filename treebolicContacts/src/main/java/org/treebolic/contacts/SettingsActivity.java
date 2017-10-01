@@ -25,12 +25,6 @@ import java.util.Set;
  */
 public class SettingsActivity extends AppCompatCommonPreferenceActivity
 {
-	/**
-	 * Determines whether to always show the simplified settings UI, where settings are presented in a single list. When false, settings are shown as a
-	 * master/detail two-pane view on tablets. When true, a single pane is shown on tablets.
-	 */
-	private static final boolean ALWAYS_SIMPLE_PREFS = false;
-
 	// E V E N T S
 
 	@Override
@@ -51,17 +45,6 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	}
 
 	@Override
-	protected void onPostCreate(final Bundle savedInstanceState)
-	{
-		super.onPostCreate(savedInstanceState);
-
-		if (SettingsActivity.isSimplePreferences(this))
-		{
-			setupSimplePreferencesScreen();
-		}
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(final MenuItem item)
 	{
 		switch (item.getItemId())
@@ -75,33 +58,10 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 
 	// S E T U P
 
-	/**
-	 * Shows the simplified settings UI if the device configuration if the device configuration dictates that a simplified, single-pane UI should be shown.
-	 */
-	@SuppressWarnings("deprecation")
-	private void setupSimplePreferencesScreen()
-	{
-		// In the simplified UI, fragments are not used at all and we instead
-		// use the older PreferenceActivity APIs.
-
-		// Add 'general' preferences.
-		addPreferencesFromResource(R.xml.pref_general);
-		addPreferencesFromResource(R.xml.pref_filter);
-
-		// bind
-		bind(findPreference(TreebolicIface.PREF_SOURCE));
-		bind(findPreference(Settings.PREF_DISPLAY));
-		bind(findPreference(Settings.PREF_SORT));
-		bindMulti(findPreference(Settings.PREF_FILTER_GROUPS));
-	}
-
 	@Override
 	public void onBuildHeaders(final List<PreferenceActivity.Header> target)
 	{
-		if (!SettingsActivity.isSimplePreferences(this))
-		{
-			loadHeadersFromResource(R.xml.pref_headers, target);
-		}
+		loadHeadersFromResource(R.xml.pref_headers, target);
 	}
 
 	// D E T E C T I O N
@@ -115,7 +75,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	@Override
 	public boolean onIsMultiPane()
 	{
-		return SettingsActivity.isLargeTablet(this) && !SettingsActivity.isSimplePreferences(this);
+		return SettingsActivity.isLargeTablet(this);
 	}
 
 	/**
@@ -124,17 +84,6 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	private static boolean isLargeTablet(final Context context)
 	{
 		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-	}
-
-	/**
-	 * Determines whether the simplified settings UI should be shown. This is true if this is forced via {@link #ALWAYS_SIMPLE_PREFS}, or the device doesn't
-	 * have newer APIs like {@link PreferenceFragment}, or the device doesn't have an extra-large screen. In these cases, a single-pane "simplified" settings UI
-	 * should be shown.
-	 */
-	private static boolean isSimplePreferences(final Context context)
-	{
-		//noinspection ConstantConditions
-		return SettingsActivity.ALWAYS_SIMPLE_PREFS || !SettingsActivity.isLargeTablet(context);
 	}
 
 	// L I S T E N E R
