@@ -94,8 +94,7 @@ public abstract class TreebolicSourceActivity extends TreebolicBasicActivity
 	/**
 	 * Unmarshal parameters from intent
 	 *
-	 * @param intent
-	 *            intent
+	 * @param intent intent
 	 */
 	@Override
 	protected void unmarshalArgs(final Intent intent)

@@ -188,13 +188,13 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 
 	// U T I L S
 
-// --Commented out by Inspection START (9/23/17 5:48 PM):
-//	private void str2sb(final String header, final String[] strings, final AbstractListContactsFragment.XSpannableStringBuilder sb)
-//	{
-//		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
-//		sb.append(join(strings)).append('\n');
-//	}
-// --Commented out by Inspection STOP (9/23/17 5:48 PM)
+	// --Commented out by Inspection START (9/23/17 5:48 PM):
+	//	private void str2sb(final String header, final String[] strings, final AbstractListContactsFragment.XSpannableStringBuilder sb)
+	//	{
+	//		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
+	//		sb.append(join(strings)).append('\n');
+	//	}
+	// --Commented out by Inspection STOP (9/23/17 5:48 PM)
 
 	private String join(final String[] strings)
 	{

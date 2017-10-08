@@ -77,7 +77,8 @@ class Settings
 
 	/**
 	 * Save source and base to preferences
-	 *  @param context context
+	 *
+	 * @param context context
 	 * @param source  source
 	 */
 	public static void save(final Context context, final String source)
@@ -123,8 +124,10 @@ class Settings
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		final Set<String> values = sharedPref.getStringSet(key, null);
-		if(values == null || values.isEmpty())
+		if (values == null || values.isEmpty())
+		{
 			return null;
+		}
 		return joinForIn(values);
 	}
 
