@@ -178,7 +178,8 @@ public class Provider implements IProvider
 	 */
 	public Provider()
 	{
-		this.loadBalancer = new LoadBalancer(TREE_MAX_NODES_AT_LEVEL, LABEL_TRUNCATE_AT, folderBackColor, folderForeColor, folderEdgeColor, -1 /*ImageIndices.FOLDER.ordinal() */, null);
+		this.loadBalancer = new LoadBalancer(TREE_MAX_NODES_AT_LEVEL, LABEL_TRUNCATE_AT);
+		this.loadBalancer.setGroupNode(folderBackColor, folderForeColor, folderEdgeColor, -1 /*ImageIndices.FOLDER.ordinal() */, null);
 	}
 
 	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
@@ -289,7 +290,7 @@ public class Provider implements IProvider
 		topRoot.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
 		topRoot.setImageIndex(ImageIndices.ROOT.ordinal());
 
-		LoadBalancer.attachToParent(topRoot, nodes);
+		topRoot.addChildren(nodes);
 		return new Tree(topRoot, null);
 	}
 
@@ -465,7 +466,7 @@ public class Provider implements IProvider
 						nodes.add(node);
 
 						final List<INode> subNodes = this.loadBalancer.buildHierarchy(memberNodes, 0);
-						LoadBalancer.attachToParent(node, subNodes);
+						node.addChildren(subNodes);
 					}
 				}
 				while (cursor.moveToNext());
@@ -506,10 +507,10 @@ public class Provider implements IProvider
 			{
 				final TreeMutableNode superNode = makeSuperGroupNode(label, "groups:" + label);
 				nodes2.add(superNode);
-				LoadBalancer.addToParent(node, superNode);
+				superNode.addChild(node);
 				for (INode node3 : kinNodes)
 				{
-					LoadBalancer.addToParent(node3, superNode);
+					superNode.addChild(node3);
 				}
 			}
 		}
