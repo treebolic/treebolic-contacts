@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -40,7 +41,7 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 			super.bindView(view, context, cursor);
 
 			// Photo Uri
-			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
+			final ImageView imageView = view.findViewById(R.id.photo);
 			final String photoThumbnailUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
 			if (photoThumbnailUri != null)
 			{
@@ -84,7 +85,9 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 		super.onActivityCreated(savedInstanceState);
 
 		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
+		final Activity activity = getActivity();
+		assert activity != null;
+		final ListView contactsListView = activity.findViewById(android.R.id.list);
 
 		// Set the item click listener to be the current fragment.
 		contactsListView.setOnItemClickListener(this);

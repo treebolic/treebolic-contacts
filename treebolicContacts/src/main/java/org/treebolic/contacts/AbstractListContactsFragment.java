@@ -1,6 +1,7 @@
 package org.treebolic.contacts;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableStringBuilder;
@@ -38,7 +40,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	}
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
 		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
@@ -80,11 +82,13 @@ abstract public class AbstractListContactsFragment extends Fragment
 		}
 
 		// view
-		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		final LayoutInflater inflater = getActivity().getLayoutInflater();
+		final Activity activity = getActivity();
+		assert activity != null;
+		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		final LayoutInflater inflater = activity.getLayoutInflater();
 		@SuppressLint("InflateParams") final View dialogView = inflater.inflate(R.layout.detail_contact, null);
-		final TextView textView = (TextView) dialogView.findViewById(android.R.id.text1);
-		final ImageView imageView = (ImageView) dialogView.findViewById(R.id.photo);
+		final TextView textView = dialogView.findViewById(android.R.id.text1);
+		final ImageView imageView = dialogView.findViewById(R.id.photo);
 		textView.setText(sb);
 		if (photoUri != null)
 		{
@@ -116,6 +120,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	private void getNames(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
+		assert context != null;
 		final ContentResolver contentResolver = context.getContentResolver();
 		final Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
@@ -164,6 +169,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	private void getAddresses(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
+		assert context != null;
 		final ContentResolver contentResolver = context.getContentResolver();
 		final Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
@@ -226,6 +232,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	private void getEmails(final String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
+		assert context != null;
 		final ContentResolver cr = context.getContentResolver();
 		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)
@@ -260,6 +267,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	private void getPhones(String contactId, final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
+		assert context != null;
 		final ContentResolver cr = context.getContentResolver();
 		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, contactId}, null);
 		if (cursor != null)

@@ -1,8 +1,10 @@
 package org.treebolic.contacts;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -58,7 +60,7 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 	// O V E R R I D E S
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
 		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
@@ -82,7 +84,9 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact, null, from, TO_IDS, 0);
 
 		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
+		final Activity activity = getActivity();
+		assert activity != null;
+		final ListView contactsListView = activity.findViewById(android.R.id.list);
 
 		// Sets the adapter for the ListView
 		contactsListView.setAdapter(this.adapter);
@@ -105,7 +109,9 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 		String sort = sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
 
 		// Starts the query
-		return new CursorLoader(getActivity(), //
+		final Activity activity = getActivity();
+		assert activity != null;
+		return new CursorLoader(activity, //
 				treebolic.provider.contacts.Settings.CONTACT_URI, //
 				treebolic.provider.contacts.Settings.CONTACT_PROJECTION, //
 				selection, //

@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -103,7 +105,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		{
 			Log.d(TAG, "POS " + position);
 			final View view = super.getView(position, convertView, parent);
-			final ImageView imageView = (ImageView) view.findViewById(R.id.photo);
+			final ImageView imageView = view.findViewById(R.id.photo);
 
 			@SuppressWarnings("unchecked") final HashMap<String, ?> item = (HashMap<String, ?>) this.getItem(position);
 			if (item.containsKey(PHOTO_THUMBNAIL_URI_KEY))
@@ -160,7 +162,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	// O V E R R I D E S
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
 		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
@@ -172,7 +174,9 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		super.onActivityCreated(savedInstanceState);
 
 		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
+		final Activity activity = getActivity();
+		assert activity != null;
+		final ListView contactsListView = activity.findViewById(android.R.id.list);
 
 		// Set the item click listener to be the current fragment.
 		contactsListView.setOnItemClickListener(this);
@@ -181,13 +185,13 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		getLoaderManager().initLoader(0, null, this);
 
 		// Gets a CursorAdapter
-		this.adapter = new ImageAdapter(getActivity(), this.rows, R.layout.item_contact_grouped, FROM_KEYS, TO_IDS);
+		this.adapter = new ImageAdapter(activity, this.rows, R.layout.item_contact_grouped, FROM_KEYS, TO_IDS);
 
 		// Sets the adapter for the ListView
 		contactsListView.setAdapter(this.adapter);
 
 		// Get groups
-		this.groups = treebolic.provider.contacts.Utils.queryGroups(getActivity());
+		this.groups = treebolic.provider.contacts.Utils.queryGroups(activity);
 	}
 
 	// L O A D E R
@@ -217,7 +221,9 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		sort = sort + "," + extraSort;
 
 		Log.d(TAG, "selection=" + selection);
-		return new CursorLoader(getActivity(), //
+		final Activity activity = getActivity();
+		assert activity != null;
+		return new CursorLoader(activity, //
 				treebolic.provider.contacts.Settings.GROUP_MEMBERS_URI, //
 				treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION, //
 				selection, //

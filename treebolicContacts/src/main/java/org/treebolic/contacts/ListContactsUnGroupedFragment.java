@@ -1,9 +1,11 @@
 package org.treebolic.contacts;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -86,7 +88,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 	// O V E R R I D E S
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
 		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
@@ -107,10 +109,12 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		final String[] from = displayCode == 1 ? FROM_COLUMNS : FROM_COLUMNS_ALT;
 
 		// Gets a CursorAdapter
-		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact_ungrouped, null, from, TO_IDS, 0);
+		final Activity activity = getActivity();
+		assert activity != null;
+		this.adapter = new ImageCursorAdapter(activity, R.layout.item_contact_ungrouped, null, from, TO_IDS, 0);
 
 		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
+		final ListView contactsListView = activity.findViewById(android.R.id.list);
 
 		// Sets the adapter for the ListView
 		contactsListView.setAdapter(this.adapter);
@@ -146,7 +150,9 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		sort = sort + "," + extraSort;
 
 		Log.d(TAG, "selection=" + selection);
-		return new CursorLoader(getActivity(), //
+		final Activity activity = getActivity();
+		assert activity != null;
+		return new CursorLoader(activity, //
 				treebolic.provider.contacts.Settings.GROUP_MEMBERS_URI, //
 				treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION, //
 				selection, //

@@ -1,11 +1,13 @@
 package org.treebolic.contacts;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -55,7 +57,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 	}
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
 		return inflater.inflate(R.layout.fragment_list, container, false);
 	}
@@ -70,10 +72,12 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		getLoaderManager().initLoader(0, null, this);
 
 		// Gets a CursorAdapter
-		this.adapter = new SimpleCursorAdapter(getActivity(), R.layout.item_group, null, FROM_COLUMNS, TO_IDS, 0);
+		final Activity activity = getActivity();
+		assert activity != null;
+		this.adapter = new SimpleCursorAdapter(activity, R.layout.item_group, null, FROM_COLUMNS, TO_IDS, 0);
 
 		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = (ListView) getActivity().findViewById(android.R.id.list);
+		final ListView contactsListView = activity.findViewById(android.R.id.list);
 
 		// Sets the adapter for the ListView
 		contactsListView.setAdapter(this.adapter);
@@ -97,7 +101,9 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		final String sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
 
 		// Starts the query
-		return new CursorLoader(getActivity(), //
+		final Activity activity = getActivity();
+		assert activity != null;
+		return new CursorLoader(activity, //
 				treebolic.provider.contacts.Settings.GROUP_URI, //
 				treebolic.provider.contacts.Settings.GROUP_PROJECTION, //
 				selection, //
@@ -168,11 +174,13 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 				.append('\n');
 
 		// view
-		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		final LayoutInflater inflater = getActivity().getLayoutInflater();
+		final Activity activity = getActivity();
+		assert activity != null;
+		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		final LayoutInflater inflater = activity.getLayoutInflater();
 		@SuppressLint("InflateParams") final View dialogView = inflater.inflate(R.layout.detail_contact, null);
-		final TextView textView = (TextView) dialogView.findViewById(android.R.id.text1);
-		final ImageView imageView = (ImageView) dialogView.findViewById(R.id.photo);
+		final TextView textView = dialogView.findViewById(android.R.id.text1);
+		final ImageView imageView = dialogView.findViewById(R.id.photo);
 		textView.setText(sb);
 		imageView.setImageResource(R.drawable.ic_group_large);
 
