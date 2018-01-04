@@ -17,7 +17,9 @@ android {
 }
 
 dependencies {
-    compile project(':treebolicLibModel')
-    compile project(':treebolicMutable')
-    compile project(':treebolicLoadBalancer')
+    implementation project(':treebolicLibModel')
+    implementation project(':treebolicMutable')
+    implementation project(':treebolicLoadBalancer')
+
+    implementation 'com.android.support:support-v4:27.0.2'
 }
