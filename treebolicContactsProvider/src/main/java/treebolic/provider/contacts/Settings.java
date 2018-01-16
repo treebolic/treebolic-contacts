@@ -1,12 +1,12 @@
 package treebolic.provider.contacts;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
 
 /**
  * Settings
@@ -41,48 +41,67 @@ public class Settings
 	static public final int PHOTO_URI_INDEX = 4;
 	static public final int PHOTO_THUMBNAIL_ID_INDEX = 5;
 	static public final int PHOTO_ID_INDEX = 6;
-	static public final int LOOKUP_KEY_INDEX = 7;
+	//static public final int LOOKUP_KEY_INDEX = 7;
 
 	// G R O U P  M E M B E R  P R O J E C T I O N
 
 	static public final Uri GROUP_MEMBERS_URI = ContactsContract.Data.CONTENT_URI;
-	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-	static public final String[] GROUP_MEMBERS_PROJECTION = new String[]{ //
-			ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
-			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
-			ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
-			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
-			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI, //
-			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, // raw contact id
-			ContactsContract.CommonDataKinds.GroupMembership._ID, // membership row
-			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET, // account
-	};
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	static public final String[] GROUP_MEMBERS_PROJECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? //
+			new String[]{ //
+					ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, // raw contact id
+					ContactsContract.CommonDataKinds.GroupMembership._ID, // membership row
+					ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,} : // account
+			new String[]{ //
+					ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, // raw contact id
+					ContactsContract.CommonDataKinds.GroupMembership._ID,}; // membership row
 
 	static public final int GROUP_MEMBERS_CONTACT_ID_INDEX = 0;
 	static public final int GROUP_MEMBERS_DISPLAY_NAME_INDEX = 1;
 	static public final int GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX = 2;
 	static public final int GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX = 3;
-	static public final int GROUP_MEMBERS_PHOTO_URI_INDEX = 4;
-	static public final int GROUP_MEMBERS_PHOTO_ID_INDEX = 5;
-	static public final int GROUP_MEMBERS_PHOTO_FILE_ID_INDEX = 6;
+	//static public final int GROUP_MEMBERS_PHOTO_URI_INDEX = 4;
+	//static public final int GROUP_MEMBERS_PHOTO_ID_INDEX = 5;
+	//static public final int GROUP_MEMBERS_PHOTO_FILE_ID_INDEX = 6;
 	static public final int GROUP_MEMBERS_GROUP_ID_INDEX = 7;
 
 	// G R O U P  P R O J E C T I O N
 
 	static public final Uri GROUP_URI = ContactsContract.Groups.CONTENT_URI;
-	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-	static public final String[] GROUP_PROJECTION = new String[]{ //
-			ContactsContract.Groups._ID, //
-			ContactsContract.Groups.SYSTEM_ID, //
-			ContactsContract.Groups.TITLE, //
-			ContactsContract.Groups.ACCOUNT_NAME, //
-			ContactsContract.Groups.ACCOUNT_TYPE, //
-			ContactsContract.Groups.TITLE_RES, //
-			ContactsContract.Groups.RES_PACKAGE, //
-	};
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	static public final String[] GROUP_PROJECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? //
+			new String[]{ //
+					ContactsContract.Groups._ID, //
+					ContactsContract.Groups.SYSTEM_ID, //
+					ContactsContract.Groups.TITLE, //
+					ContactsContract.Groups.ACCOUNT_NAME, //
+					ContactsContract.Groups.ACCOUNT_TYPE, //
+					ContactsContract.Groups.TITLE_RES, //
+					ContactsContract.Groups.RES_PACKAGE,} : //
+			new String[]{ //
+					ContactsContract.Groups._ID, //
+					ContactsContract.Groups.SYSTEM_ID, //
+					ContactsContract.Groups.TITLE, //
+					ContactsContract.Groups.ACCOUNT_NAME, //
+					ContactsContract.Groups.ACCOUNT_TYPE,};
 
 	static public final int GROUP_ID_INDEX = 0;
 	static public final int GROUP_SYSTEM_ID_INDEX = 1;
@@ -136,7 +155,7 @@ public class Settings
 	static public final String PARAM_FILTER_GROUPS = "filter_groups";
 
 	static public final String VALUE_DISPLAY_FIRST_LAST = "first,last";
-	static public String VALUE_DISPLAY_LAST_FIRST = "last,first";
+	//static public String VALUE_DISPLAY_LAST_FIRST = "last,first";
 	static public final String VALUE_SORT_FIRST = "first";
 	static public final String VALUE_SORT_LAST = "last";
 }

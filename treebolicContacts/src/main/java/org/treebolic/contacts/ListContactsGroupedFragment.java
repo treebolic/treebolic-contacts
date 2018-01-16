@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -46,20 +45,43 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
-	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-	private final static String[] FROM_COLUMNS = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
-			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET, //
-	};
+	static private String[] FROM_COLUMNS;
 
 	/**
 	 * Column names in the Cursor mapping to the ListView ids (alternative)
 	 */
-	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-	private final static String[] FROM_COLUMNS_ALT = {ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
-			ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-			ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,//
-	};
+	static private String[] FROM_COLUMNS_ALT;
+
+	/*
+	 * Mapped-to ListView ids
+	 */
+	static private int[] TO_IDS;
+
+	static
+	{
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)
+		{
+			FROM_COLUMNS = new String[]{ //
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,};
+			FROM_COLUMNS_ALT = new String[]{ //
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
+					ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,};
+			TO_IDS = new int[]{R.id.display_name, R.id.group, R.id.account};
+		}
+		else
+		{
+			FROM_COLUMNS = new String[]{ //
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,};
+			FROM_COLUMNS_ALT = new String[]{ //
+					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
+					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,};
+			TO_IDS = new int[]{R.id.display_name, R.id.group};
+		}
+	}
 
 	// A D A P T E R  K E Y S
 
@@ -75,11 +97,6 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	private final static String PHOTO_THUMBNAIL_ID_KEY = "thumbnail_photo_id";
 	private final static String PHOTO_ID_KEY = "photo_id";
 	private final static String[] FROM_KEYS = {DISPLAY_NAME_KEY, GROUP_KEY, ACCOUNT_KEY};
-
-	/*
-	 * Mapped-to ListView ids
-	 */
-	private final static int[] TO_IDS = {R.id.display_name, R.id.group, R.id.account};
 
 	/**
 	 * Row of objects

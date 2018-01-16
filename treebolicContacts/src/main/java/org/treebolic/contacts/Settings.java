@@ -70,7 +70,7 @@ class Settings
 	 * @param context context
 	 */
 	@SuppressWarnings("EmptyMethod")
-	static public void setDefaults(@SuppressWarnings("UnusedParameters") final Context context)
+	static public void setDefaults(final Context context)
 	{
 		//
 	}

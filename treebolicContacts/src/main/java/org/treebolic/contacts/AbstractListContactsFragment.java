@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -99,12 +98,9 @@ abstract public class AbstractListContactsFragment extends Fragment
 			imageView.setImageResource(R.drawable.ic_contact_large);
 		}
 
-		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", (dialog, id) ->
 		{
-			public void onClick(DialogInterface dialog, int id)
-			{
-				//do things
-			}
+			//do things
 		});
 		builder.show();
 	}

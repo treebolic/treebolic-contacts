@@ -1,12 +1,12 @@
 package org.treebolic.contacts;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
 import android.preference.MultiSelectListPreference;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -18,16 +18,17 @@ import java.util.List;
  *
  * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
  */
+@SuppressWarnings("WeakerAccess")
 public class GroupPreference extends MultiSelectListPreference
 {
-	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public GroupPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
 	{
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public GroupPreference(Context context, AttributeSet attrs, int defStyleAttr)
 	{
 		super(context, attrs, defStyleAttr);

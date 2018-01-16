@@ -10,6 +10,7 @@ import android.util.Log;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import treebolic.ILocator;
@@ -795,7 +796,7 @@ public class Provider implements IProvider
 		{
 			return null;
 		}
-		return str.length() > n ? str.substring(0, n).toLowerCase() : str.toLowerCase();
+		return str.length() > n ? str.substring(0, n).toLowerCase(Locale.getDefault()) : str.toLowerCase(Locale.getDefault());
 	}
 
 	/**

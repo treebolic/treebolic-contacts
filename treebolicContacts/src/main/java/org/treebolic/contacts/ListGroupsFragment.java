@@ -2,7 +2,6 @@ package org.treebolic.contacts;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -184,12 +183,9 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		textView.setText(sb);
 		imageView.setImageResource(R.drawable.ic_group_large);
 
-		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", (dialog, id) ->
 		{
-			public void onClick(DialogInterface dialog, int id)
-			{
-				//do things
-			}
+			//do things
 		});
 		builder.show();
 	}

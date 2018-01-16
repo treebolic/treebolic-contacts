@@ -112,7 +112,7 @@ public class Utils
 		{
 			return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(uri));
 		}
-		catch (IOException e)
+		catch (IOException ignored)
 		{
 			//
 		}

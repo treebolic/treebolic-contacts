@@ -91,35 +91,27 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	/**
 	 * A preference value change listener that updates the preference's summary to reflect its new value.
 	 */
-	private static final Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener()
+	private static final Preference.OnPreferenceChangeListener listener = (preference, value) ->
 	{
-		@Override
-		public boolean onPreferenceChange(final Preference preference, final Object value)
-		{
-			// set the summary to the value's simple string representation.
-			final String stringValue = value.toString();
-			preference.setSummary(stringValue);
-			return true;
-		}
+		// set the summary to the value's simple string representation.
+		final String stringValue = value.toString();
+		preference.setSummary(stringValue);
+		return true;
 	};
 
 	/**
 	 * A preference value change listener that updates the preference's summary to reflect its new value.
 	 */
-	private static final Preference.OnPreferenceChangeListener listenerMulti = new Preference.OnPreferenceChangeListener()
+	private static final Preference.OnPreferenceChangeListener listenerMulti = (preference, value) ->
 	{
-		@Override
-		public boolean onPreferenceChange(final Preference preference, final Object value)
-		{
-			// set the summary to the value's simple string representation.
-			// final MultiSelectListPreference multiPreference = (MultiSelectListPreference) preference;
-			// final Set<String> values = multiPreference.getValues();
-			@SuppressWarnings("unchecked") final Set<String> values = (Set<String>) value;
+		// set the summary to the value's simple string representation.
+		// final MultiSelectListPreference multiPreference = (MultiSelectListPreference) preference;
+		// final Set<String> values = multiPreference.getValues();
+		@SuppressWarnings("unchecked") final Set<String> values = (Set<String>) value;
 
-			final String stringValue = values.toString();
-			preference.setSummary(stringValue);
-			return true;
-		}
+		final String stringValue = values.toString();
+		preference.setSummary(stringValue);
+		return true;
 	};
 
 	// B I N D
@@ -153,14 +145,13 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 		preference.setOnPreferenceChangeListener(SettingsActivity.listener);
 
 		// Trigger the listener immediately with the preference's current value
-		SettingsActivity.listenerMulti.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getStringSet(preference.getKey(), new HashSet<String>()));
+		SettingsActivity.listenerMulti.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getStringSet(preference.getKey(), new HashSet<>()));
 	}
 
 	// F R A G M E N T S
 
 	public static class GeneralPreferenceFragment extends PreferenceFragment
 	{
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onCreate(final Bundle savedInstanceState)
 		{
@@ -178,7 +169,6 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 
 	public static class FilterPreferenceFragment extends PreferenceFragment
 	{
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onCreate(final Bundle savedInstanceState)
 		{

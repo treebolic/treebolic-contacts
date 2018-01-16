@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatCommonActivity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 
-		//noinspection SimplifiableIfStatement
 		switch (id)
 		{
 			case R.id.action_run:
@@ -276,7 +275,7 @@ public class MainActivity extends AppCompatCommonActivity
 	 *
 	 * @param view view
 	 */
-	public void onClick(@SuppressWarnings("UnusedParameters") final View view)
+	public void onClick(final View view)
 	{
 		query();
 	}
