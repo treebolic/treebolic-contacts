@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.treebolic.TreebolicIface;
 
@@ -70,7 +72,7 @@ class Settings
 	 * @param context context
 	 */
 	@SuppressWarnings("EmptyMethod")
-	static public void setDefaults(final Context context)
+	static public void setDefaults(@SuppressWarnings("unused") final Context context)
 	{
 		//
 	}
@@ -93,6 +95,7 @@ class Settings
 	 * @param key     key
 	 * @return value
 	 */
+	@Nullable
 	static public String getStringPref(final Context context, final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -137,7 +140,7 @@ class Settings
 	 * @param strings values
 	 * @return 'in' clause
 	 */
-	static private String joinForIn(final Iterable<String> strings)
+	static private String joinForIn(@NonNull final Iterable<String> strings)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
@@ -166,7 +169,7 @@ class Settings
 	 * @param context context
 	 * @param pkgName package name
 	 */
-	static public void applicationSettings(final Context context, @SuppressWarnings("SameParameterValue") final String pkgName)
+	static public void applicationSettings(@NonNull final Context context, @SuppressWarnings("SameParameterValue") final String pkgName)
 	{
 		final int apiLevel = Build.VERSION.SDK_INT;
 		final Intent intent = new Intent();

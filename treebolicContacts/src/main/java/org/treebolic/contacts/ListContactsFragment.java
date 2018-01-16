@@ -1,6 +1,7 @@
 package org.treebolic.contacts;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -81,7 +82,9 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 		final String[] from = displayCode == 1 ? FROM_COLUMNS : FROM_COLUMNS_ALT;
 
 		// Gets a CursorAdapter
-		this.adapter = new ImageCursorAdapter(getActivity(), R.layout.item_contact, null, from, TO_IDS, 0);
+		final Context context = getActivity();
+		assert context != null;
+		this.adapter = new ImageCursorAdapter(context, R.layout.item_contact, null, from, TO_IDS, 0);
 
 		// Gets the ListView from the View list of the parent activity
 		final Activity activity = getActivity();
@@ -94,6 +97,7 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 
 	// L O A D E R
 
+	@NonNull
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
@@ -120,7 +124,7 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
+	public void onLoadFinished(Loader<Cursor> loader, @NonNull Cursor cursor)
 	{
 		Log.d(TAG, "count=" + cursor.getCount());
 		// dumpCursor(cursor);

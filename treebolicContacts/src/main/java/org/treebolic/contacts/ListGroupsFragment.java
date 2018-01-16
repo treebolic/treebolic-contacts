@@ -87,6 +87,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 
 	// L O A D E R
 
+	@NonNull
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
@@ -127,7 +128,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 	// C L I C K
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View item, int position, long rowID)
+	public void onItemClick(@NonNull AdapterView<?> parent, View item, int position, long rowID)
 	{
 		// Get the Cursor
 		final SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
@@ -200,7 +201,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 	//	}
 	// --Commented out by Inspection STOP (9/23/17 5:48 PM)
 
-	private String join(final String[] strings)
+	private String join(@NonNull final String[] strings)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;

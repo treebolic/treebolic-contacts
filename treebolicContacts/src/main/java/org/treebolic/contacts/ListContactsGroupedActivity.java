@@ -1,5 +1,6 @@
 package org.treebolic.contacts;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 /**
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
  */
 public class ListContactsGroupedActivity extends AbstractActivity
 {
+	@NonNull
 	@Override
 	protected Fragment makeFragment()
 	{

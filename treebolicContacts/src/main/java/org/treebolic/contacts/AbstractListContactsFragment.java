@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableStringBuilder;
@@ -38,6 +39,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	{
 	}
 
+	@Nullable
 	@Override
 	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
 	{
@@ -55,7 +57,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	 * @param labels    labels
 	 * @param values    values
 	 */
-	void showDialog(final XSpannableStringBuilder sb, final String contactId, final Uri photoUri, final String[] labels, final String... values)
+	void showDialog(@NonNull final XSpannableStringBuilder sb, final String contactId, @Nullable final Uri photoUri, @NonNull final String[] labels, final String... values)
 	{
 		// id
 		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
@@ -113,7 +115,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getNames(final String contactId, final XSpannableStringBuilder sb)
+	private void getNames(final String contactId, @NonNull final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		assert context != null;
@@ -162,7 +164,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getAddresses(final String contactId, final XSpannableStringBuilder sb)
+	private void getAddresses(final String contactId, @NonNull final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		assert context != null;
@@ -225,7 +227,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getEmails(final String contactId, final XSpannableStringBuilder sb)
+	private void getEmails(final String contactId, @NonNull final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		assert context != null;
@@ -260,7 +262,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 	 * @param contactId contact id
 	 * @param sb        string buffer
 	 */
-	private void getPhones(String contactId, final XSpannableStringBuilder sb)
+	private void getPhones(String contactId, @NonNull final XSpannableStringBuilder sb)
 	{
 		final Context context = getContext();
 		assert context != null;
@@ -313,6 +315,7 @@ abstract public class AbstractListContactsFragment extends Fragment
 
 	static public class XSpannableStringBuilder extends SpannableStringBuilder
 	{
+		@NonNull
 		public SpannableStringBuilder append(CharSequence text, Object what, int flags)
 		{
 			int start = length();

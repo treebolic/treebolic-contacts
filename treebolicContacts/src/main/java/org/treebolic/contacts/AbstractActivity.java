@@ -2,6 +2,8 @@ package org.treebolic.contacts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -22,10 +24,11 @@ import treebolic.provider.contacts.Provider;
  */
 abstract public class AbstractActivity extends AppCompatCommonActivity
 {
+	@NonNull
 	abstract Fragment makeFragment();
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	protected void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
@@ -62,7 +65,7 @@ abstract public class AbstractActivity extends AppCompatCommonActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
 	{
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long

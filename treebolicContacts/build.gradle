@@ -23,7 +23,7 @@ android {
             keyPassword keystoreProperties['keyPassword_contacts']
             storeFile file(keystoreProperties['storeFile_contacts'])
             storePassword keystoreProperties['storePassword_contacts']
-         }
+        }
     }
 
     buildTypes {

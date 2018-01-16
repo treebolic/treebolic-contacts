@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatCommonActivity
 	// L I F E C Y C L E
 
 	@Override
-	protected void onCreate(final Bundle savedInstanceState)
+	protected void onCreate(@Nullable final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatCommonActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
+	public boolean onOptionsItemSelected(@NonNull MenuItem item)
 	{
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -214,7 +215,7 @@ public class MainActivity extends AppCompatCommonActivity
 	 *
 	 * @param context context
 	 */
-	private static void tryStartTreebolic(final Context context)
+	private static void tryStartTreebolic(@NonNull final Context context)
 	{
 		final Intent intent = MainActivity.makeTreebolicIntent(context);
 		Log.d(MainActivity.TAG, "Start treebolic");
@@ -227,7 +228,8 @@ public class MainActivity extends AppCompatCommonActivity
 	 * @param context context
 	 * @return intent
 	 */
-	private static Intent makeTreebolicIntent(final Context context)
+	@NonNull
+	private static Intent makeTreebolicIntent(@NonNull final Context context)
 	{
 		final String source = treebolic.provider.contacts.Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
 		final boolean groups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_GROUPS);
@@ -275,7 +277,7 @@ public class MainActivity extends AppCompatCommonActivity
 	 *
 	 * @param view view
 	 */
-	public void onClick(final View view)
+	public void onClick(@SuppressWarnings("unused") final View view)
 	{
 		query();
 	}

@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -61,7 +62,7 @@ public class Utils
 	 * @param context context
 	 * @return group id to group map
 	 */
-	static public Map<String, Group> queryGroups(final Context context)
+	static public Map<String, Group> queryGroups(@NonNull final Context context)
 	{
 		final ContentResolver cr = context.getContentResolver();
 		final Cursor cursor = cr.query(treebolic.provider.contacts.Settings.GROUP_URI, //
@@ -106,7 +107,7 @@ public class Utils
 	 * @param uri     image uri
 	 * @return bitmap
 	 */
-	static public Bitmap queryBitmapFromUri(final Context context, final String uri)
+	static public Bitmap queryBitmapFromUri(@NonNull final Context context, final String uri)
 	{
 		try
 		{
@@ -126,7 +127,7 @@ public class Utils
 	 * @param id      id as per ContactsContract.Contacts.PHOTO_ID
 	 * @return bitmap
 	 */
-	static public Bitmap queryBitmapFromId(final Context context, final long id)
+	static public Bitmap queryBitmapFromId(@NonNull final Context context, final long id)
 	{
 		final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, id);
 		final String[] projection = new String[]{ContactsContract.Contacts.Photo.PHOTO};
@@ -153,7 +154,7 @@ public class Utils
 		return null;
 	}
 
-	static private Bitmap cursorToImage(final Cursor cursor)
+	static private Bitmap cursorToImage(@NonNull final Cursor cursor)
 	{
 		if (cursor.moveToFirst())
 		{
@@ -166,12 +167,12 @@ public class Utils
 		return null;
 	}
 
-	static private Bitmap bytesToImage(final byte[] imageBytes)
+	static private Bitmap bytesToImage(@NonNull final byte[] imageBytes)
 	{
 		return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 	}
 
-	static public Bitmap roundCrop(final Bitmap bitmap)
+	static public Bitmap roundCrop(@NonNull final Bitmap bitmap)
 	{
 		final int w = bitmap.getWidth();
 		final int h = bitmap.getHeight();
@@ -192,12 +193,12 @@ public class Utils
 		return output;
 	}
 
-	static public Bitmap scale(final Bitmap bitmap, int w, int h)
+	static public Bitmap scale(@NonNull final Bitmap bitmap, int w, int h)
 	{
 		return Bitmap.createScaledBitmap(bitmap, w, h, false);
 	}
 
-	static String bitmapToUrl(final Bitmap bitmap)
+	static String bitmapToUrl(@NonNull final Bitmap bitmap)
 	{
 		final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);

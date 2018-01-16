@@ -7,6 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
@@ -45,7 +46,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(final MenuItem item)
+	public boolean onOptionsItemSelected(@NonNull final MenuItem item)
 	{
 		switch (item.getItemId())
 		{
@@ -81,7 +82,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	/**
 	 * Helper method to determine if the device has an extra-large screen. For example, 10" tablets are extra-large.
 	 */
-	private static boolean isLargeTablet(final Context context)
+	private static boolean isLargeTablet(@NonNull final Context context)
 	{
 		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	}
@@ -123,7 +124,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	 *
 	 * @see #listener
 	 */
-	private static void bind(final Preference preference)
+	private static void bind(@NonNull final Preference preference)
 	{
 		// Set the listener to watch for value changes.
 		preference.setOnPreferenceChangeListener(SettingsActivity.listener);
@@ -139,7 +140,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	 *
 	 * @see #listener
 	 */
-	private static void bindMulti(final Preference preference)
+	private static void bindMulti(@NonNull final Preference preference)
 	{
 		// Set the listener to watch for value changes.
 		preference.setOnPreferenceChangeListener(SettingsActivity.listener);

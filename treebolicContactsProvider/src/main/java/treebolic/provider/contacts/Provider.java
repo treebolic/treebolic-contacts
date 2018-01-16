@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.net.URL;
@@ -49,6 +51,7 @@ public class Provider implements IProvider
 	/**
 	 * Image array
 	 */
+	@Nullable
 	private static final Image[] images = new Image[]{ //
 			Image.try_make(Provider.class.getResource("images/root.png")), // ROOT
 			Image.try_make(Provider.class.getResource("images/folder.png")), // FOLDER
@@ -163,6 +166,7 @@ public class Provider implements IProvider
 	/**
 	 * Load balancer
 	 */
+	@NonNull
 	private final LoadBalancer loadBalancer;
 
 	// C O N T E X T
@@ -229,7 +233,7 @@ public class Provider implements IProvider
 	 * @param theseParameters parameters
 	 * @return tree
 	 */
-	private Tree buildTree(final String source, final Properties theseParameters)
+	private Tree buildTree(final String source, @Nullable final Properties theseParameters)
 	{
 		if (theseParameters != null)
 		{
@@ -303,7 +307,8 @@ public class Provider implements IProvider
 	 * @param source selection
 	 * @return list of contact nodes
 	 */
-	private List<INode> collectContacts(final String source)
+	@Nullable
+	private List<INode> collectContacts(@Nullable final String source)
 	{
 		final boolean nullSource = source == null || source.isEmpty();
 		final String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
@@ -354,7 +359,8 @@ public class Provider implements IProvider
 	 * @param groupFilter group filter
 	 * @return list of contact nodes
 	 */
-	private List<INode> collectContacts(final String source, final String groupFilter)
+	@Nullable
+	private List<INode> collectContacts(@Nullable final String source, final String groupFilter)
 	{
 		final boolean nullSource = source == null || source.isEmpty();
 		String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
@@ -416,6 +422,7 @@ public class Provider implements IProvider
 	 * @param source source
 	 * @return list of groups (with members)
 	 */
+	@Nullable
 	private List<INode> collectGroups(final String source)
 	{
 		final ContentResolver contentResolver = this.context.getContentResolver();
@@ -485,6 +492,7 @@ public class Provider implements IProvider
 		{
 			final INode node = nodes.get(i);
 			final String label = node.getLabel();
+			assert label != null;
 
 			// kin nodes
 			List<INode> kinNodes = new ArrayList<>();
@@ -525,7 +533,8 @@ public class Provider implements IProvider
 	 * @param source  source
 	 * @return list of members
 	 */
-	private List<INode> collectGroupMembers(final String groupID, final String source)
+	@Nullable
+	private List<INode> collectGroupMembers(final String groupID, @Nullable final String source)
 	{
 		// selection
 		String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
@@ -587,8 +596,9 @@ public class Provider implements IProvider
 	 * @param groupIDs group ids
 	 * @return list of members
 	 */
+	@Nullable
 	@SuppressWarnings("unused")
-	private List<INode> collectGroupsMembers(final String... groupIDs)
+	private List<INode> collectGroupsMembers(@NonNull final String... groupIDs)
 	{
 		final String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + joinForIn(groupIDs) + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
 		final String sort = (this.sortCode == 1 ?
@@ -651,7 +661,8 @@ public class Provider implements IProvider
 	 * @param photoThumbnailUri photo uri
 	 * @return contact node
 	 */
-	private TreeMutableNode makeContactNode(final String id, final String name, final String altName, final String photoThumbnailUri/*, final long photoThumbnailId*/)
+	@NonNull
+	private TreeMutableNode makeContactNode(final String id, final String name, @NonNull final String altName, @Nullable final String photoThumbnailUri/*, final long photoThumbnailId*/)
 	{
 		// make label from alt
 		final String[] fields = altName.split(", *");
@@ -712,6 +723,7 @@ public class Provider implements IProvider
 		if (photoThumbnailUri != null)
 		{
 			final Bitmap bitmap = Utils.queryBitmapFromUri(this.context, photoThumbnailUri);
+			assert bitmap != null;
 			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
 			final Bitmap scaledUpBitmap = Utils.scale(roundBitmap, 200, 200);
 			final Bitmap scaledDownBitmap = Utils.scale(roundBitmap, 50, 50);
@@ -748,6 +760,7 @@ public class Provider implements IProvider
 	 * @param accountType   account type
 	 * @return group node
 	 */
+	@NonNull
 	private TreeMutableNode makeGroupNode(final String groupId, final String groupSystemId, final String title, final String accountName, final String accountType)
 	{
 		final TreeMutableNode node = new TreeMutableNode(null, groupId);
@@ -768,6 +781,7 @@ public class Provider implements IProvider
 	 * @param groupId group id
 	 * @return super group node
 	 */
+	@NonNull
 	private TreeMutableNode makeSuperGroupNode(final String title, final String groupId)
 	{
 		final TreeMutableNode node = new TreeMutableNode(null, null);
@@ -790,7 +804,8 @@ public class Provider implements IProvider
 	 * @param n   n first characters
 	 * @return left of string
 	 */
-	private String left(final String str, @SuppressWarnings("SameParameterValue") final int n)
+	@Nullable
+	private String left(@Nullable final String str, @SuppressWarnings("SameParameterValue") final int n)
 	{
 		if (str == null)
 		{
@@ -805,7 +820,7 @@ public class Provider implements IProvider
 	 * @param strings values
 	 * @return 'in' clause
 	 */
-	private String joinForIn(final String[] strings)
+	private String joinForIn(@NonNull final String[] strings)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
@@ -833,6 +848,7 @@ public class Provider implements IProvider
 	 *
 	 * @return settings
 	 */
+	@NonNull
 	private treebolic.model.Settings makeSettings()
 	{
 		final treebolic.model.Settings settings = new treebolic.model.Settings();

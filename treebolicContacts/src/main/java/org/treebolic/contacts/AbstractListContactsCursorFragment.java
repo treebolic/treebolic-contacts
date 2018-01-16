@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.View;
@@ -30,13 +32,13 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 	class ImageCursorAdapter extends SimpleCursorAdapter
 	{
-		public ImageCursorAdapter(Context context, int layout, @SuppressWarnings("SameParameterValue") Cursor cursor, String[] from, int[] to, @SuppressWarnings("SameParameterValue") int flags)
+		public ImageCursorAdapter(@NonNull Context context, int layout, @SuppressWarnings("SameParameterValue") Cursor cursor, String[] from, int[] to, @SuppressWarnings("SameParameterValue") int flags)
 		{
 			super(context, layout, cursor, from, to, flags);
 		}
 
 		@Override
-		public void bindView(View view, Context context, Cursor cursor)
+		public void bindView(@NonNull View view, @NonNull Context context, @NonNull Cursor cursor)
 		{
 			super.bindView(view, context, cursor);
 
@@ -63,9 +65,10 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 			imageView.setImageResource(R.drawable.ic_contact);
 		}
 
-		private Bitmap uri2CircularBitmap(final Context context, final String photoUriString)
+		private Bitmap uri2CircularBitmap(@NonNull final Context context, final String photoUriString)
 		{
 			final Bitmap bitmap = Utils.queryBitmapFromUri(context, photoUriString);
+			assert bitmap != null;
 			return Utils.roundCrop(bitmap);
 		}
 	}
@@ -96,7 +99,7 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 	// C L I C K
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View item, int position, long rowID)
+	public void onItemClick(@NonNull AdapterView<?> parent, View item, int position, long rowID)
 	{
 		// Get the Cursor
 		final SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
@@ -150,7 +153,7 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 	// C U R S O R
 
-	private void dumpCursor(final Cursor cursor)
+	private void dumpCursor(@Nullable final Cursor cursor)
 	{
 		if (cursor == null)
 		{

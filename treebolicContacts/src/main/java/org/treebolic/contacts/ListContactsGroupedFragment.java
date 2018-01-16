@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -146,7 +147,10 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 
 		private Bitmap uri2CircularBitmap(final String photoUriString)
 		{
-			final Bitmap bitmap = Utils.queryBitmapFromUri(getContext(), photoUriString);
+			final Context context = getActivity();
+			assert context != null;
+			final Bitmap bitmap = Utils.queryBitmapFromUri(context, photoUriString);
+			assert bitmap != null;
 			return Utils.roundCrop(bitmap);
 		}
 	}
@@ -154,16 +158,19 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	/**
 	 * Adapter that binds the result Cursor to the ListView
 	 */
+	@Nullable
 	private SimpleAdapter adapter;
 
 	/**
 	 * Data
 	 */
+	@NonNull
 	private final List<Row<String>> rows;
 
 	/**
 	 * Groups
 	 */
+	@Nullable
 	private Map<String, Utils.Group> groups;
 
 	// C R E A T E
@@ -213,6 +220,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 
 	// L O A D E R
 
+	@NonNull
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
@@ -249,7 +257,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
+	public void onLoadFinished(Loader<Cursor> loader, @NonNull Cursor cursor)
 	{
 		Log.d(TAG, "count=" + cursor.getCount());
 
@@ -300,6 +308,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 					}
 
 					// group
+					assert this.groups != null;
 					final Utils.Group group = this.groups.get(groupId);
 
 					for (int i = 0; i < columnIndexes.length; i++)
@@ -330,6 +339,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			}
 			cursor.close();
 		}
+		assert this.adapter != null;
 		this.adapter.notifyDataSetChanged();
 	}
 
@@ -337,13 +347,14 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	public void onLoaderReset(Loader<Cursor> loader)
 	{
 		// Delete the reference to the existing Cursor
+		assert this.adapter != null;
 		this.adapter.notifyDataSetInvalidated();
 	}
 
 	// C L I C K
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View item, int position, long rowID)
+	public void onItemClick(@NonNull AdapterView<?> parent, View item, int position, long rowID)
 	{
 		// Get the Cursor
 		final SimpleAdapter adapter = (SimpleAdapter) parent.getAdapter();

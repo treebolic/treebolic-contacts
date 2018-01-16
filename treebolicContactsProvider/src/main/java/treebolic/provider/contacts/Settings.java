@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 
 /**
  * Settings
@@ -127,6 +128,7 @@ public class Settings
 	 * @param key     key
 	 * @return value
 	 */
+	@Nullable
 	static public String getStringPref(final Context context, final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);

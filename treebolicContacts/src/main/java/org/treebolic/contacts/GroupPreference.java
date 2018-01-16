@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.preference.MultiSelectListPreference;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -22,32 +23,32 @@ import java.util.List;
 public class GroupPreference extends MultiSelectListPreference
 {
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public GroupPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
+	public GroupPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
 	{
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
 	}
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public GroupPreference(Context context, AttributeSet attrs, int defStyleAttr)
+	public GroupPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr)
 	{
 		super(context, attrs, defStyleAttr);
 		init(context);
 	}
 
-	public GroupPreference(Context context, AttributeSet attrs)
+	public GroupPreference(@NonNull Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 		init(context);
 	}
 
-	public GroupPreference(Context context)
+	public GroupPreference(@NonNull Context context)
 	{
 		super(context);
 		init(context);
 	}
 
-	private void init(Context context)
+	private void init(@NonNull Context context)
 	{
 		final String selection = null;
 		final String[] selectionArgs = null;

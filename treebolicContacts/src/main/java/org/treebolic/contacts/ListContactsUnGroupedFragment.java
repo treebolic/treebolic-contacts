@@ -125,6 +125,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 
 	// L O A D E R
 
+	@NonNull
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
@@ -161,7 +162,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
+	public void onLoadFinished(Loader<Cursor> loader, @NonNull Cursor cursor)
 	{
 		Log.d(TAG, "count=" + cursor.getCount());
 		// dumpCursor(cursor);
