@@ -12,28 +12,169 @@
       <entry_point TYPE="implicit.constructor" FQNAME="treebolic.provider.contacts.Settings" />
       <entry_point TYPE="method" FQNAME="org.treebolic.contacts.TreebolicActivity android.content.Intent makeTreebolicIntent(android.content.Context context, java.lang.String providerName, java.lang.String source, java.lang.String base, java.lang.String imageBase, java.lang.String settings, java.lang.String style, java.lang.String urlScheme, android.os.Bundle more)" />
       <entry_point TYPE="method" FQNAME="treebolic.provider.contacts.Utils android.graphics.Bitmap queryBitmapFromId(android.content.Context context, long id)" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Utils.Group accountType" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider.ImageIndices CONTACT" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider.ImageIndices FOLDER" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider.ImageIndices GROUP" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Utils.Group groupId" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Utils.Group resPackage" />
+      <entry_point TYPE="field" FQNAME="org.treebolic.contacts.TreebolicBasicActivity SEARCH_TRIGGER_LEVEL" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Utils.Group systemId" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Utils.Group titleRes" />
     </entry_points>
+    <pattern value="org.treebolic.contacts.AbstractActivity" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsFragment" />
+    <pattern value="treebolic.provider.contacts.Provider" method="collectGroupsMembers" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment" method="dumpCursor" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="getBase" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="getImagesBase" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="getInput" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="getParameters" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="getParentActivityIntent" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="getStyle" />
+    <pattern value="treebolic.provider.contacts.Utils.Group" />
+    <pattern value="org.treebolic.contacts.GroupPreference" />
+    <pattern value="org.treebolic.contacts.GroupPreference" method="GroupPreference" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment.ImageCursorAdapter" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment.ImageCursorAdapter" method="ImageCursorAdapter" />
+    <pattern value="treebolic.provider.contacts.Provider.ImageIndices" />
+    <pattern value="org.treebolic.contacts.ListContactsActivity" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedActivity" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedActivity" />
+    <pattern value="org.treebolic.contacts.ListGroupsActivity" />
+    <pattern value="org.treebolic.contacts.MainActivity" />
+    <pattern value="treebolic.provider.contacts.Settings" />
+    <pattern value="org.treebolic.contacts.SettingsActivity" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="linkTo" />
+    <pattern value="org.treebolic.contacts.ListContactsFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsFragment" method="ListContactsFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" method="ListContactsGroupedFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedFragment" method="ListContactsUnGroupedFragment" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" method="ListGroupsFragment" />
+    <pattern value="org.treebolic.contacts.MainActivityFragment" />
+    <pattern value="org.treebolic.contacts.MainActivityFragment" method="MainActivityFragment" />
+    <pattern value="org.treebolic.contacts.TreebolicSourceActivity" method="makeParameters" />
+    <pattern value="org.treebolic.contacts.TreebolicActivity" method="makeTreebolicIntent" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment" method="onActivityCreated" />
+    <pattern value="org.treebolic.contacts.MainActivity" method="onClick" />
+    <pattern value="org.treebolic.contacts.TreebolicSourceActivity" method="onCreate" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="onCreateOptionsMenu" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsFragment" method="onCreateView" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment" method="onItemClick" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="onNewIntent" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="onOptionsItemSelected" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="onPause" />
+    <pattern value="org.treebolic.contacts.TreebolicSourceActivity" method="onRestoreInstanceState" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="onResume" />
+    <pattern value="org.treebolic.contacts.TreebolicSourceActivity" method="onSaveInstanceState" />
+    <pattern value="treebolic.provider.contacts.Provider" />
+    <pattern value="org.treebolic.contacts.TreebolicActivity" method="query" />
+    <pattern value="treebolic.provider.contacts.Utils" method="queryBitmapFromId" />
+    <pattern value="org.treebolic.contacts.TreebolicActivity" method="requery" />
+    <pattern value="org.treebolic.contacts.Settings" method="save" />
+    <pattern value="org.treebolic.contacts.Settings" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="status" />
+    <pattern value="org.treebolic.contacts.TreebolicActivity" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" />
+    <pattern value="org.treebolic.contacts.TreebolicSourceActivity" />
+    <pattern value="org.treebolic.contacts.TreebolicSourceActivity" method="unmarshalArgs" />
+    <pattern value="treebolic.provider.contacts.Utils" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="warn" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment" method="AbstractListContactsCursorFragment" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsFragment" method="AbstractListContactsFragment" />
+    <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment.ImageCursorAdapter" method="bindView" />
+    <pattern value="org.treebolic.contacts.SettingsActivity.FilterPreferenceFragment" />
+    <pattern value="org.treebolic.contacts.SettingsActivity.GeneralPreferenceFragment" />
+    <pattern value="treebolic.provider.contacts.Utils.Group" method="Group" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment.ImageAdapter" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment.ImageAdapter" method="ImageAdapter" />
+    <pattern value="org.treebolic.contacts.MainActivity.PlaceholderFragment" />
+    <pattern value="org.treebolic.contacts.SettingsActivity" method="isValidFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsActivity" method="makeFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedActivity" method="makeFragment" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedActivity" method="makeFragment" />
+    <pattern value="org.treebolic.contacts.ListGroupsActivity" method="makeFragment" />
+    <pattern value="treebolic.provider.contacts.Provider" method="makeTree" />
+    <pattern value="org.treebolic.contacts.ListContactsFragment" method="onActivityCreated" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" method="onActivityCreated" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedFragment" method="onActivityCreated" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" method="onActivityCreated" />
+    <pattern value="org.treebolic.contacts.SettingsActivity" method="onBuildHeaders" />
+    <pattern value="org.treebolic.contacts.AbstractActivity" method="onCreate" />
+    <pattern value="org.treebolic.contacts.MainActivity" method="onCreate" />
+    <pattern value="org.treebolic.contacts.SettingsActivity" method="onCreate" />
+    <pattern value="org.treebolic.contacts.ListContactsFragment" method="onCreateLoader" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" method="onCreateLoader" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedFragment" method="onCreateLoader" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" method="onCreateLoader" />
+    <pattern value="org.treebolic.contacts.AbstractActivity" method="onCreateOptionsMenu" />
+    <pattern value="org.treebolic.contacts.MainActivity" method="onCreateOptionsMenu" />
+    <pattern value="org.treebolic.contacts.ListContactsFragment" method="onCreateView" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" method="onCreateView" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedFragment" method="onCreateView" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" method="onCreateView" />
+    <pattern value="org.treebolic.contacts.MainActivityFragment" method="onCreateView" />
+    <pattern value="org.treebolic.contacts.SettingsActivity" method="onIsMultiPane" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" method="onItemClick" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" method="onItemClick" />
+    <pattern value="org.treebolic.contacts.ListContactsFragment" method="onLoaderReset" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" method="onLoaderReset" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedFragment" method="onLoaderReset" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" method="onLoaderReset" />
+    <pattern value="org.treebolic.contacts.ListContactsFragment" method="onLoadFinished" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment" method="onLoadFinished" />
+    <pattern value="org.treebolic.contacts.ListContactsUnGroupedFragment" method="onLoadFinished" />
+    <pattern value="org.treebolic.contacts.ListGroupsFragment" method="onLoadFinished" />
+    <pattern value="org.treebolic.contacts.AbstractActivity" method="onOptionsItemSelected" />
+    <pattern value="org.treebolic.contacts.MainActivity" method="onOptionsItemSelected" />
+    <pattern value="org.treebolic.contacts.SettingsActivity" method="onOptionsItemSelected" />
+    <pattern value="org.treebolic.contacts.MainActivity" method="onResume" />
+    <pattern value="treebolic.provider.contacts.Provider" method="Provider" />
+    <pattern value="treebolic.provider.contacts.Provider" method="setContext" />
+    <pattern value="treebolic.provider.contacts.Provider" method="setLocator" />
+    <pattern value="org.treebolic.contacts.TreebolicActivity" method="TreebolicActivity" />
+    <pattern value="org.treebolic.contacts.TreebolicBasicActivity" method="TreebolicBasicActivity" />
+    <pattern value="org.treebolic.contacts.TreebolicSourceActivity" method="TreebolicSourceActivity" />
+    <pattern value="org.treebolic.contacts.ListContactsGroupedFragment.ImageAdapter" method="getView" />
+    <pattern value="org.treebolic.contacts.SettingsActivity.GeneralPreferenceFragment" method="onCreate" />
+    <pattern value="org.treebolic.contacts.SettingsActivity.FilterPreferenceFragment" method="onCreate" />
+    <pattern value="org.treebolic.contacts.MainActivity.PlaceholderFragment" method="onCreateView" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
-    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
+    <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />
     <option name="myNullables">
       <value>
-        <list size="4">
+        <list size="10">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
           <item index="3" class="java.lang.String" itemvalue="android.support.annotation.Nullable" />
+          <item index="4" class="java.lang.String" itemvalue="javax.annotation.CheckForNull" />
+          <item index="5" class="java.lang.String" itemvalue="androidx.annotation.Nullable" />
+          <item index="6" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNullable" />
+          <item index="7" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.Nullable" />
+          <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableDecl" />
+          <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
         </list>
       </value>
     </option>
     <option name="myNotNulls">
       <value>
-        <list size="4">
+        <list size="9">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
           <item index="3" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
+          <item index="4" class="java.lang.String" itemvalue="androidx.annotation.NonNull" />
+          <item index="5" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNonNull" />
+          <item index="6" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.NonNull" />
+          <item index="7" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullDecl" />
+          <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
         </list>
       </value>
     </option>
@@ -63,5 +204,5 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8 (1)" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK" />
 </project>

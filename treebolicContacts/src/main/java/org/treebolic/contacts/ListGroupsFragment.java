@@ -6,13 +6,14 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.AlertDialog;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 /**
@@ -97,7 +99,6 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		{
 			selection = ContactsContract.Groups._ID + " IN " + groups;
 		}
-		final String[] selectionArgs = null;
 		final String sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
 
 		// Starts the query
@@ -107,19 +108,19 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 				treebolic.provider.contacts.Settings.GROUP_URI, //
 				treebolic.provider.contacts.Settings.GROUP_PROJECTION, //
 				selection, //
-				selectionArgs, //
+				null, //
 				sort);
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
+	public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor)
 	{
 		// Put the result Cursor in the adapter for the ListView
 		this.adapter.swapCursor(cursor);
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader)
+	public void onLoaderReset(@NonNull Loader<Cursor> loader)
 	{
 		// Delete the reference to the existing Cursor
 		this.adapter.swapCursor(null);
@@ -184,8 +185,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		textView.setText(sb);
 		imageView.setImageResource(R.drawable.ic_group_large);
 
-		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", (dialog, id) ->
-		{
+		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", (dialog, id) -> {
 			//do things
 		});
 		builder.show();

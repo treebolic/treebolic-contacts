@@ -7,7 +7,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 /**
  * Settings
@@ -157,7 +158,7 @@ public class Settings
 	static public final String PARAM_FILTER_GROUPS = "filter_groups";
 
 	static public final String VALUE_DISPLAY_FIRST_LAST = "first,last";
-	//static public String VALUE_DISPLAY_LAST_FIRST = "last,first";
+	static public String VALUE_DISPLAY_LAST_FIRST = "last,first";
 	static public final String VALUE_SORT_FIRST = "first";
 	static public final String VALUE_SORT_LAST = "last";
 }

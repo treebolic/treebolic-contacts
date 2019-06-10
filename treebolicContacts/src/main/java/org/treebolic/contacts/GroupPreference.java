@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.os.Build;
 import android.preference.MultiSelectListPreference;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -50,16 +52,14 @@ public class GroupPreference extends MultiSelectListPreference
 
 	private void init(@NonNull Context context)
 	{
-		final String selection = null;
-		final String[] selectionArgs = null;
 		final String sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
 
 		final ContentResolver contentResolver = context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
 				ContactsContract.Groups.CONTENT_URI, //
 				treebolic.provider.contacts.Settings.GROUP_PROJECTION, //
-				selection, //
-				selectionArgs, //
+				null, //
+				null, //
 				sort);
 
 		final List<String> labels = new ArrayList<>();
@@ -82,7 +82,7 @@ public class GroupPreference extends MultiSelectListPreference
 							title = context.getPackageManager().getText(resPackage, resId, null);
 						}
 					}
-					if ("Starred in Android".equals(title))
+					if ("Starred in Android".contentEquals(title))
 					{
 						title = "Starred";
 					}

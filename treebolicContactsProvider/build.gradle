@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -32,5 +32,5 @@ dependencies {
     implementation project(':treebolicMutable')
     implementation project(':treebolicLoadBalancer')
 
-    implementation 'com.android.support:support-v4:27.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

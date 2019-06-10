@@ -5,16 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import org.treebolic.TreebolicIface;
 
@@ -124,7 +126,7 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> loader, @NonNull Cursor cursor)
+	public void onLoadFinished(@NonNull Loader<Cursor> loader, @NonNull Cursor cursor)
 	{
 		Log.d(TAG, "count=" + cursor.getCount());
 		// dumpCursor(cursor);
@@ -134,7 +136,7 @@ public class ListContactsFragment extends AbstractListContactsCursorFragment imp
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader)
+	public void onLoaderReset(@NonNull Loader<Cursor> loader)
 	{
 		// Delete the reference to the existing Cursor
 		this.adapter.swapCursor(null);

@@ -8,14 +8,16 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SimpleCursorAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import treebolic.provider.contacts.Utils;
 
@@ -32,6 +34,7 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 	class ImageCursorAdapter extends SimpleCursorAdapter
 	{
+		@SuppressWarnings("WeakerAccess")
 		public ImageCursorAdapter(@NonNull Context context, int layout, @SuppressWarnings("SameParameterValue") Cursor cursor, String[] from, int[] to, @SuppressWarnings("SameParameterValue") int flags)
 		{
 			super(context, layout, cursor, from, to, flags);
@@ -75,12 +78,14 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 	// C R E A T E
 
+	@SuppressWarnings("WeakerAccess")
 	public AbstractListContactsCursorFragment()
 	{
 	}
 
 	// O V E R R I D E S
 
+	@SuppressWarnings("WeakerAccess")
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState)
 	{

@@ -2,8 +2,9 @@ package org.treebolic.contacts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.treebolic.TreebolicIface;
 
@@ -38,6 +39,7 @@ public abstract class TreebolicSourceActivity extends TreebolicBasicActivity
 
 	// C O N S T R U C T O R
 
+	@SuppressWarnings("WeakerAccess")
 	public TreebolicSourceActivity(int menuId0)
 	{
 		super(menuId0);
@@ -79,18 +81,18 @@ public abstract class TreebolicSourceActivity extends TreebolicBasicActivity
 	@Override
 	protected Properties makeParameters()
 	{
-		final Properties theseParameters = super.makeParameters();
+		final Properties parameters = super.makeParameters();
 
 		if (this.source != null)
 		{
-			theseParameters.setProperty("source", this.source);
-			theseParameters.setProperty("doc", this.source);
+			parameters.setProperty("source", this.source);
+			parameters.setProperty("doc", this.source);
 		}
 		if (this.providerName != null)
 		{
-			theseParameters.setProperty("provider", this.providerName);
+			parameters.setProperty("provider", this.providerName);
 		}
-		return theseParameters;
+		return parameters;
 	}
 
 	// U N M A R S H A L

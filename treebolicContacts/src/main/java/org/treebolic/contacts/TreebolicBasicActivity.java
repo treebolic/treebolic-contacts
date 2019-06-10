@@ -10,13 +10,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -26,6 +28,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.treebolic.AppCompatCommonActivity;
 import org.treebolic.ColorUtils;
@@ -136,6 +140,7 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 
 	// C O N S T R U C T O R
 
+	@SuppressWarnings("WeakerAccess")
 	protected TreebolicBasicActivity(final int menuId0)
 	{
 		this.menuId = menuId0;
@@ -144,6 +149,7 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 
 	// L I F E C Y C L E
 
+	@SuppressWarnings("WeakerAccess")
 	@Override
 	protected void onCreate(final Bundle savedInstanceState)
 	{
@@ -398,12 +404,14 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 
 	// T R E E B O L I C C O N T E X T
 
+	@SuppressWarnings("SameReturnValue")
 	@Override
 	public URL getBase()
 	{
 		return null;
 	}
 
+	@SuppressWarnings("SameReturnValue")
 	@Override
 	public URL getImagesBase()
 	{
@@ -530,7 +538,7 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 		// reset current search if any
 		resetSearch();
 
-		if (submit || query.length() > SEARCH_TRIGGER_LEVEL)
+		if (submit /*|| query.length() > SEARCH_TRIGGER_LEVEL*/)
 		{
 			// query applies to source: search is a requery
 			final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -538,10 +546,10 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 			if (SearchSettings.SCOPE_SOURCE.equals(scope))
 			{
 				Log.d(TAG, "Source" + ' ' + '"' + query + '"');
-				if (submit)
-				{
+				//if (submit)
+				//{
 					requery(query);
-				}
+				//}
 				return;
 			}
 
@@ -658,18 +666,18 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 	@SuppressWarnings("WeakerAccess")
 	protected Properties makeParameters()
 	{
-		final Properties theseParameters = new Properties();
+		final Properties parameters = new Properties();
 		if (this.base != null)
 		{
-			theseParameters.setProperty("base", this.base);
+			parameters.setProperty("base", this.base);
 		}
 		if (this.imageBase != null)
 		{
-			theseParameters.setProperty("imagebase", this.imageBase);
+			parameters.setProperty("imagebase", this.imageBase);
 		}
 		if (this.settings != null)
 		{
-			theseParameters.setProperty("settings", this.settings);
+			parameters.setProperty("settings", this.settings);
 		}
 
 		// add properties from bundle
@@ -677,16 +685,16 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 		{
 			for (String key : this.more.keySet())
 			{
-				final Object thisValue = this.more.get(key);
-				if (thisValue != null)
+				final Object value = this.more.get(key);
+				if (value != null)
 				{
-					theseParameters.setProperty(key, thisValue.toString());
+					parameters.setProperty(key, value.toString());
 				}
 			}
 		}
 
-		theseParameters.setProperty("debug", Boolean.toString(BuildConfig.DEBUG));
-		return theseParameters;
+		parameters.setProperty("debug", Boolean.toString(BuildConfig.DEBUG));
+		return parameters;
 	}
 
 	// --Commented out by Inspection START (9/23/17 5:49 PM):
@@ -717,8 +725,7 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 	 */
 	private void snackbar(@NonNull final String message, final int duration)
 	{
-		runOnUiThread(() ->
-		{
+		runOnUiThread(() -> {
 			Snackbar.make(TreebolicBasicActivity.this.widget, message, duration).show();
 			final Snackbar snack = Snackbar.make(TreebolicBasicActivity.this.widget, message, duration);
 			final android.view.View view = snack.getView();

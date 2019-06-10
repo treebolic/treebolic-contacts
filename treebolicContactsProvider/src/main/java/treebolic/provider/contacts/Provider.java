@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 import java.net.URL;
@@ -44,9 +46,7 @@ public class Provider implements IProvider
 	 * Ordinals used as indexes of images
 	 */
 	private enum ImageIndices
-	{
-		ROOT, @SuppressWarnings("unused")FOLDER, CONTACT, GROUP,
-	}
+	{ROOT, @SuppressWarnings("unused") FOLDER, CONTACT, GROUP,}
 
 	/**
 	 * Image array
@@ -190,19 +190,21 @@ public class Provider implements IProvider
 	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
 
 	@Override
-	public void setHandle(final Object thisHandle)
+	public void setHandle(final Object handle)
 	{
-		this.context = (Context) thisHandle;
+		this.context = (Context) handle;
 	}
 
+	@SuppressWarnings("EmptyMethod")
 	@Override
-	public void setContext(final IProviderContext thisProviderContext)
+	public void setContext(final IProviderContext providerContext)
 	{
 		// not needed
 	}
 
+	@SuppressWarnings("EmptyMethod")
 	@Override
-	public void setLocator(final ILocator thisContext)
+	public void setLocator(final ILocator context)
 	{
 		// not needed
 	}
@@ -230,24 +232,24 @@ public class Provider implements IProvider
 	 * Tree factory
 	 *
 	 * @param source          source
-	 * @param theseParameters parameters
+	 * @param parameters parameters
 	 * @return tree
 	 */
-	private Tree buildTree(final String source, @Nullable final Properties theseParameters)
+	private Tree buildTree(final String source, @Nullable final Properties parameters)
 	{
-		if (theseParameters != null)
+		if (parameters != null)
 		{
-			final String display = theseParameters.getProperty(Settings.PARAM_DISPLAY);
+			final String display = parameters.getProperty(Settings.PARAM_DISPLAY);
 			if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
 			{
 				this.displayCode = 1;
 			}
-			else if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
+			else if (Settings.VALUE_DISPLAY_LAST_FIRST.equals(display))
 			{
 				this.displayCode = 2;
 			}
 
-			final String sort = theseParameters.getProperty(Settings.PARAM_SORT);
+			final String sort = parameters.getProperty(Settings.PARAM_SORT);
 			if (Settings.VALUE_SORT_FIRST.equals(sort))
 			{
 				this.sortCode = 1;
@@ -257,14 +259,14 @@ public class Provider implements IProvider
 				this.sortCode = 2;
 			}
 
-			final String mergeGroups = theseParameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
+			final String mergeGroups = parameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
 			this.mergeGroups = "true".equals(mergeGroups);
 
-			final String filterGroups = theseParameters.getProperty(Settings.PARAM_FILTER_GROUPS);
+			final String filterGroups = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
 
 			// start
 
-			final String groups = theseParameters.getProperty(Settings.PARAM_GROUPS, "false");
+			final String groups = parameters.getProperty(Settings.PARAM_GROUPS, "false");
 			if ("true".equals(groups))
 			{
 				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(source), 0));
@@ -291,7 +293,6 @@ public class Provider implements IProvider
 		topRoot.setBackColor(Provider.rootBackColor);
 		topRoot.setForeColor(Provider.rootForeColor);
 		topRoot.setEdgeColor(Provider.rootEdgeColor);
-		//noinspection PointlessBitwiseExpression
 		topRoot.setEdgeStyle(IEdge.SOLID | IEdge.TOTRIANGLE | IEdge.TOFILL);
 		topRoot.setImageIndex(ImageIndices.ROOT.ordinal());
 
@@ -457,7 +458,7 @@ public class Provider implements IProvider
 							title = this.context.getPackageManager().getText(resPackage, resId, null);
 						}
 					}
-					if ("Starred in Android".equals(title))
+					if ("Starred in Android".contentEquals(title))
 					{
 						title = "Starred";
 					}
@@ -577,7 +578,7 @@ public class Provider implements IProvider
 					//final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
 					//final Long thumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
 					//final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_FILE_ID_INDEX);
-					final Long groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX);
+					final long groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX);
 					Log.d("\tmember ", groupId + " " + contactId + " " + name + " " + altName + " " + photoThumbnailUri);
 
 					final TreeMutableNode node = makeContactNode(contactId, name, altName, photoThumbnailUri);
@@ -639,7 +640,7 @@ public class Provider implements IProvider
 					//final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
 					//final Long thumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
 					//final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_FILE_ID_INDEX);
-					final Long groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX);
+					final long groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX);
 					Log.d("\tmember ", groupId + " " + contactId + " " + name + " " + altName + " " + photoThumbnailUri);
 
 					final TreeMutableNode node = makeContactNode(contactId, name, altName, photoThumbnailUri);
@@ -852,23 +853,23 @@ public class Provider implements IProvider
 	private treebolic.model.Settings makeSettings()
 	{
 		final treebolic.model.Settings settings = new treebolic.model.Settings();
-		settings.theBackColor = Provider.backgroundColor;
-		settings.theNodeBackColor = Provider.contactBackColor;
-		settings.theNodeForeColor = Provider.contactForeColor;
-		settings.theOrientation = "radial";
-		settings.theHasToolbarFlag = true;
-		settings.theFontFace = "SansSerif";
-		settings.theExpansion = .8F;
-		settings.theSweep = 1.3F;
-		settings.theEllipsizeFlag = true;
-		settings.theLabelMaxLines = 2;
-		settings.theLabelExtraLineFactor = .7F;
-		settings.theHasToolbarFlag = true;
-		settings.theHasStatusbarFlag = true;
-		settings.theFocusOnHoverFlag = true;
-		settings.theTreeEdgeColor = Provider.contactEdgeColor;
-		settings.theTreeEdgeStyle = (int) IEdge.DOT;
-		//settings.theDefaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
+		settings.backColor = Provider.backgroundColor;
+		settings.nodeBackColor = Provider.contactBackColor;
+		settings.nodeForeColor = Provider.contactForeColor;
+		settings.orientation = "radial";
+		settings.hasToolbarFlag = true;
+		settings.fontFace = "SansSerif";
+		settings.expansion = .8F;
+		settings.sweep = 1.3F;
+		settings.ellipsizeFlag = true;
+		settings.labelMaxLines = 2;
+		settings.labelExtraLineFactor = .7F;
+		settings.hasToolbarFlag = true;
+		settings.hasStatusbarFlag = true;
+		settings.focusOnHoverFlag = true;
+		settings.treeEdgeColor = Provider.contactEdgeColor;
+		settings.treeEdgeStyle = (int) IEdge.DOT;
+		//settings.defaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
 		return settings;
 	}
 }

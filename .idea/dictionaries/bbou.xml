@@ -1,9 +1,31 @@
 <component name="ProjectDictionaryState">
   <dictionary name="bbou">
     <words>
+      <w>actionbutton</w>
       <w>balancer</w>
+      <w>doubletap</w>
+      <w>firstrun</w>
+      <w>iface</w>
+      <w>imagebase</w>
+      <w>keyw</w>
+      <w>mimetype</w>
+      <w>requery</w>
+      <w>scaledown</w>
       <w>scaledup</w>
+      <w>scaleone</w>
+      <w>scaleup</w>
+      <w>sectionhead</w>
+      <w>snackbar</w>
+      <w>startswith</w>
+      <w>treebolic</w>
+      <w>treeedge</w>
+      <w>unmarshal</w>
+      <w>urlscheme</w>
       <w>valign</w>
+      <w>webview</w>
+      <w>zoomin</w>
+      <w>zoomone</w>
+      <w>zoomout</w>
     </words>
   </dictionary>
 </component>

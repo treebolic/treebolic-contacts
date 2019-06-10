@@ -14,7 +14,9 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -33,17 +35,24 @@ public class Utils
 	{
 		@SuppressWarnings("unused")
 		public final String groupId;
+
 		@SuppressWarnings("unused")
 		public final String systemId;
+
 		public final String title;
+
 		public final String account;
+
 		@SuppressWarnings("unused")
 		public final String accountType;
+
 		@SuppressWarnings("unused")
 		public final String titleRes;
+
 		@SuppressWarnings("unused")
 		public final String resPackage;
 
+		@SuppressWarnings("WeakerAccess")
 		public Group(String groupId, String systemId, String title, String account, String accountType, String titleRes, String resPackage)
 		{
 			this.groupId = groupId;
@@ -131,15 +140,13 @@ public class Utils
 	{
 		final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, id);
 		final String[] projection = new String[]{ContactsContract.Contacts.Photo.PHOTO};
-		final String selection = null;
-		final String[] selectionArgs = null;
 
 		//final Uri uri = ContactsContract.Data.CONTENT_URI;
 		//final String[] projection = new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO};
 		//final String selection = ContactsContract.Data._ID + " = ?";
 		//final String[] selectionArgs = new String[]{Integer.toString(photoId)};
 
-		final Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+		final Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
 		if (cursor != null)
 		{
 			try
@@ -176,6 +183,7 @@ public class Utils
 	{
 		final int w = bitmap.getWidth();
 		final int h = bitmap.getHeight();
+		final float h2 = h / 2F;
 		final Bitmap output = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 		final Canvas canvas = new Canvas(output);
 		canvas.drawARGB(0, 0, 0, 0);
@@ -185,7 +193,7 @@ public class Utils
 		final Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setColor(color);
-		canvas.drawCircle(h / 2, h / 2, h / 2, paint);    // canvas.drawRoundRect(rect, roundPx, roundPx, paint);
+		canvas.drawCircle(h2, h2, h2, paint);    // canvas.drawRoundRect(rect, roundPx, roundPx, paint);
 
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 		canvas.drawBitmap(bitmap, rect, rect, paint);

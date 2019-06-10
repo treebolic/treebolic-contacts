@@ -9,11 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import treebolic.provider.contacts.Utils;
 
 /**
@@ -113,6 +113,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	 */
 	class ImageAdapter extends SimpleAdapter
 	{
+		@SuppressWarnings("WeakerAccess")
 		public ImageAdapter(final Context context, final List<? extends Map<String, ?>> data, @SuppressWarnings("SameParameterValue") final int resource, @SuppressWarnings("SameParameterValue") final String[] from, @SuppressWarnings("SameParameterValue") final int[] to)
 		{
 			super(context, data, resource, from, to);
@@ -257,7 +258,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> loader, @NonNull Cursor cursor)
+	public void onLoadFinished(@NonNull Loader<Cursor> loader, @NonNull Cursor cursor)
 	{
 		Log.d(TAG, "count=" + cursor.getCount());
 
@@ -310,29 +311,31 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 					// group
 					assert this.groups != null;
 					final Utils.Group group = this.groups.get(groupId);
-
-					for (int i = 0; i < columnIndexes.length; i++)
+					if (group != null)
 					{
-						final String key = FROM_KEYS[i];
-						String value = cursor.getString(columnIndexes[i]);
-						if (GROUP_KEY.equals(key))
+						for (int i = 0; i < columnIndexes.length; i++)
 						{
-							value = group.title;
-						}
-						else if (ACCOUNT_KEY.equals(key))
-						{
-							value = group.account;
-						}
-						Log.d(TAG, key + " (" + columns[i] + ") " + value);
-						if (i > 0)
-						{
-							String value0 = row.get(key);
-							if (value0 != null)
+							final String key = FROM_KEYS[i];
+							String value = cursor.getString(columnIndexes[i]);
+							if (GROUP_KEY.equals(key))
 							{
-								value = value0 + '\n' + value;
+								value = group.title;
 							}
+							else if (ACCOUNT_KEY.equals(key))
+							{
+								value = group.account;
+							}
+							Log.d(TAG, key + " (" + columns[i] + ") " + value);
+							if (i > 0)
+							{
+								String value0 = row.get(key);
+								if (value0 != null)
+								{
+									value = value0 + '\n' + value;
+								}
+							}
+							row.put(key, value);
 						}
-						row.put(key, value);
 					}
 				}
 				while (cursor.moveToNext());
@@ -344,7 +347,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader)
+	public void onLoaderReset(@NonNull Loader<Cursor> loader)
 	{
 		// Delete the reference to the existing Cursor
 		assert this.adapter != null;
@@ -364,7 +367,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		final String contactId = row.get(CONTACT_ID_KEY);
 
 		// Content Uri
-		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.valueOf(contactId));
+		final Uri contactContentUri = contactId == null ? null : ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.valueOf(contactId));
 
 		// IMAGES
 
@@ -390,7 +393,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 				contactId, //
 				thumbnailUri != null ? Uri.parse(thumbnailUri) : (photoUri != null ? Uri.parse(photoUri) : null), //
 				labels, //
-				contactContentUri.toString(), //
+				contactContentUri == null ? "" : contactContentUri.toString(), //
 				thumbnailUri, //
 				photoUri, //
 				thumbnailId, //
