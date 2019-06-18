@@ -143,6 +143,8 @@
     <pattern value="org.treebolic.contacts.SettingsActivity.GeneralPreferenceFragment" method="onCreate" />
     <pattern value="org.treebolic.contacts.SettingsActivity.FilterPreferenceFragment" method="onCreate" />
     <pattern value="org.treebolic.contacts.MainActivity.PlaceholderFragment" method="onCreateView" />
+    <pattern value="org.treebolic.contacts.SettingsActivity.GeneralPreferenceFragment" method="onCreatePreferences" />
+    <pattern value="org.treebolic.contacts.SettingsActivity.FilterPreferenceFragment" method="onCreatePreferences" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
