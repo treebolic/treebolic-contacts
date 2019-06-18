@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+ */
+
 package treebolic.provider.contacts;
 
 import android.content.ContentResolver;
@@ -220,6 +224,7 @@ public class Provider implements IProvider
 		return new Model(tree, settings, images);
 	}
 
+	@SuppressWarnings("WeakerAccess")
 	@Override
 	public Tree makeTree(final String source, final URL base, final Properties parameters, final boolean checkRecursion)
 	{

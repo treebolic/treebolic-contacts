@@ -1,25 +1,30 @@
+/*
+ * Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+ */
+
 package org.treebolic.contacts;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.NavUtils;
-import androidx.appcompat.app.ActionBar;
-
 import android.view.MenuItem;
 
 import org.treebolic.AppCompatCommonPreferenceActivity;
 import org.treebolic.TreebolicIface;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.app.NavUtils;
+import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.MultiSelectListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.legacy.contrib.Header;
 
 /**
  * Settings activity
@@ -28,7 +33,7 @@ import java.util.Set;
  */
 public class SettingsActivity extends AppCompatCommonPreferenceActivity
 {
-	// E V E N T S
+	// L I F E C Y C L E
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState)
@@ -61,7 +66,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	// S E T U P
 
 	@Override
-	public void onBuildHeaders(final List<PreferenceActivity.Header> target)
+	public void onBuildHeaders(@NonNull final List<Header> target)
 	{
 		loadHeadersFromResource(R.xml.pref_headers, target);
 	}
@@ -69,7 +74,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	// D E T E C T I O N
 
 	@Override
-	protected boolean isValidFragment(final String fragmentName)
+	public boolean isValidFragment(final String fragmentName)
 	{
 		return GeneralPreferenceFragment.class.getName().equals(fragmentName) || FilterPreferenceFragment.class.getName().equals(fragmentName);
 	}
@@ -88,97 +93,78 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
 	}
 
-	// L I S T E N E R
+	// S U M M A R Y
 
 	/**
 	 * A preference value change listener that updates the preference's summary to reflect its new value.
 	 */
-	private static final Preference.OnPreferenceChangeListener listener = (preference, value) -> {
-		// set the summary to the value's simple string representation.
-		final String stringValue = value.toString();
-		preference.setSummary(stringValue);
-		return true;
+	private static final Preference.SummaryProvider<MultiSelectListPreference> LIST_SUMMARY_PROVIDER = (preference) -> {
+
+		final Set<String> values = preference.getPersistedStringSet(null);
+		return setToString(values);
 	};
 
-	/**
-	 * A preference value change listener that updates the preference's summary to reflect its new value.
-	 */
-	private static final Preference.OnPreferenceChangeListener listenerMulti = (preference, value) -> {
-		// set the summary to the value's simple string representation.
-		// final MultiSelectListPreference multiPreference = (MultiSelectListPreference) preference;
-		// final Set<String> values = multiPreference.getValues();
-		@SuppressWarnings("unchecked") final Set<String> values = (Set<String>) value;
-
-		final String stringValue = values.toString();
-		preference.setSummary(stringValue);
-		return true;
-	};
-
-	// B I N D
-
-	/**
-	 * Binds a preference's summary to its value. More specifically, when the preference's value is changed, its summary (line of text below the preference
-	 * title) is updated to reflect the value. The summary is also immediately updated upon calling this method. The exact display format is dependent on the
-	 * type of preference.
-	 *
-	 * @see #listener
-	 */
-	private static void bind(@NonNull final Preference preference)
+	static @NonNull
+	private CharSequence setToString(@Nullable final Set<String> values)
 	{
-		// Set the listener to watch for value changes.
-		preference.setOnPreferenceChangeListener(SettingsActivity.listener);
-
-		// Trigger the listener immediately with the preference's current value.
-		SettingsActivity.listener.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
-	}
-
-	/**
-	 * Binds a preference's summary to its value. More specifically, when the preference's value is changed, its summary (line of text below the preference
-	 * title) is updated to reflect the value. The summary is also immediately updated upon calling this method. The exact display format is dependent on the
-	 * type of preference.
-	 *
-	 * @see #listener
-	 */
-	private static void bindMulti(@NonNull final Preference preference)
-	{
-		// Set the listener to watch for value changes.
-		preference.setOnPreferenceChangeListener(SettingsActivity.listener);
-
-		// Trigger the listener immediately with the preference's current value
-		SettingsActivity.listenerMulti.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getStringSet(preference.getKey(), new HashSet<>()));
+		if (values == null)
+		{
+			return "";
+		}
+		final StringBuilder sb = new StringBuilder();
+		boolean isFirst = true;
+		for (String value : values)
+		{
+			if (isFirst)
+			{
+				isFirst = false;
+			}
+			else
+			{
+				sb.append(' ');
+			}
+			sb.append(value);
+		}
+		return sb;
 	}
 
 	// F R A G M E N T S
 
-	public static class GeneralPreferenceFragment extends PreferenceFragment
+	public static class GeneralPreferenceFragment extends PreferenceFragmentCompat
 	{
 		@Override
-		public void onCreate(final Bundle savedInstanceState)
+		public void onCreatePreferences(@SuppressWarnings("unused") final Bundle savedInstanceState, @SuppressWarnings("unused") final String rootKey)
 		{
-			super.onCreate(savedInstanceState);
-
 			// inflate
 			addPreferencesFromResource(R.xml.pref_general);
 
 			// bind
-			SettingsActivity.bind(findPreference(TreebolicIface.PREF_SOURCE));
-			SettingsActivity.bind(findPreference(Settings.PREF_DISPLAY));
-			SettingsActivity.bind(findPreference(Settings.PREF_SORT));
+			final EditTextPreference sourcePref = findPreference(TreebolicIface.PREF_SOURCE);
+			assert sourcePref != null;
+			sourcePref.setSummaryProvider(EditTextPreference.SimpleSummaryProvider.getInstance());
+
+			final ListPreference displayPref = findPreference(Settings.PREF_DISPLAY);
+			assert displayPref != null;
+			displayPref.setSummaryProvider(ListPreference.SimpleSummaryProvider.getInstance());
+
+			final ListPreference sortPref = findPreference(Settings.PREF_SORT);
+			assert sortPref != null;
+			sortPref.setSummaryProvider(ListPreference.SimpleSummaryProvider.getInstance());
 		}
 	}
 
-	public static class FilterPreferenceFragment extends PreferenceFragment
+	public static class FilterPreferenceFragment extends PreferenceFragmentCompat
 	{
 		@Override
-		public void onCreate(final Bundle savedInstanceState)
+		public void onCreatePreferences(@SuppressWarnings("unused") final Bundle savedInstanceState, @SuppressWarnings("unused") final String rootKey)
 		{
-			super.onCreate(savedInstanceState);
-
 			// inflate
 			addPreferencesFromResource(R.xml.pref_filter);
 
 			// bind
-			SettingsActivity.bindMulti(findPreference(Settings.PREF_FILTER_GROUPS));
+			MultiSelectListPreference pref = findPreference(Settings.PREF_FILTER_GROUPS);
+			assert pref != null;
+			pref.setSummaryProvider(LIST_SUMMARY_PROVIDER);
 		}
 	}
 }

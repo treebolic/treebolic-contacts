@@ -1,13 +1,16 @@
-<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+  ~ Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+  -->
 
-	<!-- These settings headers are only used on tablets. -->
+<preference-headers
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<header
-		android:fragment="org.treebolic.contacts.SettingsActivity$GeneralPreferenceFragment"
-		android:title="@string/pref_header_general"/>
+		app:fragment="org.treebolic.contacts.SettingsActivity$GeneralPreferenceFragment"
+		app:title="@string/pref_header_general"/>
 
 	<header
-		android:fragment="org.treebolic.contacts.SettingsActivity$FilterPreferenceFragment"
-		android:title="@string/pref_header_filter"/>
+		app:fragment="org.treebolic.contacts.SettingsActivity$FilterPreferenceFragment"
+		app:title="@string/pref_header_filter"/>
 
 </preference-headers>

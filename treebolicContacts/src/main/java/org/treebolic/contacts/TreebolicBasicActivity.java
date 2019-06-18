@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+ */
+
 package org.treebolic.contacts;
 
 import android.annotation.SuppressLint;
@@ -10,15 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -42,6 +37,12 @@ import org.treebolic.search.SearchSettings;
 import java.net.URL;
 import java.util.Properties;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import treebolic.IContext;
 import treebolic.Widget;
 import treebolic.glue.component.Container;
@@ -548,7 +549,7 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 				Log.d(TAG, "Source" + ' ' + '"' + query + '"');
 				//if (submit)
 				//{
-					requery(query);
+				requery(query);
 				//}
 				return;
 			}

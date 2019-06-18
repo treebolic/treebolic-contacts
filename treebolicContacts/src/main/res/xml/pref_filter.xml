@@ -1,8 +1,12 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+  ~ Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+  -->
+
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<org.treebolic.contacts.GroupPreference
 		android:key="pref_filter_groups"
 		android:summary="@string/pref_description_group_filter"
 		android:title="@string/pref_title_group_filter"/>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

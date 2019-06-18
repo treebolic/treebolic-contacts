@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+ */
+
 package org.treebolic.contacts;
 
 import android.annotation.SuppressLint;
@@ -8,12 +12,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import org.treebolic.TreebolicIface;
 
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Settings

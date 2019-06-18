@@ -11,8 +11,6 @@
       <module fileurl="file://$PROJECT_DIR$/../TreebolicSupportLibs/searchLib/searchLib.iml" filepath="$PROJECT_DIR$/../TreebolicSupportLibs/searchLib/searchLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/../TreebolicSupportLibs/storageLib/storageLib.iml" filepath="$PROJECT_DIR$/../TreebolicSupportLibs/storageLib/storageLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/treebolicContacts/treebolicContacts.iml" filepath="$PROJECT_DIR$/treebolicContacts/treebolicContacts.iml" />
-      <module fileurl="file://$PROJECT_DIR$/treebolicContacts/treebolicContacts.iml" filepath="$PROJECT_DIR$/treebolicContacts/treebolicContacts.iml" />
-      <module fileurl="file://$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" filepath="$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" />
       <module fileurl="file://$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" filepath="$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" />
       <module fileurl="file://$PROJECT_DIR$/../TreebolicLib/treebolicGlue/treebolicGlue.iml" filepath="$PROJECT_DIR$/../TreebolicLib/treebolicGlue/treebolicGlue.iml" />
       <module fileurl="file://$PROJECT_DIR$/../TreebolicLib/treebolicGlueIface/treebolicGlueIface.iml" filepath="$PROJECT_DIR$/../TreebolicLib/treebolicGlueIface/treebolicGlueIface.iml" />

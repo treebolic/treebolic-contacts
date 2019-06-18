@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+ */
+
 package org.treebolic.contacts;
 
 import android.annotation.TargetApi;
@@ -5,16 +9,16 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
-import android.preference.MultiSelectListPreference;
 import android.provider.ContactsContract;
-
-import androidx.annotation.NonNull;
-
 import android.util.AttributeSet;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.MultiSelectListPreference;
 
 /**
  * Group preference
@@ -25,26 +29,26 @@ import java.util.List;
 public class GroupPreference extends MultiSelectListPreference
 {
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public GroupPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
+	public GroupPreference(@NonNull final Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes)
 	{
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
 	}
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public GroupPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr)
+	public GroupPreference(@NonNull final Context context, @Nullable AttributeSet attrs, int defStyleAttr)
 	{
 		super(context, attrs, defStyleAttr);
 		init(context);
 	}
 
-	public GroupPreference(@NonNull Context context, AttributeSet attrs)
+	public GroupPreference(@NonNull final Context context, @Nullable AttributeSet attrs)
 	{
 		super(context, attrs);
 		init(context);
 	}
 
-	public GroupPreference(@NonNull Context context)
+	public GroupPreference(@NonNull final Context context)
 	{
 		super(context);
 		init(context);
