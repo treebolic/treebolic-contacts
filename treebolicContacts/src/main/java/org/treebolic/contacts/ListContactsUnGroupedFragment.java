@@ -106,7 +106,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		super.onActivityCreated(savedInstanceState);
 
 		// Initializes the loader
-		getLoaderManager().initLoader(0, null, this);
+		LoaderManager.getInstance(this).initLoader(0, null, this);
 
 		// Gets adapter's source columns
 		final String displayPref = Settings.getStringPref(getContext(), Settings.PREF_DISPLAY);

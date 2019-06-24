@@ -16,87 +16,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e357679-a691-479e-bec4-ec1616a208e4" name="Default" comment="androidx&#10;lint">
-      <change afterPath="$PROJECT_DIR$/.idea/copyright/treebolic.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_1_1_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_1_1_0_rc01_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_1_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_1_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_common_2_1_0_beta01_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_collection_collection_1_1_0_rc01_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_1_0_rc01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_1_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_common_2_1_0_beta01_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_1_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_1_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_preference_preference_1_1_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_0_0_beta01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_beta02_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_beta02_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_rc01_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/assets/help/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/assets/help/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/AbstractActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/AbstractActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/AbstractListContactsCursorFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/AbstractListContactsCursorFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/AbstractListContactsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/AbstractListContactsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/GroupPreference.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/GroupPreference.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsGroupedActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsGroupedActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsGroupedFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsGroupedFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsUnGroupedActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsUnGroupedActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsUnGroupedFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListContactsUnGroupedFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListGroupsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListGroupsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListGroupsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/ListGroupsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/MainActivityFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/MainActivityFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/SettingsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicBasicActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicBasicActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicSourceActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/TreebolicSourceActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/actionbutton.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/actionbutton.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/activity_fragment_container.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/activity_fragment_container.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/detail_contact.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/detail_contact.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/fragment_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/fragment_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/fragment_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/fragment_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_contact.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_contact.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_contact_grouped.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_contact_grouped.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_contact_ungrouped.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_contact_ungrouped.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_group.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_group.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_mode.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_mode.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_scope.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/item_scope.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/toolbar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/layout/toolbar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/menu/list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/menu/list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/menu/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/menu/main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/menu/treebolic.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/menu/treebolic.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values-fr/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values-fr/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values-w820dp/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values-w820dp/dimens.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/dimens.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/string_nontranslatable.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/string_nontranslatable.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/styles_app.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/styles_app.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/backup_descriptor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/backup_descriptor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/pref_filter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/pref_filter.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/pref_general.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/pref_general.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/pref_headers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/xml/pref_headers.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/treebolicContacts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/treebolicContacts.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Permissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Permissions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Provider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/src/main/java/treebolic/provider/contacts/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" afterDir="false" />
     </list>
     <ignored path="TreebolicContacts.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -568,20 +488,6 @@
       <option name="presentableId" value="Default" />
       <updated>1495124405024</updated>
     </task>
-    <task id="LOCAL-00012" summary="in progress">
-      <created>1495641393482</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1495641393482</updated>
-    </task>
-    <task id="LOCAL-00013" summary="in progress">
-      <created>1495715634480</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1495715634480</updated>
-    </task>
     <task id="LOCAL-00014" summary="in progress">
       <created>1495729873801</created>
       <option name="number" value="00014" />
@@ -911,7 +817,21 @@
       <option name="project" value="LOCAL" />
       <updated>1560154217461</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="copyright&#10;preference 1.1.0">
+      <created>1560866493212</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1560866493214</updated>
+    </task>
+    <task id="LOCAL-00062" summary="androidx&#10;lint">
+      <created>1560866514742</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1560866514742</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -998,7 +918,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="in progress group merging" />
     <MESSAGE value="in progress artwork&#10;" />
     <MESSAGE value="splash&#10;" />
     <MESSAGE value="group filtering" />
@@ -1022,6 +941,7 @@
     <MESSAGE value="new build chain" />
     <MESSAGE value="prelint" />
     <MESSAGE value="lint" />
+    <MESSAGE value="copyright&#10;preference 1.1.0" />
     <MESSAGE value="androidx&#10;lint" />
     <option name="LAST_COMMIT_MESSAGE" value="androidx&#10;lint" />
   </component>
@@ -1121,7 +1041,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52">
           <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>

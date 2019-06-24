@@ -74,7 +74,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 		super.onActivityCreated(savedInstanceState);
 
 		// Initializes the loader
-		getLoaderManager().initLoader(0, null, this);
+		LoaderManager.getInstance(this).initLoader(0, null, this);
 
 		// Gets a CursorAdapter
 		final Activity activity = getActivity();

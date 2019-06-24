@@ -211,7 +211,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		contactsListView.setOnItemClickListener(this);
 
 		// Initializes the loader
-		getLoaderManager().initLoader(0, null, this);
+		LoaderManager.getInstance(this).initLoader(0, null, this);
 
 		// Gets a CursorAdapter
 		this.adapter = new ImageAdapter(activity, this.rows, R.layout.item_contact_grouped, FROM_KEYS, TO_IDS);
