@@ -16,17 +16,17 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-
-import androidx.annotation.NonNull;
-
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Photo utilities
@@ -99,8 +99,9 @@ public class Utils
 					}
 					final String account = cursor.getString(Settings.GROUP_ACCOUNT_NAME);
 					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
-					final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
-					final String resPackage = cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX);
+
+					final String titleRes = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ? null : cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
+					final String resPackage = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ? null : cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX);
 
 					final Group group = new Group(groupId, systemId, title, account, accountType, titleRes, resPackage);
 					map.put(groupId, group);

@@ -8,11 +8,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.provider.ContactsContract;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 
 import java.net.URL;
@@ -21,6 +18,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import treebolic.ILocator;
 import treebolic.glue.Color;
 import treebolic.glue.Image;
@@ -153,6 +152,16 @@ public class Provider implements IProvider
 	private static final int LABEL_TRUNCATE_AT = 3;
 
 	/**
+	 * LoadBalancer : edge color
+	 */
+	static private final Color LOADBALANCING_EDGE_COLOR = Color.WHITE;
+
+	/**
+	 * LoadBalancer : Edge style
+	 */
+	static private final int LOADBALANCING_EDGE_STYLE = IEdge.DOT | /* IEdge.FROMDEF | IEdge.FROMCIRCLE | */IEdge.TOTRIANGLE | IEdge.TOFILL | IEdge.STROKEDEF | IEdge.TODEF;
+
+	/**
 	 * Sort code 1=first name-last name, 2=last name, first name
 	 */
 	private int displayCode = 0;
@@ -188,7 +197,7 @@ public class Provider implements IProvider
 	public Provider()
 	{
 		this.loadBalancer = new LoadBalancer(TREE_MAX_NODES_AT_LEVEL, LABEL_TRUNCATE_AT);
-		this.loadBalancer.setGroupNode(folderBackColor, folderForeColor, folderEdgeColor, -1 /*ImageIndices.FOLDER.ordinal() */, null);
+		this.loadBalancer.setGroupNode(null, null, null, LOADBALANCING_EDGE_COLOR, LOADBALANCING_EDGE_STYLE, -1 /*ImageIndices.FOLDER.ordinal() */, null);
 	}
 
 	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
@@ -236,7 +245,7 @@ public class Provider implements IProvider
 	/**
 	 * Tree factory
 	 *
-	 * @param source          source
+	 * @param source     source
 	 * @param parameters parameters
 	 * @return tree
 	 */
@@ -453,23 +462,28 @@ public class Provider implements IProvider
 					final String groupId = cursor.getString(Settings.GROUP_ID_INDEX);
 					final String groupSystemId = cursor.getString(Settings.GROUP_SYSTEM_ID_INDEX);
 					CharSequence title = cursor.getString(Settings.GROUP_TITLE_INDEX);
-					final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
-					if (titleRes != null)
+
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 					{
-						int resId = Integer.parseInt(titleRes);
-						final String resPackage = cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX);
-						if (resPackage != null)
+						final String titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX);
+						if (titleRes != null)
 						{
-							title = this.context.getPackageManager().getText(resPackage, resId, null);
+							int resId = Integer.parseInt(titleRes);
+							final String resPackage = cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX);
+							if (resPackage != null)
+							{
+								title = this.context.getPackageManager().getText(resPackage, resId, null);
+							}
 						}
 					}
+
 					if ("Starred in Android".contentEquals(title))
 					{
 						title = "Starred";
 					}
 					final String accountName = cursor.getString(Settings.GROUP_ACCOUNT_NAME);
 					final String accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE);
-					Log.d("group ", groupId + " " + groupSystemId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
+					Log.d("group ", groupId + " " + groupSystemId + " " + title + " " + accountName + " " + accountType);
 
 					// members
 					final List<INode> memberNodes = collectGroupMembers(groupId, source);

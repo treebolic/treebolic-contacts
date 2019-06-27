@@ -76,23 +76,28 @@ public class GroupPreference extends MultiSelectListPreference
 				{
 					final String groupId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ID_INDEX);
 					CharSequence title = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_INDEX);
-					final String titleRes = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_RES_INDEX);
-					if (titleRes != null)
+
+					if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
 					{
-						int resId = Integer.parseInt(titleRes);
-						final String resPackage = cursor.getString(treebolic.provider.contacts.Settings.GROUP_RES_PACKAGE_INDEX);
-						if (resPackage != null)
+						final String titleRes = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_RES_INDEX);
+						if (titleRes != null)
 						{
-							title = context.getPackageManager().getText(resPackage, resId, null);
+							int resId = Integer.parseInt(titleRes);
+							final String resPackage = cursor.getString(treebolic.provider.contacts.Settings.GROUP_RES_PACKAGE_INDEX);
+							if (resPackage != null)
+							{
+								title = context.getPackageManager().getText(resPackage, resId, null);
+							}
 						}
 					}
+
 					if ("Starred in Android".contentEquals(title))
 					{
 						title = "Starred";
 					}
 					final String accountName = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_NAME);
 					final String accountType = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_TYPE);
-					Log.d("group ", groupId + " " + title + " " + titleRes + " " + accountName + " " + accountType);
+					Log.d("group ", groupId + " " + title + " " + accountName + " " + accountType);
 
 					labels.add(title + " " + accountName + " " + accountType);
 					values.add(groupId);
