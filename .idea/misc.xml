@@ -21,6 +21,9 @@
       <entry_point TYPE="field" FQNAME="org.treebolic.contacts.TreebolicBasicActivity SEARCH_TRIGGER_LEVEL" />
       <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Utils.Group systemId" />
       <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Utils.Group titleRes" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider folderBackColor" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider folderEdgeColor" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider folderForeColor" />
     </entry_points>
     <pattern value="org.treebolic.contacts.AbstractActivity" />
     <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment" />

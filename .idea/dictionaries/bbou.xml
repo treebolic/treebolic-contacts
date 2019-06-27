@@ -5,9 +5,12 @@
       <w>balancer</w>
       <w>doubletap</w>
       <w>firstrun</w>
+      <w>fromcircle</w>
+      <w>fromdef</w>
       <w>iface</w>
       <w>imagebase</w>
       <w>keyw</w>
+      <w>loadbalancing</w>
       <w>mimetype</w>
       <w>requery</w>
       <w>scaledown</w>
