@@ -24,6 +24,8 @@
       <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider folderBackColor" />
       <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider folderEdgeColor" />
       <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Provider folderForeColor" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Settings BASE_GROUP_MEMBERS_PROJECTION" />
+      <entry_point TYPE="field" FQNAME="treebolic.provider.contacts.Settings BASE_GROUP_PROJECTION" />
     </entry_points>
     <pattern value="org.treebolic.contacts.AbstractActivity" />
     <pattern value="org.treebolic.contacts.AbstractListContactsCursorFragment" />
@@ -148,6 +150,9 @@
     <pattern value="org.treebolic.contacts.MainActivity.PlaceholderFragment" method="onCreateView" />
     <pattern value="org.treebolic.contacts.SettingsActivity.GeneralPreferenceFragment" method="onCreatePreferences" />
     <pattern value="org.treebolic.contacts.SettingsActivity.FilterPreferenceFragment" method="onCreatePreferences" />
+    <pattern value="treebolic.provider.contacts.Provider" method="count" />
+    <pattern value="treebolic.provider.contacts.Provider" method="countGroupMembers" />
+    <pattern value="treebolic.provider.contacts.Provider" method="countGroups" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

@@ -5,9 +5,13 @@
 package org.treebolic.contacts;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListAdapter;
+import android.widget.TextView;
 
 import org.treebolic.AppCompatCommonPreferenceActivity;
 import org.treebolic.TreebolicIface;
@@ -18,10 +22,15 @@ import java.util.Set;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NavUtils;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
+import androidx.preference.ListPreferenceDialogFragmentCompat;
 import androidx.preference.MultiSelectListPreference;
+import androidx.preference.MultiSelectListPreferenceDialogFragmentCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.legacy.contrib.Header;
@@ -165,6 +174,32 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 			MultiSelectListPreference pref = findPreference(Settings.PREF_FILTER_GROUPS);
 			assert pref != null;
 			pref.setSummaryProvider(LIST_SUMMARY_PROVIDER);
+		}
+
+		private static final String DIALOG_FRAGMENT_TAG = "GroupPreference";
+
+		@Override
+		public void onDisplayPreferenceDialog(final Preference pref)
+		{
+			final FragmentManager manager = getFragmentManager();
+			if (manager == null)
+			{
+				return;
+			}
+
+			if (manager.findFragmentByTag(DIALOG_FRAGMENT_TAG) != null)
+			{
+				return;
+			}
+
+			if (pref instanceof GroupPreference)
+			{
+				final DialogFragment dialogFragment = GroupPreferenceDialogFragmentCompat.newInstance((GroupPreference) pref);
+				dialogFragment.setTargetFragment(this, 0);
+				dialogFragment.show(manager, DIALOG_FRAGMENT_TAG);
+				return;
+			}
+			super.onDisplayPreferenceDialog(pref);
 		}
 	}
 }

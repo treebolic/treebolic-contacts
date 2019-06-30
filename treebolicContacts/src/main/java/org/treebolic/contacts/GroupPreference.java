@@ -19,6 +19,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.MultiSelectListPreference;
+import treebolic.provider.contacts.Provider;
 
 /**
  * Group preference
@@ -28,6 +29,12 @@ import androidx.preference.MultiSelectListPreference;
 @SuppressWarnings("WeakerAccess")
 public class GroupPreference extends MultiSelectListPreference
 {
+	public final List<String> accountNames = new ArrayList<>();
+
+	public final List<String> accountTypes = new ArrayList<>();
+
+	public final List<Long> counts = new ArrayList<>();
+
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public GroupPreference(@NonNull final Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes)
 	{
@@ -77,7 +84,7 @@ public class GroupPreference extends MultiSelectListPreference
 					final String groupId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ID_INDEX);
 					CharSequence title = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_INDEX);
 
-					if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP )
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 					{
 						final String titleRes = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_RES_INDEX);
 						if (titleRes != null)
@@ -99,8 +106,11 @@ public class GroupPreference extends MultiSelectListPreference
 					final String accountType = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_TYPE);
 					Log.d("group ", groupId + " " + title + " " + accountName + " " + accountType);
 
-					labels.add(title + " " + accountName + " " + accountType);
+					labels.add(title.toString());
 					values.add(groupId);
+					this.accountNames.add(accountName);
+					this.accountTypes.add(accountType);
+					this.counts.add(Provider.countGroupMembers(context, groupId, null));
 				}
 				while (cursor.moveToNext());
 			}

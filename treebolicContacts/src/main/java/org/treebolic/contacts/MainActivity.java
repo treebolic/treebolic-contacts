@@ -24,6 +24,8 @@ import org.treebolic.guide.AboutActivity;
 import org.treebolic.guide.HelpActivity;
 import org.treebolic.guide.Tip;
 
+import java.util.Properties;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatCommonActivity
 		// fragment
 		if (savedInstanceState == null)
 		{
-			PlaceholderFragment fragment = new PlaceholderFragment();
+			Fragment fragment = new MainActivityFragment();
 			getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
 		}
 	}
@@ -285,19 +287,5 @@ public class MainActivity extends AppCompatCommonActivity
 	public void onClick(@SuppressWarnings("unused") final View view)
 	{
 		query();
-	}
-
-	// F R A G M E N T
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment
-	{
-		@Override
-		public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
-		{
-			return inflater.inflate(R.layout.fragment_main, container, false);
-		}
 	}
 }

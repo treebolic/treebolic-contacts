@@ -200,6 +200,32 @@ public class Provider implements IProvider
 		this.loadBalancer.setGroupNode(null, null, null, LOADBALANCING_EDGE_COLOR, LOADBALANCING_EDGE_STYLE, -1 /*ImageIndices.FOLDER.ordinal() */, null);
 	}
 
+	/**
+	 * Count
+	 *
+	 * @param context    context
+	 * @param source     source
+	 * @param parameters parameters
+	 * @return count
+	 */
+	static public long count(final Context context, final String source, @Nullable final Properties parameters)
+	{
+		if (parameters != null)
+		{
+			final String groups = parameters.getProperty(Settings.PARAM_GROUPS, "false");
+			if ("true".equals(groups))
+			{
+				return countGroups(context, source);
+			}
+			final String filterGroups = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
+			return filterGroups == null ? countContacts(context, source) : countContacts(context, source, filterGroups);
+		}
+		else
+		{
+			return countGroups(context, source);
+		}
+	}
+
 	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
 
 	@Override
@@ -368,6 +394,29 @@ public class Provider implements IProvider
 	}
 
 	/**
+	 * Count contact nodes
+	 *
+	 * @param context context
+	 * @param source  selection
+	 * @return count of contact nodes
+	 */
+	static public long countContacts(@NonNull final Context context, @Nullable final String source)
+	{
+		final boolean nullSource = source == null || source.isEmpty();
+		final String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.CONTACT_URI, //
+				null, // Settings.BASE_CONTACT_PROJECTION, // columns to return for each row
+				selection, // selection criteria
+				selectionArgs, // selection criteria arguments to placeholders
+				null); // sort order for the returned rows
+		return count(cursor);
+	}
+
+	/**
 	 * Collect contact nodes
 	 *
 	 * @param source      selection
@@ -429,6 +478,34 @@ public class Provider implements IProvider
 			cursor.close();
 		}
 		return nodes;
+	}
+
+	/**
+	 * Collect contact nodes
+	 *
+	 * @param context     context
+	 * @param source      selection
+	 * @param groupFilter group filter
+	 * @return list of contact nodes
+	 */
+	static private long countContacts(@NonNull final Context context, @Nullable final String source, final String groupFilter)
+	{
+		final boolean nullSource = source == null || source.isEmpty();
+		String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+
+		final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groupFilter + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
+		Log.d(TAG, "selection=" + selection);
+
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.GROUP_MEMBERS_URI, //
+				null, //Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_MEMBERS_PROJECTION, // columns to return for each row
+				selection, //
+				selectionArgs, // selection criteria arguments to placeholders
+				null); // sort order for the returned rows
+		return count(cursor);
 	}
 
 	/**
@@ -547,6 +624,26 @@ public class Provider implements IProvider
 	}
 
 	/**
+	 * Count groups
+	 *
+	 * @param context context
+	 * @param source  source
+	 * @return count of members in groups
+	 */
+	static public long countGroups(@NonNull final Context context, final String source)
+	{
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.GROUP_URI, //
+				null, // Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_PROJECTION, //
+				null, //
+				null, //
+				null //
+		);
+		return count(cursor);
+	}
+
+	/**
 	 * Collect group members
 	 *
 	 * @param groupID group id
@@ -611,6 +708,37 @@ public class Provider implements IProvider
 	}
 
 	/**
+	 * Count group members
+	 *
+	 * @param context context
+	 * @param groupID group id
+	 * @param source  source
+	 * @return count of members
+	 */
+	static public long countGroupMembers(@NonNull final Context context, final String groupID, @Nullable final String source)
+	{
+		// selection
+		String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+		final boolean nullSource = source == null || source.isEmpty();
+		String extraSelection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		if (extraSelection != null)
+		{
+			selection += " AND " + extraSelection;
+		}
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.GROUP_MEMBERS_URI, //
+				null, // Settings.COUNT_PROJECTION, // Settings.BASE_GROUP_MEMBERS_PROJECTION, //
+				selection, //
+				selectionArgs,  //
+				null //
+		);
+		return count(cursor);
+	}
+
+	/**
 	 * Collect groups' members
 	 *
 	 * @param groupIDs group ids
@@ -671,6 +799,8 @@ public class Provider implements IProvider
 		}
 		return nodes;
 	}
+
+	// N O D E   F A C T O R I E S
 
 	/**
 	 * Make contact node
@@ -816,6 +946,26 @@ public class Provider implements IProvider
 	}
 
 	// H E L P E R S
+
+	static private long count(final Cursor cursor)
+	{
+		if (cursor != null)
+		{
+			long count = cursor.getCount();
+			/*
+			int countColumnIndex = cursor.getColumnIndex(Settings.COUNT_COL);
+			long count = -1;
+			if (cursor.moveToFirst())
+			{
+				count = cursor.getLong(countColumnIndex);
+			}
+			*/
+			cursor.close();
+			Log.d(TAG, "count " + count);
+			return count;
+		}
+		return -1L;
+	}
 
 	/**
 	 * Left truncation of a string

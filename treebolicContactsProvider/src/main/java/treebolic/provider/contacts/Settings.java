@@ -12,6 +12,8 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 
+import java.util.Properties;
+
 import androidx.annotation.Nullable;
 
 /**
@@ -26,9 +28,19 @@ public class Settings
 	 */
 	static final public String URLSCHEME = "contact:";
 
+	// C O U N T    P R O J E C T I O N
+
+	static final public String COUNT_COL = "count";
+
+	//static public final String[] COUNT_PROJECTION = {//
+	//		"count(*) AS " + COUNT_COL};
+
 	// C O N T A C T   P R O J E C T I O N
 
 	static public final Uri CONTACT_URI = ContactsContract.Contacts.CONTENT_URI;
+	static public final String[] BASE_CONTACT_PROJECTION = {//
+			ContactsContract.Contacts._ID, //
+	};
 	static public final String[] CONTACT_PROJECTION = {//
 			ContactsContract.Contacts._ID, //
 			ContactsContract.Contacts.DISPLAY_NAME, //
@@ -54,6 +66,11 @@ public class Settings
 	static public final Uri GROUP_MEMBERS_URI = ContactsContract.Data.CONTENT_URI;
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	static public final String[] BASE_GROUP_MEMBERS_PROJECTION = //
+			new String[]{ //
+					ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
+			};
+
 	static public final String[] GROUP_MEMBERS_PROJECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? //
 			new String[]{ //
 					ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
@@ -91,6 +108,9 @@ public class Settings
 	// G R O U P  P R O J E C T I O N
 
 	static public final Uri GROUP_URI = ContactsContract.Groups.CONTENT_URI;
+
+	static public final String[] BASE_GROUP_PROJECTION = new String[]{ //
+			ContactsContract.Groups._ID,};
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	static public final String[] GROUP_PROJECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? //

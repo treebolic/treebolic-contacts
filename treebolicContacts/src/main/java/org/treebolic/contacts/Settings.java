@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 
 import org.treebolic.TreebolicIface;
 
+import java.util.Properties;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -140,6 +141,19 @@ class Settings
 	}
 
 	/**
+	 * Get boolean preference
+	 *
+	 * @param context context
+	 * @param key     key
+	 * @return value
+	 */
+	static public boolean getBooleanPref(final Context context, final String key)
+	{
+		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		return sharedPref.getBoolean(key, false);
+	}
+
+	/**
 	 * Join for 'in' selection clause
 	 *
 	 * @param strings values
@@ -167,6 +181,28 @@ class Settings
 	}
 
 	// U T I L S
+
+	/**
+	 * @param context
+	 * @return
+	 */
+	static public Properties settingsToProperties(final Context context)
+	{
+		final String source = getStringPref(context, TreebolicIface.PREF_SOURCE);
+		final boolean groups = getBooleanPref(context, PREF_GROUPS);
+		final boolean mergeGroups = getBooleanPref(context, PREF_MERGE_GROUPS);
+		final String display = getStringPref(context, PREF_DISPLAY);
+		final String sort = getStringPref(context, PREF_SORT);
+		final String filterGroups = getStringsPref(context, PREF_FILTER_GROUPS);
+
+		final Properties properties = new Properties();
+		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups ? "true" : "false");
+		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups ? "true" : "false");
+		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
+		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
+		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_FILTER_GROUPS, filterGroups);
+		return properties;
+	}
 
 	/**
 	 * Application settings
