@@ -62,8 +62,17 @@
 	<string name="pref_title_group_filter">Filtre de groupe</string>
 	<string name="pref_description_group_filter">Filtrer par groupe</string>
 
-	<string name="format_count">Il y a %1$d contacts.</string>
-	<string name="format_count_contacts">Il y a %1$d contacts.</string>
-	<string name="format_count_groups">Il y a %1$d groupes.</string>
+	<plurals name="format_count">
+		<item quantity="one">Il y a %1$d contact sélectionné.</item>
+		<item quantity="other">Il y a %1$d contacts sélectionné.</item>
+	</plurals>
+	<plurals name="format_count_contacts">
+		<item quantity="one">Il y a %1$d contact.</item>
+		<item quantity="other">There are %1$d contacts.</item>
+	</plurals>
+	<plurals name="format_count_groups">
+		<item quantity="one">Il y a %1$d group.</item>
+		<item quantity="other">Il y a %1$d groups.</item>
+	</plurals>
 
 </resources>

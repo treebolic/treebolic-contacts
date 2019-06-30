@@ -43,18 +43,18 @@ public class MainActivityFragment extends Fragment
 		final Context context = requireContext();
 		final String source = Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
 		final Properties parameters = Settings.settingsToProperties(requireContext());
-		final long count = Provider.count(context, source, parameters);
-		final long countContacts = Provider.countContacts(context, source);
-		final long countGroups = Provider.countGroups(context, source);
+		final int count = (int) Provider.count(context, source, parameters);
+		final int countContacts = (int) Provider.countContacts(context, source);
+		final int countGroups = (int) Provider.countGroups(context, source);
 
 		final TextView filteredContactsView = view.findViewById(R.id.filteredContactsView);
-		filteredContactsView.setText(getString(R.string.format_count, count));
+		filteredContactsView.setText(getResources().getQuantityString(R.plurals.format_count, count, count));
 
 		final TextView contactView = view.findViewById(R.id.contactsView);
-		contactView.setText(getString(R.string.format_count_contacts, countContacts));
+		contactView.setText(getResources().getQuantityString(R.plurals.format_count_contacts, countContacts, countContacts));
 
 		final TextView groupView = view.findViewById(R.id.groupsView);
-		groupView.setText(getString(R.string.format_count_groups, countGroups));
+		groupView.setText(getResources().getQuantityString(R.plurals.format_count_groups, countGroups, countGroups));
 		return view;
 	}
 }

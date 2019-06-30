@@ -11,11 +11,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import org.treebolic.AppCompatCommonActivity;
@@ -23,8 +21,6 @@ import org.treebolic.TreebolicIface;
 import org.treebolic.guide.AboutActivity;
 import org.treebolic.guide.HelpActivity;
 import org.treebolic.guide.Tip;
-
-import java.util.Properties;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

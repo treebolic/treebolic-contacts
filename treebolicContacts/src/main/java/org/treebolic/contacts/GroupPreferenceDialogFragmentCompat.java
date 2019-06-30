@@ -8,20 +8,17 @@ import android.os.Bundle;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.preference.MultiSelectListPreference;
-
 public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferenceCustomDialogFragmentCompat
 {
-	public final List<String> accountNames = new ArrayList<>();
+	private final List<String> accountNames = new ArrayList<>();
 
-	public final List<String> accountTypes = new ArrayList<>();
+	private final List<String> accountTypes = new ArrayList<>();
 
-	public final List<Long> counts = new ArrayList<>();
+	private final List<Long> counts = new ArrayList<>();
 
 	public static MultiSelectListPreferenceCustomDialogFragmentCompat newInstance(final GroupPreference pref)
 	{
@@ -66,8 +63,7 @@ public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferen
 		}
 
 		final String[] from = {"check", "group_id", "display_name", "account_name", "account_type", "count"};
-		final int[] to = {R.id.check, R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type, R.id.count};
-		final CheckBoxSimpleAdapter listAdapter = new CheckBoxSimpleAdapter(getContext(), data, R.layout.item_group_select, from, to, R.id.check);
-		return listAdapter;
+		final int[] to = {android.R.id.checkbox, R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type, R.id.count};
+		return new CheckBoxSimpleAdapter(getContext(), data, R.layout.item_group_select, from, to, android.R.id.checkbox);
 	}
 }

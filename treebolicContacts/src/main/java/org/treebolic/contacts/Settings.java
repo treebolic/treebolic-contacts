@@ -147,6 +147,7 @@ class Settings
 	 * @param key     key
 	 * @return value
 	 */
+	@SuppressWarnings("WeakerAccess")
 	static public boolean getBooleanPref(final Context context, final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -183,8 +184,10 @@ class Settings
 	// U T I L S
 
 	/**
-	 * @param context
-	 * @return
+	 * Collect preferences to properties
+	 *
+	 * @param context context
+	 * @return properties
 	 */
 	static public Properties settingsToProperties(final Context context)
 	{
@@ -196,6 +199,7 @@ class Settings
 		final String filterGroups = getStringsPref(context, PREF_FILTER_GROUPS);
 
 		final Properties properties = new Properties();
+		properties.setProperty(TreebolicIface.PREF_SOURCE, source);
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups ? "true" : "false");
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups ? "true" : "false");
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);

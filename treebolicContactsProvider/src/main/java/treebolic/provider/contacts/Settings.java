@@ -12,8 +12,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 
-import java.util.Properties;
-
 import androidx.annotation.Nullable;
 
 /**
@@ -30,9 +28,9 @@ public class Settings
 
 	// C O U N T    P R O J E C T I O N
 
-	static final public String COUNT_COL = "count";
+	// static final public String COUNT_COL = "count";
 
-	//static public final String[] COUNT_PROJECTION = {//
+	// static public final String[] COUNT_PROJECTION = {//
 	//		"count(*) AS " + COUNT_COL};
 
 	// C O N T A C T   P R O J E C T I O N

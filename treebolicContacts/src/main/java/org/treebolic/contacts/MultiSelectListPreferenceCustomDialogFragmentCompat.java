@@ -13,7 +13,6 @@ import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +30,13 @@ public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extend
 	private static final String SAVE_STATE_ENTRIES = "MultiSelectListPreferenceDialogFragmentCompat.entries";
 	private static final String SAVE_STATE_ENTRY_VALUES = "MultiSelectListPreferenceDialogFragmentCompat.entryValues";
 
-	@SuppressWarnings("WeakerAccess") /* synthetic access */ Set<String> mNewValues = new HashSet<>();
+	@SuppressWarnings("WeakerAccess")
+	final /* synthetic access */ Set<String> mNewValues = new HashSet<>();
 	@SuppressWarnings("WeakerAccess") /* synthetic access */ boolean mPreferenceChanged;
 	@SuppressWarnings("WeakerAccess") /* synthetic access */ CharSequence[] mEntries;
 	@SuppressWarnings("WeakerAccess") /* synthetic access */ CharSequence[] mEntryValues;
 
+	@SuppressWarnings("WeakerAccess")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -58,7 +59,11 @@ public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extend
 		else
 		{
 			mNewValues.clear();
-			mNewValues.addAll(savedInstanceState.getStringArrayList(SAVE_STATE_VALUES));
+			final List<String> valueList = savedInstanceState.getStringArrayList(SAVE_STATE_VALUES);
+			if (valueList != null)
+			{
+				mNewValues.addAll(valueList);
+			}
 			mPreferenceChanged = savedInstanceState.getBoolean(SAVE_STATE_CHANGED, false);
 			mEntries = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRIES);
 			mEntryValues = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRY_VALUES);
