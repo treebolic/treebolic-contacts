@@ -6,9 +6,9 @@
 
 	<SwitchPreferenceCompat
 		android:defaultValue="false"
-		android:key="pref_groups"
-		android:summary="@string/pref_description_groups"
-		android:title="@string/pref_title_groups"/>
+		android:key="pref_grouped"
+		android:summary="@string/pref_description_grouped"
+		android:title="@string/pref_title_grouped"/>
 
 	<SwitchPreferenceCompat
 		android:defaultValue="true"

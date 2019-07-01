@@ -4,12 +4,14 @@
 
 package org.treebolic.contacts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import treebolic.provider.contacts.Permissions;
 import treebolic.provider.contacts.Provider;
 
 import android.view.LayoutInflater;
@@ -28,7 +30,9 @@ import java.util.Properties;
  */
 public class MainActivityFragment extends Fragment
 {
-	// --Commented out by Inspection (9/23/17 5:48 PM):static private final String TAG = "MainF";
+	// static private final String TAG = "MainF";
+
+	private TextView statusView;
 
 	// C R E A T E
 
@@ -40,22 +44,34 @@ public class MainActivityFragment extends Fragment
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		final View view = inflater.inflate(R.layout.fragment_main, container, false);
+		this.statusView = view.findViewById(R.id.status);
+		return view;
+	}
 
-		final Context context = requireContext();
-		final Resources resources = context.getResources();
+	@Override
+	public void onResume()
+	{
+		super.onResume();
 
-		final String source = Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
+		final Activity activity = requireActivity();
+		if (Permissions.check(activity))
+		{
+			activity.finish();
+			return;
+		}
+
+		final Resources resources = activity.getResources();
+
+		final String source = Settings.getStringPref(activity, TreebolicIface.PREF_SOURCE);
 		final Properties parameters = Settings.settingsToProperties(requireContext());
-		final int count = (int) Provider.count(context, source, parameters);
-		final int countContacts = (int) Provider.countContacts(context, source);
-		final int countGroups = (int) Provider.countGroups(context, source);
+		final int count = (int) Provider.count(activity, source, parameters);
+		final int countContacts = (int) Provider.countContacts(activity, source);
+		final int countGroups = (int) Provider.countGroups(activity);
 		final String countStr = resources.getQuantityString(R.plurals.format_count, count, count);
 		final String countContactsStr = resources.getQuantityString(R.plurals.format_count_contacts, countContacts, countContacts);
 		final String countGroupsStr = resources.getQuantityString(R.plurals.format_count_groups, countGroups, countGroups);
 		final String status = resources.getString(R.string.status, countContactsStr, countGroupsStr, countStr);
 
-		final TextView statusView = view.findViewById(R.id.status);
-		statusView.setText(status);
-		return view;
+		this.statusView.setText(status);
 	}
 }

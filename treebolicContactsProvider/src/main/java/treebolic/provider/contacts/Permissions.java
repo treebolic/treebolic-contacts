@@ -6,6 +6,7 @@ package treebolic.provider.contacts;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
@@ -23,8 +24,13 @@ public class Permissions
 {
 	static private final int PERMISSIONS_REQUEST_READ_CONTACTS = 1313;
 
+	static public boolean check(@NonNull final Context context)
+	{
+		return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED;
+	}
+
 	@SuppressWarnings("UnusedReturnValue")
-	static public boolean check(@NonNull final Activity activity)
+	static public boolean checkAndRequest(@NonNull final Activity activity)
 	{
 		if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
 		{
@@ -73,7 +79,7 @@ public class Permissions
 				break;
 			}
 
-			// other 'case' lines to check for other permissions this app might request
+			// other 'case' lines to checkAndRequest for other permissions this app might request
 		}
 	}
 	*/

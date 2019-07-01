@@ -44,8 +44,8 @@
 	<string name="pref_title_source">Contact filter</string>
 	<string name="pref_description_source">Substring that contact name must contain</string>
 
-	<string name="pref_title_groups">Groups</string>
-	<string name="pref_description_groups">Distribute contacts according to groups</string>
+	<string name="pref_title_grouped">Grouped</string>
+	<string name="pref_description_grouped">Contacts grouped by Contact Group</string>
 
 	<string name="pref_title_merge_groups">Merge groups</string>
 	<string name="pref_description_merge_groups">Merge groups so that duplicates are avoided</string>

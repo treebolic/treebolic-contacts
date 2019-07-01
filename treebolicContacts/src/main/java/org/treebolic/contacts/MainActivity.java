@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatCommonActivity
 	private void initialize()
 	{
 		// permissions
-		Permissions.check(this);
+		Permissions.checkAndRequest(this);
 
 		// test if initialized
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatCommonActivity
 	private static Intent makeTreebolicIntent(@NonNull final Context context)
 	{
 		final String source = treebolic.provider.contacts.Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
-		final boolean groups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_GROUPS);
+		final boolean groups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_GROUPED);
 		final boolean mergeGroups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_MERGE_GROUPS);
 		final boolean photo = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_PHOTO);
 		final String display = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_DISPLAY);

@@ -6,7 +6,7 @@
 
 	<EditTextPreference
 		android:capitalize="none"
-		android:defaultValue="@string/pref_default_source"
+		android:defaultValue="@null"
 		android:inputType="text"
 		android:key="pref_source"
 		android:maxLines="1"

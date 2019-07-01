@@ -38,9 +38,9 @@ class Settings
 	public static final String PREF_FIRSTRUN = "pref_first_run";
 
 	/**
-	 * Groups preference key
+	 * Grouped preference key
 	 */
-	public static final String PREF_GROUPS = "pref_groups";
+	public static final String PREF_GROUPED = "pref_grouped";
 
 	/**
 	 * Display preference key
@@ -197,7 +197,7 @@ class Settings
 	static public Properties settingsToProperties(final Context context)
 	{
 		final String source = getStringPref(context, TreebolicIface.PREF_SOURCE);
-		final boolean groups = getBooleanPref(context, PREF_GROUPS);
+		final boolean groups = getBooleanPref(context, PREF_GROUPED);
 		final boolean mergeGroups = getBooleanPref(context, PREF_MERGE_GROUPS);
 		final boolean photo = getBooleanPref(context, PREF_PHOTO);
 		final String display = getStringPref(context, PREF_DISPLAY);
@@ -205,13 +205,25 @@ class Settings
 		final String filterGroups = getStringsPref(context, PREF_FILTER_GROUPS);
 
 		final Properties properties = new Properties();
-		properties.setProperty(TreebolicIface.PREF_SOURCE, source);
+		if (source != null)
+		{
+			properties.setProperty(TreebolicIface.PREF_SOURCE, source);
+		}
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups ? "true" : "false");
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups ? "true" : "false");
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_PHOTO, photo ? "true" : "false");
-		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
-		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
-		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_FILTER_GROUPS, filterGroups);
+		if (display != null)
+		{
+			properties.setProperty(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
+		}
+		if (sort != null)
+		{
+			properties.setProperty(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
+		}
+		if (filterGroups != null)
+		{
+			properties.setProperty(treebolic.provider.contacts.Settings.PARAM_FILTER_GROUPS, filterGroups);
+		}
 		return properties;
 	}
 

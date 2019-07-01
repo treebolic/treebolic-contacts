@@ -187,6 +187,11 @@ public class Provider implements IProvider
 	@NonNull
 	private final LoadBalancer loadBalancer;
 
+	/**
+	 * Node count
+	 */
+	private int contactsCount;
+
 	// C O N T E X T
 
 	/**
@@ -205,30 +210,151 @@ public class Provider implements IProvider
 		this.loadBalancer.setGroupNode(null, null, null, LOADBALANCING_EDGE_COLOR, LOADBALANCING_EDGE_STYLE, -1 /*ImageIndices.FOLDER.ordinal() */, null);
 	}
 
+	// C O U N T
+
 	/**
 	 * Count
 	 *
-	 * @param context    context
-	 * @param source     source
-	 * @param parameters parameters
+	 * @param context       context
+	 * @param contactFilter contact filter
+	 * @param parameters    parameters
 	 * @return count
 	 */
-	static public long count(final Context context, final String source, @Nullable final Properties parameters)
+	static public long count(final Context context, @Nullable final String contactFilter, @NonNull final Properties parameters)
 	{
-		if (parameters != null)
+		final String filterGroups = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
+		final String groupsParam = parameters.getProperty(Settings.PARAM_GROUPS, "false");
+		if ("true".equals(groupsParam))
 		{
-			final String groups = parameters.getProperty(Settings.PARAM_GROUPS, "false");
-			if ("true".equals(groups))
-			{
-				return countGroups(context, source);
-			}
-			final String filterGroups = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
-			return filterGroups == null ? countContacts(context, source) : countContacts(context, source, filterGroups);
+			return sumGroupMembers(context, filterGroups, contactFilter);
 		}
-		else
+		return filterGroups == null ? countContacts(context, contactFilter) : countContacts(context, contactFilter, filterGroups);
+	}
+
+	/**
+	 * Count contact nodes
+	 *
+	 * @param context       context
+	 * @param contactFilter contact filter
+	 * @return count of contact nodes
+	 */
+	static public long countContacts(@NonNull final Context context, @Nullable final String contactFilter)
+	{
+		final boolean nullSource = contactFilter == null || contactFilter.isEmpty();
+		final String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + contactFilter + "%"};
+
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.CONTACT_URI, //
+				null, // Settings.BASE_CONTACT_PROJECTION, // columns to return for each row
+				selection, // selection criteria
+				selectionArgs, // selection criteria arguments to placeholders
+				null); // sort order for the returned rows
+		return count(cursor);
+	}
+
+	/**
+	 * Collect contact nodes
+	 *
+	 * @param context     context
+	 * @param source      selection
+	 * @param groupFilter group filter
+	 * @return list of contact nodes
+	 */
+	static private long countContacts(@NonNull final Context context, @Nullable final String source, final String groupFilter)
+	{
+		final boolean nullSource = source == null || source.isEmpty();
+		String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+
+		final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groupFilter + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
+		Log.d(TAG, "selection=" + selection);
+
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.GROUP_MEMBERS_URI, //
+				null, //Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_MEMBERS_PROJECTION, // columns to return for each row
+				selection, //
+				selectionArgs, // selection criteria arguments to placeholders
+				null); // sort order for the returned rows
+		return count(cursor);
+	}
+
+	/**
+	 * Count groups
+	 *
+	 * @param context context
+	 * @return count of groups
+	 */
+	static public long countGroups(@NonNull final Context context)
+	{
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.GROUP_URI, //
+				null, // Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_PROJECTION, //
+				null, //
+				null, //
+				null //
+		);
+		return count(cursor);
+	}
+
+	/**
+	 * Count group members
+	 *
+	 * @param context       context
+	 * @param groupID       group id
+	 * @param contactFilter contact filter
+	 * @return count of members
+	 */
+	static public long countGroupMembers(@NonNull final Context context, final String groupID, @Nullable final String contactFilter)
+	{
+		// selection
+		String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
+		final boolean nullSource = contactFilter == null || contactFilter.isEmpty();
+		String extraSelection = nullSource ? null : Settings.SELECTION_DN_LIKE;
+		if (extraSelection != null)
 		{
-			return countGroups(context, source);
+			selection += " AND " + extraSelection;
 		}
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + contactFilter + "%"};
+
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.GROUP_MEMBERS_URI, //
+				null, // Settings.COUNT_PROJECTION, // Settings.BASE_GROUP_MEMBERS_PROJECTION, //
+				selection, //
+				selectionArgs,  //
+				null //
+		);
+		return count(cursor);
+	}
+
+	/**
+	 * Count group members
+	 *
+	 * @param context       context
+	 * @param allGroupIDs   space separated group ids
+	 * @param contactFilter contact filter
+	 * @return count of members
+	 */
+	static public long sumGroupMembers(@NonNull final Context context, @Nullable final String allGroupIDs, @Nullable final String contactFilter)
+	{
+		long total = 0;
+		final String[] groupIDs = allGroupIDs != null ? interpretGroupIDs(allGroupIDs) : getGroups(context);
+		for (String groupID : groupIDs)
+		{
+			total += countGroupMembers(context, groupID, contactFilter);
+		}
+		return total;
+	}
+
+	@NonNull
+	static private final String[] interpretGroupIDs(@NonNull final String allGroupIDs)
+	{
+		return allGroupIDs.substring(1, allGroupIDs.length() - 1).split(",+");
 	}
 
 	// I P R O V I D E R  I N T E R F A C E  (S E T U P)
@@ -256,7 +382,7 @@ public class Provider implements IProvider
 	// I P R O V I D E R  I N T E R F A C E   (M O D E L)
 
 	@Override
-	public Model makeModel(final String source, final URL base, final Properties parameters)
+	public Model makeModel(@Nullable final String source, final URL base, final Properties parameters)
 	{
 		final Tree tree = makeTree(source, base, parameters, false);
 		final treebolic.model.Settings settings = makeSettings();
@@ -266,9 +392,13 @@ public class Provider implements IProvider
 
 	@SuppressWarnings("WeakerAccess")
 	@Override
-	public Tree makeTree(final String source, final URL base, final Properties parameters, final boolean checkRecursion)
+	public Tree makeTree(@Nullable final String source, final URL base, final Properties parameters, final boolean checkRecursion)
 	{
-		return buildTree(source, parameters);
+		this.contactsCount = 0;
+		final Tree tree = buildTree(source, parameters);
+		final TreeMutableNode root = (TreeMutableNode) tree.getRoot();
+		root.setContent(Integer.toString(this.contactsCount));
+		return tree;
 	}
 
 	// T R E E   F A C T O R Y
@@ -276,11 +406,11 @@ public class Provider implements IProvider
 	/**
 	 * Tree factory
 	 *
-	 * @param source     source
-	 * @param parameters parameters
+	 * @param contactFilter contact filter
+	 * @param parameters    parameters
 	 * @return tree
 	 */
-	private Tree buildTree(final String source, @Nullable final Properties parameters)
+	private Tree buildTree(@Nullable final String contactFilter, @Nullable final Properties parameters)
 	{
 		if (parameters != null)
 		{
@@ -316,15 +446,15 @@ public class Provider implements IProvider
 			boolean groups = "true".equals(groupsParam);
 			if (groups)
 			{
-				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(source), 0));
+				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(contactFilter), 0));
 			}
 
 			final String filterGroupsParam = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
-			return buildTree(this.loadBalancer.buildHierarchy(filterGroupsParam == null ? collectContacts(source) : collectContacts(source, filterGroupsParam), 0));
+			return buildTree(this.loadBalancer.buildHierarchy(filterGroupsParam == null ? collectContacts(contactFilter) : collectContacts(contactFilter, filterGroupsParam), 0));
 		}
 		else
 		{
-			return buildTree(this.loadBalancer.buildHierarchy(collectGroups(source), 0));
+			return buildTree(this.loadBalancer.buildHierarchy(collectGroups(contactFilter), 0));
 		}
 	}
 
@@ -348,20 +478,50 @@ public class Provider implements IProvider
 		return new Tree(topRoot, null);
 	}
 
+	// G R O U P S
+
+	@NonNull
+	static public String[] getGroups(@NonNull final Context context)
+	{
+		final ContentResolver contentResolver = context.getContentResolver();
+		final Cursor cursor = contentResolver.query( //
+				Settings.GROUP_URI, //
+				Settings.BASE_GROUP_PROJECTION, //
+				null, //
+				null, //
+				null //
+		);
+		final List<String> groupIDs = new ArrayList<>();
+		if (cursor != null)
+		{
+			if (cursor.moveToFirst())
+			{
+				do
+				{
+					final String groupId = cursor.getString(Settings.GROUP_ID_INDEX);
+					groupIDs.add(groupId);
+				}
+				while (cursor.moveToNext());
+			}
+			cursor.close();
+		}
+		return groupIDs.toArray(new String[0]);
+	}
+
 	// L E A V E S
 
 	/**
 	 * Collect contact nodes
 	 *
-	 * @param source selection
+	 * @param contactFilter contact filter
 	 * @return list of contact nodes
 	 */
 	@Nullable
-	private List<INode> collectContacts(@Nullable final String source)
+	private List<INode> collectContacts(@Nullable final String contactFilter)
 	{
-		final boolean nullSource = source == null || source.isEmpty();
+		final boolean nullSource = contactFilter == null || contactFilter.isEmpty();
 		final String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
-		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + contactFilter + "%"};
 		final String sort = (this.sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC";
 
 		final ContentResolver contentResolver = this.context.getContentResolver();
@@ -402,41 +562,18 @@ public class Provider implements IProvider
 	}
 
 	/**
-	 * Count contact nodes
-	 *
-	 * @param context context
-	 * @param source  selection
-	 * @return count of contact nodes
-	 */
-	static public long countContacts(@NonNull final Context context, @Nullable final String source)
-	{
-		final boolean nullSource = source == null || source.isEmpty();
-		final String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
-		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
-
-		final ContentResolver contentResolver = context.getContentResolver();
-		final Cursor cursor = contentResolver.query( //
-				Settings.CONTACT_URI, //
-				null, // Settings.BASE_CONTACT_PROJECTION, // columns to return for each row
-				selection, // selection criteria
-				selectionArgs, // selection criteria arguments to placeholders
-				null); // sort order for the returned rows
-		return count(cursor);
-	}
-
-	/**
 	 * Collect contact nodes
 	 *
-	 * @param source      selection
-	 * @param groupFilter group filter
+	 * @param contactFilter contact filter
+	 * @param groupFilter   group filter
 	 * @return list of contact nodes
 	 */
 	@Nullable
-	private List<INode> collectContacts(@Nullable final String source, final String groupFilter)
+	private List<INode> collectContacts(@Nullable final String contactFilter, final String groupFilter)
 	{
-		final boolean nullSource = source == null || source.isEmpty();
-		String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
-		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+		final boolean nullContactFilter = contactFilter == null || contactFilter.isEmpty();
+		String selection = nullContactFilter ? null : Settings.SELECTION_DN_LIKE;
+		final String[] selectionArgs = nullContactFilter ? null : new String[]{"%" + contactFilter + "%"};
 		final String sort = (this.sortCode == 1 ?
 				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME :
 				ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID;
@@ -489,41 +626,13 @@ public class Provider implements IProvider
 	}
 
 	/**
-	 * Collect contact nodes
+	 * Collect all groups
 	 *
-	 * @param context     context
-	 * @param source      selection
-	 * @param groupFilter group filter
-	 * @return list of contact nodes
-	 */
-	static private long countContacts(@NonNull final Context context, @Nullable final String source, final String groupFilter)
-	{
-		final boolean nullSource = source == null || source.isEmpty();
-		String selection = nullSource ? null : Settings.SELECTION_DN_LIKE;
-		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
-
-		final String extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groupFilter + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
-		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
-		Log.d(TAG, "selection=" + selection);
-
-		final ContentResolver contentResolver = context.getContentResolver();
-		final Cursor cursor = contentResolver.query( //
-				Settings.GROUP_MEMBERS_URI, //
-				null, //Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_MEMBERS_PROJECTION, // columns to return for each row
-				selection, //
-				selectionArgs, // selection criteria arguments to placeholders
-				null); // sort order for the returned rows
-		return count(cursor);
-	}
-
-	/**
-	 * Collect groups
-	 *
-	 * @param source source
+	 * @param contactFilter contact filter
 	 * @return list of groups (with members)
 	 */
 	@Nullable
-	private List<INode> collectGroups(final String source)
+	private List<INode> collectGroups(final String contactFilter)
 	{
 		final ContentResolver contentResolver = this.context.getContentResolver();
 		final Cursor cursor = contentResolver.query( //
@@ -571,7 +680,7 @@ public class Provider implements IProvider
 					Log.d("group ", groupId + " " + groupSystemId + " " + title + " " + accountName + " " + accountType);
 
 					// members
-					final List<INode> memberNodes = collectGroupMembers(groupId, source);
+					final List<INode> memberNodes = collectGroupMembers(groupId, contactFilter);
 					if (memberNodes != null && memberNodes.size() > 0)
 					{
 						// group
@@ -632,44 +741,24 @@ public class Provider implements IProvider
 	}
 
 	/**
-	 * Count groups
-	 *
-	 * @param context context
-	 * @param source  source
-	 * @return count of members in groups
-	 */
-	static public long countGroups(@NonNull final Context context, final String source)
-	{
-		final ContentResolver contentResolver = context.getContentResolver();
-		final Cursor cursor = contentResolver.query( //
-				Settings.GROUP_URI, //
-				null, // Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_PROJECTION, //
-				null, //
-				null, //
-				null //
-		);
-		return count(cursor);
-	}
-
-	/**
 	 * Collect group members
 	 *
-	 * @param groupID group id
-	 * @param source  source
+	 * @param groupID       group id
+	 * @param contactFilter contact filter
 	 * @return list of members
 	 */
 	@Nullable
-	private List<INode> collectGroupMembers(final String groupID, @Nullable final String source)
+	private List<INode> collectGroupMembers(final String groupID, @Nullable final String contactFilter)
 	{
 		// selection
 		String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
-		final boolean nullSource = source == null || source.isEmpty();
+		final boolean nullSource = contactFilter == null || contactFilter.isEmpty();
 		String extraSelection = nullSource ? null : Settings.SELECTION_DN_LIKE;
 		if (extraSelection != null)
 		{
 			selection += " AND " + extraSelection;
 		}
-		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
+		final String[] selectionArgs = nullSource ? null : new String[]{"%" + contactFilter + "%"};
 
 		// sort
 		final String sort = (this.sortCode == 1 ?
@@ -713,37 +802,6 @@ public class Provider implements IProvider
 			cursor.close();
 		}
 		return nodes;
-	}
-
-	/**
-	 * Count group members
-	 *
-	 * @param context context
-	 * @param groupID group id
-	 * @param source  source
-	 * @return count of members
-	 */
-	static public long countGroupMembers(@NonNull final Context context, final String groupID, @Nullable final String source)
-	{
-		// selection
-		String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupID + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
-		final boolean nullSource = source == null || source.isEmpty();
-		String extraSelection = nullSource ? null : Settings.SELECTION_DN_LIKE;
-		if (extraSelection != null)
-		{
-			selection += " AND " + extraSelection;
-		}
-		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
-
-		final ContentResolver contentResolver = context.getContentResolver();
-		final Cursor cursor = contentResolver.query( //
-				Settings.GROUP_MEMBERS_URI, //
-				null, // Settings.COUNT_PROJECTION, // Settings.BASE_GROUP_MEMBERS_PROJECTION, //
-				selection, //
-				selectionArgs,  //
-				null //
-		);
-		return count(cursor);
 	}
 
 	/**
@@ -905,6 +963,7 @@ public class Provider implements IProvider
 		{
 			node.setImageIndex(ImageIndices.CONTACT.ordinal());
 		}
+		this.contactsCount++;
 		return node;
 	}
 

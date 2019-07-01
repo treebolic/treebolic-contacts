@@ -53,7 +53,7 @@ public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferen
 		{
 			final Map<String, Object> row = new HashMap<>();
 			boolean checked = mNewValues.contains(mEntryValues[i].toString());
-			row.put("check", checked);
+			row.put("checkAndRequest", checked);
 			row.put("group_id", mEntryValues[i].toString());
 			row.put("display_name", mEntries[i]);
 			row.put("account_name", accountNames.get(i));
@@ -62,7 +62,7 @@ public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferen
 			data.add(row);
 		}
 
-		final String[] from = {"check", "group_id", "display_name", "account_name", "account_type", "count"};
+		final String[] from = {"checkAndRequest", "group_id", "display_name", "account_name", "account_type", "count"};
 		final int[] to = {android.R.id.checkbox, R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type, R.id.count};
 		return new CheckBoxSimpleAdapter(getContext(), data, R.layout.item_group_select, from, to, android.R.id.checkbox);
 	}

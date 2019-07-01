@@ -39,7 +39,7 @@ public class TreebolicActivity extends TreebolicSourceActivity
 	@Override
 	protected void query()
 	{
-		// sanity check
+		// sanity checkAndRequest
 		if (this.providerName == null && this.source == null)
 		{
 			Toast.makeText(this, R.string.error_null_data, Toast.LENGTH_LONG).show();
