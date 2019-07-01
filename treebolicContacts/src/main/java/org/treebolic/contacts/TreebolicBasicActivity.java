@@ -294,6 +294,12 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 		int itemId = item.getItemId();
 		switch (itemId)
 		{
+			case R.id.action_filter:
+			{
+				final Intent intent = new Intent(this, FilterActivity.class);
+				startActivity(intent);
+				return true;
+			}
 			case R.id.action_finish:
 			{
 				finish();

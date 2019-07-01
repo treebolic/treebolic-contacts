@@ -131,6 +131,12 @@ public class MainActivity extends AppCompatCommonActivity
 				startActivity(new Intent(this, AboutActivity.class));
 				return true;
 			}
+			case R.id.action_filter:
+			{
+				final Intent intent = new Intent(this, FilterActivity.class);
+				startActivity(intent);
+				return true;
+			}
 			case R.id.action_list_contacts:
 			{
 				final Intent intent = new Intent(this, ListContactsActivity.class);
@@ -237,12 +243,14 @@ public class MainActivity extends AppCompatCommonActivity
 		final String source = treebolic.provider.contacts.Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
 		final boolean groups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_GROUPS);
 		final boolean mergeGroups = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_MERGE_GROUPS);
+		final boolean photo = treebolic.provider.contacts.Settings.getBooleanPref(context, Settings.PREF_PHOTO);
 		final String display = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_DISPLAY);
 		final String sort = treebolic.provider.contacts.Settings.getStringPref(context, Settings.PREF_SORT);
 		final String filterGroups = Settings.getStringsPref(context, Settings.PREF_FILTER_GROUPS);
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups);
 		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups);
+		bundle.putBoolean(treebolic.provider.contacts.Settings.PARAM_PHOTO, photo);
 		bundle.putString(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
 		bundle.putString(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
 		bundle.putString(treebolic.provider.contacts.Settings.PARAM_FILTER_GROUPS, filterGroups);

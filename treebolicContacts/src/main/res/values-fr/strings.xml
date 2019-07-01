@@ -24,6 +24,7 @@
 	<string name="title_activity_settings">Paramètres</string>
 	<string name="title_finish">Finir</string>
 
+	<string name="action_filter">Filtrer</string>
 	<string name="action_run">Lancer</string>
 	<string name="action_list_contacts">Lister contacts</string>
 	<string name="action_list_grouped_contacts">Lister contacts groupés</string>
@@ -31,6 +32,7 @@
 	<string name="action_list_groups">Lister groupes</string>
 	<string name="action_model">Modèle</string>
 	<string name="action_settings">Paramètres</string>
+	<string name="title_activity_filter">Filtre</string>
 	<string name="action_app_settings">Application</string>
 
 	<string name="error_null_data">Données nulles</string>
@@ -39,11 +41,17 @@
 	<string name="pref_header_general">Général</string>
 	<string name="pref_header_filter">Filtre</string>
 
-	<string name="pref_title_source">Source</string>
-	<string name="pref_description_source">Source pour Contacts</string>
+	<string name="pref_title_source">Filtre contact</string>
+	<string name="pref_description_source">Sous-chaîne que le nom du contact doit contenir</string>
 
 	<string name="pref_title_groups">Groupes</string>
+	<string name="pref_description_groups">Répartir les contacts suivant les groupes</string>
+
 	<string name="pref_title_merge_groups">Fusionner groupes</string>
+	<string name="pref_description_merge_groups">Fusionner groupes de façon à éviter les doublons</string>
+
+	<string name="pref_title_photo">Photos</string>
+	<string name="pref_description_photo">Utiliser photos des contacts (Ralentissement très important)</string>
 
 	<string name="pref_title_display">Affichage</string>
 	<string name="pref_description_display">Affiché dans l\'étiquette</string>
@@ -63,16 +71,19 @@
 	<string name="pref_description_group_filter">Filtrer par groupe</string>
 
 	<plurals name="format_count">
-		<item quantity="one">Il y a %1$d contact sélectionné.</item>
-		<item quantity="other">Il y a %1$d contacts sélectionné.</item>
+		<item quantity="one">%1$d contact sélectionné</item>
+		<item quantity="other">%1$d contacts sélectionnés</item>
 	</plurals>
 	<plurals name="format_count_contacts">
-		<item quantity="one">Il y a %1$d contact.</item>
-		<item quantity="other">There are %1$d contacts.</item>
+		<item quantity="one">%1$d contact</item>
+		<item quantity="other">%1$d contacts</item>
 	</plurals>
 	<plurals name="format_count_groups">
-		<item quantity="one">Il y a %1$d group.</item>
-		<item quantity="other">Il y a %1$d groups.</item>
+		<item quantity="one">%1$d groupe</item>
+		<item quantity="other">%1$d groupes</item>
 	</plurals>
+
+	<string name="status">%1$s dans %2$s.\n%3$s.</string>
+	<string name="none">Aucune</string>
 
 </resources>

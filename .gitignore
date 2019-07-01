@@ -1,1 +1,6 @@
+/build
+/.gradle
+/captures
+gradle-wrapper.jar
+gradle-wrapper.properties
 keystore.properties

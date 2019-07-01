@@ -177,6 +177,11 @@ public class Provider implements IProvider
 	private boolean mergeGroups = true;
 
 	/**
+	 * Whether to include photos
+	 */
+	private boolean photo = false;
+
+	/**
 	 * Load balancer
 	 */
 	@NonNull
@@ -279,40 +284,43 @@ public class Provider implements IProvider
 	{
 		if (parameters != null)
 		{
-			final String display = parameters.getProperty(Settings.PARAM_DISPLAY);
-			if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(display))
+			final String displayParam = parameters.getProperty(Settings.PARAM_DISPLAY);
+			if (Settings.VALUE_DISPLAY_FIRST_LAST.equals(displayParam))
 			{
 				this.displayCode = 1;
 			}
-			else if (Settings.VALUE_DISPLAY_LAST_FIRST.equals(display))
+			else if (Settings.VALUE_DISPLAY_LAST_FIRST.equals(displayParam))
 			{
 				this.displayCode = 2;
 			}
 
-			final String sort = parameters.getProperty(Settings.PARAM_SORT);
-			if (Settings.VALUE_SORT_FIRST.equals(sort))
+			final String sortParam = parameters.getProperty(Settings.PARAM_SORT);
+			if (Settings.VALUE_SORT_FIRST.equals(sortParam))
 			{
 				this.sortCode = 1;
 			}
-			else if (Settings.VALUE_SORT_LAST.equals(sort))
+			else if (Settings.VALUE_SORT_LAST.equals(sortParam))
 			{
 				this.sortCode = 2;
 			}
 
-			final String mergeGroups = parameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
-			this.mergeGroups = "true".equals(mergeGroups);
+			final String mergeGroupsParam = parameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true");
+			this.mergeGroups = "true".equals(mergeGroupsParam);
 
-			final String filterGroups = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
+			final String photoParam = parameters.getProperty(Settings.PARAM_PHOTO, "false");
+			this.photo = "true".equals(photoParam);
 
 			// start
 
-			final String groups = parameters.getProperty(Settings.PARAM_GROUPS, "false");
-			if ("true".equals(groups))
+			final String groupsParam = parameters.getProperty(Settings.PARAM_GROUPS, "false");
+			boolean groups = "true".equals(groupsParam);
+			if (groups)
 			{
 				return buildTree(this.loadBalancer.buildHierarchy(collectGroups(source), 0));
 			}
 
-			return buildTree(this.loadBalancer.buildHierarchy(filterGroups == null ? collectContacts(source) : collectContacts(source, filterGroups), 0));
+			final String filterGroupsParam = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
+			return buildTree(this.loadBalancer.buildHierarchy(filterGroupsParam == null ? collectContacts(source) : collectContacts(source, filterGroupsParam), 0));
 		}
 		else
 		{
@@ -375,7 +383,7 @@ public class Provider implements IProvider
 					final String id = cursor.getString(Settings.CONTACT_ID_INDEX);
 					final String name = cursor.getString(Settings.DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.DISPLAY_NAME_ALTERNATIVE_INDEX);
-					final String photoThumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX);
+					final String photoThumbnailUri = this.photo ? cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX) : null;
 					//final String photoUri = cursor.getString(Settings.PHOTO_URI_INDEX);
 					//final Long photoThumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
 					//final Long photoId = cursor.getLong(Settings.PHOTO_ID_INDEX);
@@ -463,7 +471,7 @@ public class Provider implements IProvider
 					// row values
 					final String name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX);
-					final String photoThumbnailUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX);
+					final String photoThumbnailUri = this.photo ? cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) : null;
 					//final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
 					//final Long photoThumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_ID_INDEX);
 					//final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
@@ -690,7 +698,7 @@ public class Provider implements IProvider
 					final String contactId = cursor.getString(Settings.GROUP_MEMBERS_CONTACT_ID_INDEX);
 					final String name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX);
-					final String photoThumbnailUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX);
+					final String photoThumbnailUri = this.photo ? cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) : null;
 					//final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
 					//final Long thumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
 					//final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_FILE_ID_INDEX);
@@ -783,7 +791,7 @@ public class Provider implements IProvider
 
 					final String name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX);
 					final String altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX);
-					final String photoThumbnailUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX);
+					final String photoThumbnailUri = this.photo ? cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) : null;
 					//final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
 					//final Long thumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
 					//final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_FILE_ID_INDEX);

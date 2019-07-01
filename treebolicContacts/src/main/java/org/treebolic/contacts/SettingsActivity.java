@@ -5,6 +5,7 @@
 package org.treebolic.contacts;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -98,7 +99,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	// S U M M A R Y
 
 	/**
-	 * A preference value change listener that updates the preference's summary to reflect its new value.
+	 * A list preference summary provider.
 	 */
 	private static final Preference.SummaryProvider<MultiSelectListPreference> LIST_SUMMARY_PROVIDER = (preference) -> {
 
@@ -141,9 +142,6 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 			addPreferencesFromResource(R.xml.pref_general);
 
 			// bind
-			final EditTextPreference sourcePref = findPreference(TreebolicIface.PREF_SOURCE);
-			assert sourcePref != null;
-			sourcePref.setSummaryProvider(EditTextPreference.SimpleSummaryProvider.getInstance());
 
 			final ListPreference displayPref = findPreference(Settings.PREF_DISPLAY);
 			assert displayPref != null;
@@ -157,6 +155,26 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 
 	public static class FilterPreferenceFragment extends PreferenceFragmentCompat
 	{
+		/**
+		 * Source summary provider.
+		 */
+		private static final Preference.SummaryProvider<EditTextPreference> SOURCE_SUMMARY_PROVIDER = (preference) -> {
+
+			final Context context = preference.getContext();
+			final SharedPreferences prefs = preference.getSharedPreferences();
+			final String desc = context.getString(R.string.pref_description_source);
+			String value = prefs.getString(preference.getKey(), null);
+			if (value == null || value.isEmpty())
+			{
+				value = context.getString(R.string.none);
+			}
+			else
+			{
+				value = "'" + value + "'";
+			}
+			return desc + " :\n" + value;
+		};
+
 		@Override
 		public void onCreatePreferences(@SuppressWarnings("unused") final Bundle savedInstanceState, @SuppressWarnings("unused") final String rootKey)
 		{
@@ -164,6 +182,10 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 			addPreferencesFromResource(R.xml.pref_filter);
 
 			// bind
+			final EditTextPreference sourcePref = findPreference(TreebolicIface.PREF_SOURCE);
+			assert sourcePref != null;
+			sourcePref.setSummaryProvider(SOURCE_SUMMARY_PROVIDER);
+
 			MultiSelectListPreference pref = findPreference(Settings.PREF_FILTER_GROUPS);
 			assert pref != null;
 			pref.setSummaryProvider(LIST_SUMMARY_PROVIDER);

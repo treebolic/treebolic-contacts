@@ -178,9 +178,10 @@ public class Settings
 	static public final String PARAM_SORT = "sort";
 	static public final String PARAM_MERGE_GROUPS = "merge_groups";
 	static public final String PARAM_FILTER_GROUPS = "filter_groups";
+	static public final String PARAM_PHOTO = "photo";
 
 	static public final String VALUE_DISPLAY_FIRST_LAST = "first,last";
-	static public String VALUE_DISPLAY_LAST_FIRST = "last,first";
+	static public final String VALUE_DISPLAY_LAST_FIRST = "last,first";
 	static public final String VALUE_SORT_FIRST = "first";
 	static public final String VALUE_SORT_LAST = "last";
 }

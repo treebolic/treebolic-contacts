@@ -63,6 +63,11 @@ class Settings
 	public static final String PREF_FILTER_GROUPS = "pref_filter_groups";
 
 	/**
+	 * Photo preference key
+	 */
+	public static final String PREF_PHOTO = "pref_photo";
+
+	/**
 	 * Default CSS
 	 */
 	public static final String STYLE_DEFAULT = ".content { }\n" + //
@@ -194,6 +199,7 @@ class Settings
 		final String source = getStringPref(context, TreebolicIface.PREF_SOURCE);
 		final boolean groups = getBooleanPref(context, PREF_GROUPS);
 		final boolean mergeGroups = getBooleanPref(context, PREF_MERGE_GROUPS);
+		final boolean photo = getBooleanPref(context, PREF_PHOTO);
 		final String display = getStringPref(context, PREF_DISPLAY);
 		final String sort = getStringPref(context, PREF_SORT);
 		final String filterGroups = getStringsPref(context, PREF_FILTER_GROUPS);
@@ -202,6 +208,7 @@ class Settings
 		properties.setProperty(TreebolicIface.PREF_SOURCE, source);
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups ? "true" : "false");
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups ? "true" : "false");
+		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_PHOTO, photo ? "true" : "false");
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
 		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_FILTER_GROUPS, filterGroups);

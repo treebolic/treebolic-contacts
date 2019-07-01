@@ -5,6 +5,7 @@
 package org.treebolic.contacts;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -41,20 +42,20 @@ public class MainActivityFragment extends Fragment
 		final View view = inflater.inflate(R.layout.fragment_main, container, false);
 
 		final Context context = requireContext();
+		final Resources resources = context.getResources();
+
 		final String source = Settings.getStringPref(context, TreebolicIface.PREF_SOURCE);
 		final Properties parameters = Settings.settingsToProperties(requireContext());
 		final int count = (int) Provider.count(context, source, parameters);
 		final int countContacts = (int) Provider.countContacts(context, source);
 		final int countGroups = (int) Provider.countGroups(context, source);
+		final String countStr = resources.getQuantityString(R.plurals.format_count, count, count);
+		final String countContactsStr = resources.getQuantityString(R.plurals.format_count_contacts, countContacts, countContacts);
+		final String countGroupsStr = resources.getQuantityString(R.plurals.format_count_groups, countGroups, countGroups);
+		final String status = resources.getString(R.string.status, countContactsStr, countGroupsStr, countStr);
 
-		final TextView filteredContactsView = view.findViewById(R.id.filteredContactsView);
-		filteredContactsView.setText(getResources().getQuantityString(R.plurals.format_count, count, count));
-
-		final TextView contactView = view.findViewById(R.id.contactsView);
-		contactView.setText(getResources().getQuantityString(R.plurals.format_count_contacts, countContacts, countContacts));
-
-		final TextView groupView = view.findViewById(R.id.groupsView);
-		groupView.setText(getResources().getQuantityString(R.plurals.format_count_groups, countGroups, countGroups));
+		final TextView statusView = view.findViewById(R.id.status);
+		statusView.setText(status);
 		return view;
 	}
 }

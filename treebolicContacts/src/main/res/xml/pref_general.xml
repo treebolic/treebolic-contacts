@@ -4,26 +4,23 @@
 
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<EditTextPreference
-		android:capitalize="none"
-		android:defaultValue="@string/pref_default_source"
-		android:inputType="text"
-		android:key="pref_source"
-		android:maxLines="1"
-		android:selectAllOnFocus="true"
-		android:singleLine="true"
-		android:summary="@string/pref_description_source"
-		android:title="@string/pref_title_source"/>
-
-	<CheckBoxPreference
+	<SwitchPreferenceCompat
 		android:defaultValue="false"
 		android:key="pref_groups"
+		android:summary="@string/pref_description_groups"
 		android:title="@string/pref_title_groups"/>
 
-	<CheckBoxPreference
+	<SwitchPreferenceCompat
 		android:defaultValue="true"
 		android:key="pref_merge_groups"
+		android:summary="@string/pref_description_merge_groups"
 		android:title="@string/pref_title_merge_groups"/>
+
+	<SwitchPreferenceCompat
+		android:defaultValue="false"
+		android:key="pref_photo"
+		android:summary="@string/pref_description_photo"
+		android:title="@string/pref_title_photo"/>
 
 	<ListPreference
 		android:defaultValue="@string/pref_display_value_first_last"

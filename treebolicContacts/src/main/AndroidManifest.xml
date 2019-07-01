@@ -89,6 +89,16 @@
 		</activity>
 
 		<activity
+			android:name=".FilterActivity"
+			android:label="@string/title_activity_filter"
+			android:parentActivityName=".MainActivity"
+			tools:targetApi="jelly_bean">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".MainActivity"/>
+		</activity>
+
+		<activity
 			android:name="org.treebolic.guide.HelpActivity"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">

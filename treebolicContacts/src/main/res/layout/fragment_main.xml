@@ -25,25 +25,12 @@
 		android:contentDescription="@string/contacts"
 		android:src="@drawable/ic_splash"/>
 	<TextView
-		android:id="@+id/filteredContactsView"
+		android:id="@+id/status"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
-		android:layout_below="@id/imageView"
+		android:layout_above="@id/imageView"
+		android:gravity="center"
 		android:contentDescription="@string/contacts" />
-	<TextView
-		android:id="@+id/contactsView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:layout_below="@id/filteredContactsView"
-		android:contentDescription="@string/contacts" />
-	<TextView
-		android:id="@+id/groupsView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:layout_below="@id/contactsView"
-		android:contentDescription="@string/groups" />
 
 </RelativeLayout>

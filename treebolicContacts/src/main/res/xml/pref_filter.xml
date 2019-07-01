@@ -4,6 +4,17 @@
 
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<EditTextPreference
+		android:capitalize="none"
+		android:defaultValue="@string/pref_default_source"
+		android:inputType="text"
+		android:key="pref_source"
+		android:maxLines="1"
+		android:selectAllOnFocus="true"
+		android:singleLine="true"
+		android:summary="@string/pref_description_source"
+		android:title="@string/pref_title_source"/>
+
 	<org.treebolic.contacts.GroupPreference
 		android:key="pref_filter_groups"
 		android:summary="@string/pref_description_group_filter"
