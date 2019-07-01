@@ -340,6 +340,7 @@ public class Provider implements IProvider
 	 * @param contactFilter contact filter
 	 * @return count of members
 	 */
+	@SuppressWarnings("WeakerAccess")
 	static public long sumGroupMembers(@NonNull final Context context, @Nullable final String allGroupIDs, @Nullable final String contactFilter)
 	{
 		long total = 0;
@@ -352,7 +353,7 @@ public class Provider implements IProvider
 	}
 
 	@NonNull
-	static private final String[] interpretGroupIDs(@NonNull final String allGroupIDs)
+	static private String[] interpretGroupIDs(@NonNull final String allGroupIDs)
 	{
 		return allGroupIDs.substring(1, allGroupIDs.length() - 1).split(",+");
 	}
@@ -480,6 +481,7 @@ public class Provider implements IProvider
 
 	// G R O U P S
 
+	@SuppressWarnings("WeakerAccess")
 	@NonNull
 	static public String[] getGroups(@NonNull final Context context)
 	{
