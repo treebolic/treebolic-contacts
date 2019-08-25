@@ -156,9 +156,6 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 	{
 		super.onCreate(savedInstanceState);
 
-		// toolbar
-		@SuppressLint("InflateParams") final Toolbar toolbar = (Toolbar) getLayoutInflater().inflate(R.layout.toolbar, null);
-
 		// setup
 		final TypedValue value = new TypedValue();
 		getResources().getValue(R.dimen.splitter_position_percent, value, true);
@@ -169,12 +166,13 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 		this.widget = new Widget(this, this);
 
 		// content view
-		final LinearLayout contentView = new LinearLayout(this);
-		contentView.setOrientation(LinearLayout.VERTICAL);
-		contentView.addView(toolbar);
+		setContentView(R.layout.activity_treebolic);
+		final ViewGroup container = findViewById(R.id.container);
 		final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.F);
-		contentView.addView(this.widget, params);
-		setContentView(contentView);
+		container.addView(this.widget, params);
+
+		// toolbar
+		final Toolbar toolbar = findViewById(R.id.toolbar);
 
 		// action bar
 		setSupportActionBar(toolbar);

@@ -165,6 +165,7 @@
     <pattern value="org.treebolic.contacts.MultiSelectListPreferenceCustomDialogFragmentCompat" method="onDialogClosed" />
     <pattern value="org.treebolic.contacts.MultiSelectListPreferenceCustomDialogFragmentCompat" method="onPrepareDialogBuilder" />
     <pattern value="org.treebolic.contacts.MultiSelectListPreferenceCustomDialogFragmentCompat" method="onSaveInstanceState" />
+    <pattern value="org.treebolic.contacts.MainActivityFragment" method="onResume" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

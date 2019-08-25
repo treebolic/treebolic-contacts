@@ -19,6 +19,7 @@ import java.util.Set;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -45,7 +46,8 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 		super.onCreate(savedInstanceState);
 
 		// toolbar
-		setupToolbar(R.layout.toolbar, R.id.toolbar);
+		final Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 
 		// set up the action bar
 		final ActionBar actionBar = getSupportActionBar();

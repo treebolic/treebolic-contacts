@@ -8,6 +8,7 @@
 	<color name="default_primaryColor">#FF009688</color>
 	<color name="default_primaryDarkColor">#FF004d40</color>
 	<color name="default_secondaryColor">#FFffA500</color>
+	<color name="default_tertiaryForeColor">#FF40d6c8</color>
 
 	<!-- snackbar and splash -->
 	<color name="snackbar_color">#FF009688</color>
