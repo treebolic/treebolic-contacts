@@ -68,7 +68,7 @@
 	</string-array>
 
 	<string name="pref_title_group_filter">Filtre de groupe</string>
-	<string name="pref_description_group_filter">Filtrer par groupe</string>
+	<string name="pref_description_group_filter">Groupes sélectionnés :</string>
 
 	<plurals name="format_count">
 		<item quantity="one">%1$d contact sélectionné</item>
@@ -84,6 +84,7 @@
 	</plurals>
 
 	<string name="status">%1$s dans %2$s.\n%3$s.</string>
-	<string name="none">Aucune</string>
+	<string name="none">Aucun</string>
+	<string name="all">Tous</string>
 
 </resources>

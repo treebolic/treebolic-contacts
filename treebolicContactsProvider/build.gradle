@@ -36,5 +36,6 @@ dependencies {
     implementation project(':treebolicMutable')
     implementation project(':treebolicLoadBalancer')
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.core:core:1.0.2'
 }

@@ -105,8 +105,19 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 	 */
 	private static final Preference.SummaryProvider<MultiSelectListPreference> LIST_SUMMARY_PROVIDER = (preference) -> {
 
+		final Context context = preference.getContext();
+		final CharSequence header = context.getString(R.string.pref_description_group_filter);
 		final Set<String> values = preference.getPersistedStringSet(null);
-		return setToString(values);
+		String summary = header.toString() + '\n';
+		if (values == null || values.isEmpty())
+		{
+			summary += context.getString(R.string.all);
+		}
+		else
+		{
+			summary += setToString(values);
+		}
+		return summary;
 	};
 
 	static @NonNull
