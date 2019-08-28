@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Photo utilities
@@ -75,6 +76,7 @@ public class Utils
 	 * @param context context
 	 * @return group id to group map
 	 */
+	@Nullable
 	static public Map<String, Group> queryGroups(@NonNull final Context context)
 	{
 		final ContentResolver cr = context.getContentResolver();
@@ -121,6 +123,7 @@ public class Utils
 	 * @param uri     image uri
 	 * @return bitmap
 	 */
+	@Nullable
 	static public Bitmap queryBitmapFromUri(@NonNull final Context context, final String uri)
 	{
 		try
@@ -141,6 +144,7 @@ public class Utils
 	 * @param id      id as per ContactsContract.Contacts.PHOTO_ID
 	 * @return bitmap
 	 */
+	@Nullable
 	static public Bitmap queryBitmapFromId(@NonNull final Context context, final long id)
 	{
 		final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, id);
@@ -166,6 +170,7 @@ public class Utils
 		return null;
 	}
 
+	@Nullable
 	static private Bitmap cursorToImage(@NonNull final Cursor cursor)
 	{
 		if (cursor.moveToFirst())
@@ -211,6 +216,7 @@ public class Utils
 		return Bitmap.createScaledBitmap(bitmap, w, h, false);
 	}
 
+	@NonNull
 	static String bitmapToUrl(@NonNull final Bitmap bitmap)
 	{
 		final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

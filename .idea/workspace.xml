@@ -15,16 +15,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e357679-a691-479e-bec4-ec1616a208e4" name="Default" comment="toolbar">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_0_2_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/SettingsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values-fr/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values-fr/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/theme.xml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContacts/src/main/res/values/theme.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" beforeDir="false" afterPath="$PROJECT_DIR$/treebolicContactsProvider/treebolicContactsProvider.iml" afterDir="false" />
-    </list>
+    <list default="true" id="8e357679-a691-479e-bec4-ec1616a208e4" name="Default" comment="filter summary" />
     <ignored path="TreebolicContacts.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="../../../../mnt/data2/devel/android-treebolic-as/TreebolicContacts/treebolicContactsProvider/build/" />
@@ -64,22 +55,7 @@
     <favorites_list name="TreebolicContacts" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/treebolicContacts/src/main/java/org/treebolic/contacts/SettingsActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="113" column="30" selection-start-line="113" selection-start-column="30" selection-end-line="113" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3003#3060#0" expanded="true" />
-                <element signature="e#4985#5017#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -571,13 +547,6 @@
       <option name="presentableId" value="Default" />
       <updated>1495124405024</updated>
     </task>
-    <task id="LOCAL-00024" summary="in progress artwork&#10;">
-      <created>1496039658205</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1496039658205</updated>
-    </task>
     <task id="LOCAL-00025" summary="splash&#10;">
       <created>1496152929432</created>
       <option name="number" value="00025" />
@@ -914,12 +883,18 @@
       <option name="project" value="LOCAL" />
       <updated>1566724784878</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="filter summary">
+      <created>1566835337483</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1566835337483</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="27" width="1187" height="1167" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6937173" visible="true" weight="0.22882096" />
       <window_info id="Structure" order="1" weight="0.17518637" />
@@ -931,7 +906,7 @@
       <window_info id="Image Layers" order="7" />
       <window_info id="Resources Explorer" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" sideWeight="0.48296058" visible="true" weight="0.26771653" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.48296058" weight="0.26771653" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3297456" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978701" weight="0.48818898" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -941,7 +916,7 @@
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.29179978" side_tool="true" weight="0.4012158" />
       <window_info anchor="bottom" id="Logcat" order="9" weight="0.3277559" />
       <window_info anchor="bottom" id="Android Monitor" order="10" sideWeight="0.48722044" weight="0.508612" />
-      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.485623" weight="0.3444882" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="11" sideWeight="0.485623" visible="true" weight="0.3444882" />
       <window_info anchor="bottom" id="Terminal" order="12" weight="0.32874015" />
       <window_info anchor="bottom" id="Gradle Console" order="13" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.4909478" weight="0.3245098" />
@@ -973,7 +948,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="fices&#10;help" />
     <MESSAGE value="fix" />
     <MESSAGE value="fix layouts" />
     <MESSAGE value="circular images" />
@@ -998,7 +972,8 @@
     <MESSAGE value="fixes (permission, count, filter)" />
     <MESSAGE value="lint" />
     <MESSAGE value="toolbar" />
-    <option name="LAST_COMMIT_MESSAGE" value="toolbar" />
+    <MESSAGE value="filter summary" />
+    <option name="LAST_COMMIT_MESSAGE" value="filter summary" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

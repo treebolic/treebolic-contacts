@@ -134,6 +134,7 @@ class Settings
 	 * @param key     key
 	 * @return value
 	 */
+	@Nullable
 	static public String getStringsPref(final Context context, @SuppressWarnings("SameParameterValue") final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -165,6 +166,7 @@ class Settings
 	 * @param strings values
 	 * @return 'in' clause
 	 */
+	@NonNull
 	static private String joinForIn(@NonNull final Iterable<String> strings)
 	{
 		final StringBuilder sb = new StringBuilder();
@@ -194,6 +196,7 @@ class Settings
 	 * @param context context
 	 * @return properties
 	 */
+	@NonNull
 	static public Properties settingsToProperties(final Context context)
 	{
 		final String source = getStringPref(context, TreebolicIface.PREF_SOURCE);

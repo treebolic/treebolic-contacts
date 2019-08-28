@@ -220,7 +220,7 @@ public class Provider implements IProvider
 	 * @param parameters    parameters
 	 * @return count
 	 */
-	static public long count(final Context context, @Nullable final String contactFilter, @NonNull final Properties parameters)
+	static public long count(@NonNull final Context context, @Nullable final String contactFilter, @NonNull final Properties parameters)
 	{
 		final String filterGroups = parameters.getProperty(Settings.PARAM_FILTER_GROUPS);
 		final String groupsParam = parameters.getProperty(Settings.PARAM_GROUPS, "false");
@@ -411,6 +411,7 @@ public class Provider implements IProvider
 	 * @param parameters    parameters
 	 * @return tree
 	 */
+	@NonNull
 	private Tree buildTree(@Nullable final String contactFilter, @Nullable final Properties parameters)
 	{
 		if (parameters != null)
@@ -465,6 +466,7 @@ public class Provider implements IProvider
 	 * @param nodes contact nodes
 	 * @return tree of contact nodes
 	 */
+	@Nullable
 	private Tree buildTree(final List<INode> nodes)
 	{
 		final TreeMutableNode topRoot = new TreeMutableNode(null, "root");
@@ -1016,7 +1018,7 @@ public class Provider implements IProvider
 
 	// H E L P E R S
 
-	static private long count(final Cursor cursor)
+	static private long count(@Nullable final Cursor cursor)
 	{
 		if (cursor != null)
 		{
@@ -1059,6 +1061,7 @@ public class Provider implements IProvider
 	 * @param strings values
 	 * @return 'in' clause
 	 */
+	@NonNull
 	private String joinForIn(@NonNull final String[] strings)
 	{
 		final StringBuilder sb = new StringBuilder();

@@ -205,6 +205,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 	//	}
 	// --Commented out by Inspection STOP (9/23/17 5:48 PM)
 
+	@NonNull
 	private String join(@NonNull final String[] strings)
 	{
 		final StringBuilder sb = new StringBuilder();

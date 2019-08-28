@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferenceCustomDialogFragmentCompat
 {
 	private final List<String> accountNames = new ArrayList<>();
@@ -20,7 +23,8 @@ public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferen
 
 	private final List<Long> counts = new ArrayList<>();
 
-	public static MultiSelectListPreferenceCustomDialogFragmentCompat newInstance(final GroupPreference pref)
+	@NonNull
+	public static MultiSelectListPreferenceCustomDialogFragmentCompat newInstance(@NonNull final GroupPreference pref)
 	{
 		final GroupPreferenceDialogFragmentCompat fragment = new GroupPreferenceDialogFragmentCompat();
 		final Bundle bundle = new Bundle(1);
@@ -43,6 +47,7 @@ public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferen
 		counts.addAll(preference.counts);
 	}
 
+	@Nullable
 	@Override
 	protected ListAdapter getAdapter()
 	{

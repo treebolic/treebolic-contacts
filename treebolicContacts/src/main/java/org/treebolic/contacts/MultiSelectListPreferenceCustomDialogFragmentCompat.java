@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.PreferenceDialogFragmentCompat;
@@ -33,12 +34,14 @@ public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extend
 	@SuppressWarnings("WeakerAccess")
 	final /* synthetic access */ Set<String> mNewValues = new HashSet<>();
 	@SuppressWarnings("WeakerAccess") /* synthetic access */ boolean mPreferenceChanged;
+	@Nullable
 	@SuppressWarnings("WeakerAccess") /* synthetic access */ CharSequence[] mEntries;
+	@Nullable
 	@SuppressWarnings("WeakerAccess") /* synthetic access */ CharSequence[] mEntryValues;
 
 	@SuppressWarnings("WeakerAccess")
 	@Override
-	public void onCreate(Bundle savedInstanceState)
+	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
@@ -80,15 +83,17 @@ public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extend
 		outState.putCharSequenceArray(SAVE_STATE_ENTRY_VALUES, mEntryValues);
 	}
 
+	@NonNull
 	private MultiSelectListPreference getListPreference()
 	{
 		return (MultiSelectListPreference) getPreference();
 	}
 
+	@Nullable
 	abstract protected ListAdapter getAdapter();
 
 	@Override
-	protected void onPrepareDialogBuilder(AlertDialog.Builder builder)
+	protected void onPrepareDialogBuilder(@NonNull AlertDialog.Builder builder)
 	{
 		super.onPrepareDialogBuilder(builder);
 
