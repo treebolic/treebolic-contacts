@@ -51,7 +51,7 @@ public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferen
 	@Override
 	protected ListAdapter getAdapter()
 	{
-		final int entryCount = mEntryValues.length;
+		final int entryCount = mEntryValues == null ? 0 : mEntryValues.length;
 		final List<Map<String, Object>> data = new ArrayList<>();
 		for (int i = 0; i < entryCount; i++)
 
@@ -60,6 +60,7 @@ public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferen
 			boolean checked = mNewValues.contains(mEntryValues[i].toString());
 			row.put("checkAndRequest", checked);
 			row.put("group_id", mEntryValues[i].toString());
+			assert mEntries != null;
 			row.put("display_name", mEntries[i]);
 			row.put("account_name", accountNames.get(i));
 			row.put("account_type", accountTypes.get(i));

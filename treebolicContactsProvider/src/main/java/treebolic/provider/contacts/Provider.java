@@ -466,7 +466,7 @@ public class Provider implements IProvider
 	 * @param nodes contact nodes
 	 * @return tree of contact nodes
 	 */
-	@Nullable
+	@NonNull
 	private Tree buildTree(final List<INode> nodes)
 	{
 		final TreeMutableNode topRoot = new TreeMutableNode(null, "root");
