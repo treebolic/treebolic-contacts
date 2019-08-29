@@ -7,7 +7,6 @@ package org.treebolic.contacts;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import org.treebolic.AppCompatCommonPreferenceActivity;
 import org.treebolic.TreebolicIface;
@@ -16,7 +15,6 @@ import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NavUtils;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.EditTextPreference;
