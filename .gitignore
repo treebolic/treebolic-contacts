@@ -1,6 +1,9 @@
 /build
+/gradle
 /.gradle
+/.idea
 /captures
-gradle-wrapper.jar
-gradle-wrapper.properties
-keystore.properties
+
+**/build
+
+**/*.iml
