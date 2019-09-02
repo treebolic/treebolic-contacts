@@ -101,11 +101,11 @@ public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extend
 		builder.setAdapter(listAdapter, null);
 	}
 
-	public class CheckBoxSimpleAdapter extends SimpleAdapter
+	class CheckBoxSimpleAdapter extends SimpleAdapter
 	{
 		private final int checkId;
 
-		public CheckBoxSimpleAdapter(final Context context, final List<? extends Map<String, ?>> data, final int resource, final String[] from, final int[] to, final int checkId)
+		CheckBoxSimpleAdapter(final Context context, final List<? extends Map<String, ?>> data, @SuppressWarnings("SameParameterValue") final int resource, final String[] from, final int[] to, @SuppressWarnings("SameParameterValue") final int checkId)
 		{
 			super(context, data, resource, from, to);
 			this.checkId = checkId;
