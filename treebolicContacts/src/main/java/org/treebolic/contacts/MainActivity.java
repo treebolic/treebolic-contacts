@@ -9,12 +9,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Process;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.bbou.donate.DonateActivity;
+import com.bbou.others.OthersActivity;
+import com.bbou.rate.AppRate;
 
 import org.treebolic.AppCompatCommonActivity;
 import org.treebolic.TreebolicIface;
@@ -48,6 +53,9 @@ public class MainActivity extends AppCompatCommonActivity
 	protected void onCreate(@Nullable final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		// rate
+		AppRate.invoke(this);
 
 		// layout
 		setContentView(R.layout.activity_main);
@@ -116,27 +124,6 @@ public class MainActivity extends AppCompatCommonActivity
 				query();
 				return true;
 			}
-			case R.id.action_tips:
-			{
-				Tip.show(getSupportFragmentManager());
-				return true;
-			}
-			case R.id.action_help:
-			{
-				startActivity(new Intent(this, HelpActivity.class));
-				return true;
-			}
-			case R.id.action_about:
-			{
-				startActivity(new Intent(this, AboutActivity.class));
-				return true;
-			}
-			case R.id.action_filter:
-			{
-				final Intent intent = new Intent(this, FilterActivity.class);
-				startActivity(intent);
-				return true;
-			}
 			case R.id.action_list_contacts:
 			{
 				final Intent intent = new Intent(this, ListContactsActivity.class);
@@ -161,17 +148,6 @@ public class MainActivity extends AppCompatCommonActivity
 				startActivity(intent);
 				return true;
 			}
-			case R.id.action_settings:
-			{
-				final Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_app_settings:
-			{
-				Settings.applicationSettings(this, "org.treebolic.contacts");
-				return true;
-			}
 			case R.id.action_model:
 			{
 				final Provider provider = new Provider();
@@ -184,6 +160,64 @@ public class MainActivity extends AppCompatCommonActivity
 				builder.show();
 				return true;
 			}
+			case R.id.action_filter:
+			{
+				final Intent intent = new Intent(this, FilterActivity.class);
+				startActivity(intent);
+				return true;
+			}
+			case R.id.action_settings:
+			{
+				final Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+				return true;
+			}
+			case R.id.action_help:
+			{
+				startActivity(new Intent(this, HelpActivity.class));
+				return true;
+			}
+			case R.id.action_tips:
+			{
+				Tip.show(getSupportFragmentManager());
+				return true;
+			}
+			case R.id.action_about:
+			{
+				startActivity(new Intent(this, AboutActivity.class));
+				return true;
+			}
+			case R.id.action_others:
+			{
+				startActivity(new Intent(this, OthersActivity.class));
+				return true;
+			}
+			case R.id.action_donate:
+			{
+				startActivity(new Intent(this, DonateActivity.class));
+				return true;
+			}
+			case R.id.action_rate:
+			{
+				AppRate.rate(this);
+				return true;
+			}
+			case R.id.action_app_settings:
+			{
+				Settings.applicationSettings(this, "org.treebolic.contacts");
+				return true;
+			}
+			case R.id.action_finish:
+			{
+				finish();
+				return true;
+			}
+			case R.id.action_kill:
+			{
+				Process.killProcess(Process.myPid());
+				return true;
+			}
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}

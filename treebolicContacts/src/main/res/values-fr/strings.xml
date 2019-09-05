@@ -23,6 +23,7 @@
 	<string name="title_activity_treebolic">Contacts</string>
 	<string name="title_activity_settings">Paramètres</string>
 	<string name="title_finish">Finir</string>
+	<string name="title_kill">Terminer</string>
 
 	<string name="action_filter">Filtrer</string>
 	<string name="action_run">Lancer</string>

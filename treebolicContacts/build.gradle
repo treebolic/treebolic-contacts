@@ -57,6 +57,9 @@ dependencies {
     implementation project(':searchLib')
     implementation project(':guideLib')
     implementation project(':preferenceLib')
+    implementation project(':rateLib')
+    implementation project(':othersLib')
+    implementation project(':donateLib')
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
