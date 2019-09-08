@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -302,6 +303,11 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 			case R.id.action_finish:
 			{
 				finish();
+				return true;
+			}
+			case R.id.action_kill:
+			{
+				Process.killProcess(Process.myPid());
 				return true;
 			}
 			case R.id.action_tips:
