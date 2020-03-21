@@ -36,7 +36,7 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 	// A D A P T E R
 
-	class ImageCursorAdapter extends SimpleCursorAdapter
+	static class ImageCursorAdapter extends SimpleCursorAdapter
 	{
 		@SuppressWarnings("WeakerAccess")
 		public ImageCursorAdapter(@NonNull Context context, int layout, @SuppressWarnings("SameParameterValue") Cursor cursor, String[] from, int[] to, @SuppressWarnings("SameParameterValue") int flags)
@@ -127,7 +127,7 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 		// final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
 
 		// Content Uri
-		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.valueOf(contactId));
+		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
 
 		// IMAGES
 

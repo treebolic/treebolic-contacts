@@ -108,7 +108,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	 *
 	 * @param <T> object type
 	 */
-	private class Row<T> extends HashMap<String, T>
+	private static class Row<T> extends HashMap<String, T>
 	{
 	}
 
@@ -371,7 +371,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 		final String contactId = row.get(CONTACT_ID_KEY);
 
 		// Content Uri
-		final Uri contactContentUri = contactId == null ? null : ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.valueOf(contactId));
+		final Uri contactContentUri = contactId == null ? null : ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
 
 		// IMAGES
 
