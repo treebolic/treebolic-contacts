@@ -142,8 +142,12 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 		@Override
 		public void onDisplayPreferenceDialog(final Preference pref)
 		{
-			final FragmentManager manager = getFragmentManager();
-			if (manager == null)
+			final FragmentManager manager;
+			try
+			{
+				manager = getParentFragmentManager();
+			}
+			catch (IllegalStateException e)
 			{
 				return;
 			}
