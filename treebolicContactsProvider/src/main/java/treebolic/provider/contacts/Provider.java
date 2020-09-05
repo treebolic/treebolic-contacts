@@ -675,7 +675,7 @@ public class Provider implements IProvider
 						}
 					}
 
-					if ("Starred in Android".contentEquals(title))
+					if (title != null && "Starred in Android".contentEquals(title))
 					{
 						title = "Starred";
 					}
@@ -688,7 +688,7 @@ public class Provider implements IProvider
 					if (memberNodes != null && memberNodes.size() > 0)
 					{
 						// group
-						final TreeMutableNode node = makeGroupNode(groupId, groupSystemId, title.toString(), accountName, accountType);
+						final TreeMutableNode node = makeGroupNode(groupId, groupSystemId, title == null ? "?" : title.toString(), accountName, accountType);
 						nodes.add(node);
 
 						final List<INode> subNodes = this.loadBalancer.buildHierarchy(memberNodes, 0);

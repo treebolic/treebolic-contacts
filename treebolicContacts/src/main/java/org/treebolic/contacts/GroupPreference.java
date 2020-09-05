@@ -98,7 +98,7 @@ public class GroupPreference extends MultiSelectListPreference
 						}
 					}
 
-					if ("Starred in Android".contentEquals(title))
+					if (title != null && "Starred in Android".contentEquals(title))
 					{
 						title = "Starred";
 					}
@@ -106,7 +106,7 @@ public class GroupPreference extends MultiSelectListPreference
 					final String accountType = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_TYPE);
 					Log.d("group ", groupId + " " + title + " " + accountName + " " + accountType);
 
-					labels.add(title.toString());
+					labels.add(title == null ? "?" : title.toString());
 					values.add(groupId);
 					this.accountNames.add(accountName);
 					this.accountTypes.add(accountType);

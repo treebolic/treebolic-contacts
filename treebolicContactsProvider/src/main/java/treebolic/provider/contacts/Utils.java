@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ImageDecoder;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -120,21 +121,30 @@ public class Utils
 	 * Get bitmap from Uri
 	 *
 	 * @param context context
-	 * @param uri     image uri
+	 * @param uriStr  image uri
 	 * @return bitmap
 	 */
+	@SuppressWarnings("deprecation")
 	@Nullable
-	static public Bitmap queryBitmapFromUri(@NonNull final Context context, final String uri)
+	static public Bitmap queryBitmapFromUri(@NonNull final Context context, final String uriStr)
 	{
 		try
 		{
-			return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(uri));
+			Uri uri = Uri.parse(uriStr);
+			if (Build.VERSION.SDK_INT >= 28)
+			{
+				ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), uri);
+				return ImageDecoder.decodeBitmap(source);
+			}
+			else
+			{
+				return MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+			}
 		}
 		catch (IOException ignored)
 		{
 			//
-		}
-		return null;
+		} return null;
 	}
 
 	/**
