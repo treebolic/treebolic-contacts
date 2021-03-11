@@ -2,7 +2,7 @@
   ~ Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<string name="app_name">Treebolic Contacts</string>
 
 	<string name="contacts">Contacts</string>
@@ -39,8 +39,8 @@
 	<string name="error_null_data">Données nulles</string>
 	<string name="error_link">Erreur avec le lien</string>
 
-	<string name="pref_header_general">Général</string>
-	<string name="pref_header_filter">Filtre</string>
+	<string name="pref_header_general" tools:keep="@string/pref_header_general">Général</string>
+	<string name="pref_header_filter" tools:keep="@string/pref_header_filter">Filtre</string>
 
 	<string name="pref_title_source">Filtre contact</string>
 	<string name="pref_description_source">Sous-chaîne que le nom du contact doit contenir</string>

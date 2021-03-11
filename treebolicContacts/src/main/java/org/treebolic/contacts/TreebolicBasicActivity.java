@@ -291,87 +291,83 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 	@Override
 	public boolean onOptionsItemSelected(@NonNull final MenuItem item)
 	{
-		int itemId = item.getItemId();
-		switch (itemId)
+		int id = item.getItemId();
+		if (R.id.action_filter == id)
 		{
-			case R.id.action_filter:
-			{
-				final Intent intent = new Intent(this, FilterActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_finish:
-			{
-				finish();
-				return true;
-			}
-			case R.id.action_kill:
-			{
-				Process.killProcess(Process.myPid());
-				return true;
-			}
-			case R.id.action_tips:
-			{
-				Tip.show(getSupportFragmentManager());
-				return true;
-			}
-			case R.id.action_help:
-			{
-				startActivity(new Intent(this, HelpActivity.class));
-				return true;
-			}
-			case R.id.action_about:
-			{
-				startActivity(new Intent(this, AboutActivity.class));
-				return true;
-			}
-			case R.id.action_search_run:
-			{
-				handleSearchRun();
-				return true;
-			}
-			case R.id.action_search_reset:
-			{
-				handleSearchReset();
-				return true;
-			}
-			case R.id.action_search_settings:
-			{
-				SearchSettings.show(getSupportFragmentManager());
-				return true;
-			}
-			case R.id.action_list_contacts:
-			{
-				final Intent intent = new Intent(this, ListContactsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_list_grouped_contacts:
-			{
-				final Intent intent = new Intent(this, ListContactsGroupedActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_list_ungrouped_contacts:
-			{
-				final Intent intent = new Intent(this, ListContactsUnGroupedActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_list_groups:
-			{
-				final Intent intent = new Intent(this, ListGroupsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_settings:
-			{
-				final Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				return true;
-			}
+			final Intent intent = new Intent(this, FilterActivity.class);
+			startActivity(intent);
+			return true;
 		}
-
+		else if (R.id.action_finish == id)
+		{
+			finish();
+			return true;
+		}
+		else if (R.id.action_kill == id)
+		{
+			Process.killProcess(Process.myPid());
+			return true;
+		}
+		else if (R.id.action_tips == id)
+		{
+			Tip.show(getSupportFragmentManager());
+			return true;
+		}
+		else if (R.id.action_help == id)
+		{
+			startActivity(new Intent(this, HelpActivity.class));
+			return true;
+		}
+		else if (R.id.action_about == id)
+		{
+			startActivity(new Intent(this, AboutActivity.class));
+			return true;
+		}
+		else if (R.id.action_search_run == id)
+		{
+			handleSearchRun();
+			return true;
+		}
+		else if (R.id.action_search_reset == id)
+		{
+			handleSearchReset();
+			return true;
+		}
+		else if (R.id.action_search_settings == id)
+		{
+			SearchSettings.show(getSupportFragmentManager());
+			return true;
+		}
+		else if (R.id.action_list_contacts == id)
+		{
+			final Intent intent = new Intent(this, ListContactsActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_list_grouped_contacts == id)
+		{
+			final Intent intent = new Intent(this, ListContactsGroupedActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_list_ungrouped_contacts == id)
+		{
+			final Intent intent = new Intent(this, ListContactsUnGroupedActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_list_groups == id)
+		{
+			final Intent intent = new Intent(this, ListGroupsActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_settings == id)
+		{
+			final Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			return true;
+		}
 		return false;
 	}
 

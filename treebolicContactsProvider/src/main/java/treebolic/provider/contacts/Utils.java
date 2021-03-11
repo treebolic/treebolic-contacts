@@ -39,23 +39,18 @@ public class Utils
 {
 	static public class Group
 	{
-		@SuppressWarnings("unused")
 		public final String groupId;
 
-		@SuppressWarnings("unused")
 		public final String systemId;
 
 		public final String title;
 
 		public final String account;
 
-		@SuppressWarnings("unused")
 		public final String accountType;
 
-		@SuppressWarnings("unused")
 		public final String titleRes;
 
-		@SuppressWarnings("unused")
 		public final String resPackage;
 
 		@SuppressWarnings("WeakerAccess")

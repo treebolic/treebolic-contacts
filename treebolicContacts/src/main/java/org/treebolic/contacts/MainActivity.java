@@ -116,110 +116,107 @@ public class MainActivity extends AppCompatCommonActivity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-
-		switch (id)
+		if (R.id.action_run == id)
 		{
-			case R.id.action_run:
-			{
-				query();
-				return true;
-			}
-			case R.id.action_list_contacts:
-			{
-				final Intent intent = new Intent(this, ListContactsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_list_grouped_contacts:
-			{
-				final Intent intent = new Intent(this, ListContactsGroupedActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_list_ungrouped_contacts:
-			{
-				final Intent intent = new Intent(this, ListContactsUnGroupedActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_list_groups:
-			{
-				final Intent intent = new Intent(this, ListGroupsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_model:
-			{
-				final Provider provider = new Provider();
-				provider.setHandle(this);
-				final Model model = provider.makeModel(null, null, null);
-				final String dump = ModelDump.toString(model);
-				//System.out.println(dump);
-				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage(dump);
-				builder.show();
-				return true;
-			}
-			case R.id.action_filter:
-			{
-				final Intent intent = new Intent(this, FilterActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_settings:
-			{
-				final Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.action_help:
-			{
-				startActivity(new Intent(this, HelpActivity.class));
-				return true;
-			}
-			case R.id.action_tips:
-			{
-				Tip.show(getSupportFragmentManager());
-				return true;
-			}
-			case R.id.action_about:
-			{
-				startActivity(new Intent(this, AboutActivity.class));
-				return true;
-			}
-			case R.id.action_others:
-			{
-				startActivity(new Intent(this, OthersActivity.class));
-				return true;
-			}
-			case R.id.action_donate:
-			{
-				startActivity(new Intent(this, DonateActivity.class));
-				return true;
-			}
-			case R.id.action_rate:
-			{
-				AppRate.rate(this);
-				return true;
-			}
-			case R.id.action_app_settings:
-			{
-				Settings.applicationSettings(this, "org.treebolic.contacts");
-				return true;
-			}
-			case R.id.action_finish:
-			{
-				finish();
-				return true;
-			}
-			case R.id.action_kill:
-			{
-				Process.killProcess(Process.myPid());
-				return true;
-			}
-
-			default:
-				return super.onOptionsItemSelected(item);
+			query();
+			return true;
+		}
+		else if (R.id.action_list_contacts == id)
+		{
+			final Intent intent = new Intent(this, ListContactsActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_list_grouped_contacts == id)
+		{
+			final Intent intent = new Intent(this, ListContactsGroupedActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_list_ungrouped_contacts == id)
+		{
+			final Intent intent = new Intent(this, ListContactsUnGroupedActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_list_groups == id)
+		{
+			final Intent intent = new Intent(this, ListGroupsActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_model == id)
+		{
+			final Provider provider = new Provider();
+			provider.setHandle(this);
+			final Model model = provider.makeModel(null, null, null);
+			final String dump = ModelDump.toString(model);
+			//System.out.println(dump);
+			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(dump);
+			builder.show();
+			return true;
+		}
+		else if (R.id.action_filter == id)
+		{
+			final Intent intent = new Intent(this, FilterActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_settings == id)
+		{
+			final Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else if (R.id.action_help == id)
+		{
+			startActivity(new Intent(this, HelpActivity.class));
+			return true;
+		}
+		else if (R.id.action_tips == id)
+		{
+			Tip.show(getSupportFragmentManager());
+			return true;
+		}
+		else if (R.id.action_about == id)
+		{
+			startActivity(new Intent(this, AboutActivity.class));
+			return true;
+		}
+		else if (R.id.action_others == id)
+		{
+			startActivity(new Intent(this, OthersActivity.class));
+			return true;
+		}
+		else if (R.id.action_donate == id)
+		{
+			startActivity(new Intent(this, DonateActivity.class));
+			return true;
+		}
+		else if (R.id.action_rate == id)
+		{
+			AppRate.rate(this);
+			return true;
+		}
+		else if (R.id.action_app_settings == id)
+		{
+			Settings.applicationSettings(this, "org.treebolic.contacts");
+			return true;
+		}
+		else if (R.id.action_finish == id)
+		{
+			finish();
+			return true;
+		}
+		else if (R.id.action_kill == id)
+		{
+			Process.killProcess(Process.myPid());
+			return true;
+		}
+		else
+		{
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -322,7 +319,7 @@ public class MainActivity extends AppCompatCommonActivity
 	 *
 	 * @param view view
 	 */
-	public void onClick(@SuppressWarnings("unused") final View view)
+	public void onClick(final View view)
 	{
 		query();
 	}

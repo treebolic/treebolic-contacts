@@ -49,7 +49,7 @@ public class Provider implements IProvider
 	 * Ordinals used as indexes of images
 	 */
 	private enum ImageIndices
-	{ROOT, @SuppressWarnings("unused") FOLDER, CONTACT, GROUP,}
+	{ROOT, FOLDER, CONTACT, GROUP,}
 
 	/**
 	 * Image array
@@ -815,7 +815,6 @@ public class Provider implements IProvider
 	 * @return list of members
 	 */
 	@Nullable
-	@SuppressWarnings("unused")
 	private List<INode> collectGroupsMembers(@NonNull final String... groupIDs)
 	{
 		final String selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + joinForIn(groupIDs) + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";

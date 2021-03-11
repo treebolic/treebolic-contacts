@@ -6,18 +6,16 @@ package org.treebolic.contacts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import org.treebolic.AppCompatCommonActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
-import org.treebolic.AppCompatCommonActivity;
-
 import androidx.fragment.app.Fragment;
 import treebolic.model.Model;
 import treebolic.model.ModelDump;
@@ -78,30 +76,27 @@ abstract public class AbstractActivity extends AppCompatCommonActivity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		switch (id)
+		if (R.id.action_model == id)
 		{
-			case R.id.action_model:
-			{
-				final Provider provider = new Provider();
-				provider.setHandle(this);
-				final Model model = provider.makeModel(null, null, null);
-				final String dump = ModelDump.toString(model);
-				//System.out.println(dump);
-				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage(dump);
-				builder.show();
-				return true;
-			}
-
-			case R.id.action_settings:
-			{
-				final Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				return true;
-			}
-
-			default:
-				return super.onOptionsItemSelected(item);
+			final Provider provider = new Provider();
+			provider.setHandle(this);
+			final Model model = provider.makeModel(null, null, null);
+			final String dump = ModelDump.toString(model);
+			//System.out.println(dump);
+			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(dump);
+			builder.show();
+			return true;
+		}
+		else if (R.id.action_settings == id)
+		{
+			final Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		else
+		{
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
