@@ -129,7 +129,7 @@ public class Utils
 			if (Build.VERSION.SDK_INT >= 28)
 			{
 				ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), uri);
-				return ImageDecoder.decodeBitmap(source);
+				return ImageDecoder.decodeBitmap(source, (decoder, info, source2) -> decoder.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE));
 			}
 			else
 			{
@@ -139,7 +139,8 @@ public class Utils
 		catch (IOException ignored)
 		{
 			//
-		} return null;
+		}
+		return null;
 	}
 
 	/**
