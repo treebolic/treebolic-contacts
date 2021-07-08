@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatCommonActivity
 	private void updateButton()
 	{
 		final ImageButton button = findViewById(R.id.queryButton);
+		button.setOnClickListener(this::onClick);
 		// final String source = Settings.getStringPref(this, TreebolicIface.PREF_SOURCE);
 		button.setVisibility(View.VISIBLE);
 	}
