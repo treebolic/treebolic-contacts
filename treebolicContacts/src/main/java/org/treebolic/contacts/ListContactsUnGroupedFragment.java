@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -100,10 +101,9 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 	}
 
 	@Override
-	public void onActivityCreated(final Bundle savedInstanceState)
+	public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState)
 	{
-		// Always call the super method first
-		super.onActivityCreated(savedInstanceState);
+		super.onViewCreated(view, savedInstanceState);
 
 		// Initializes the loader
 		LoaderManager.getInstance(this).initLoader(0, null, this);

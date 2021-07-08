@@ -89,12 +89,10 @@ abstract public class AbstractListContactsCursorFragment extends AbstractListCon
 
 	// O V E R R I D E S
 
-	@SuppressWarnings("WeakerAccess")
 	@Override
-	public void onActivityCreated(final Bundle savedInstanceState)
+	public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState)
 	{
-		// Always call the super method first
-		super.onActivityCreated(savedInstanceState);
+		super.onViewCreated(view, savedInstanceState);
 
 		// Gets the ListView from the View list of the parent activity
 		final Activity activity = getActivity();
