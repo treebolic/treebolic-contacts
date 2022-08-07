@@ -20,6 +20,7 @@
 
 		<activity
 			android:name=".MainActivity"
+			android:exported="true"
 			android:label="@string/title_activity_main">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
@@ -29,6 +30,7 @@
 
 		<activity
 			android:name="org.treebolic.contacts.TreebolicActivity"
+			android:exported="true"
 			android:hardwareAccelerated="true"
 			android:label="@string/title_activity_treebolic"
 			android:parentActivityName=".MainActivity"
@@ -40,6 +42,7 @@
 
 		<activity
 			android:name=".ListContactsActivity"
+			android:exported="false"
 			android:label="@string/title_activity_list_contacts"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
@@ -50,6 +53,7 @@
 
 		<activity
 			android:name=".ListContactsGroupedActivity"
+			android:exported="false"
 			android:label="@string/title_activity_list_grouped_contacts"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
@@ -60,6 +64,7 @@
 
 		<activity
 			android:name=".ListContactsUnGroupedActivity"
+			android:exported="false"
 			android:label="@string/title_activity_list_ungrouped_contacts"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
@@ -70,6 +75,7 @@
 
 		<activity
 			android:name=".ListGroupsActivity"
+			android:exported="false"
 			android:label="@string/title_activity_list_groups"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
@@ -80,6 +86,7 @@
 
 		<activity
 			android:name=".SettingsActivity"
+			android:exported="false"
 			android:label="@string/title_activity_settings"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
@@ -90,6 +97,7 @@
 
 		<activity
 			android:name=".FilterActivity"
+			android:exported="false"
 			android:label="@string/title_activity_filter"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
@@ -100,6 +108,7 @@
 
 		<activity
 			android:name="org.treebolic.guide.HelpActivity"
+			android:exported="false"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
 			<meta-data
@@ -109,6 +118,7 @@
 
 		<activity
 			android:name="com.bbou.others.OthersActivity"
+			android:exported="false"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
 			<meta-data
@@ -118,6 +128,7 @@
 
 		<activity
 			android:name="com.bbou.donate.DonateActivity"
+			android:exported="false"
 			android:parentActivityName=".MainActivity"
 			tools:targetApi="jelly_bean">
 			<meta-data
