@@ -36,7 +36,7 @@ dependencies {
     implementation project(':treebolicMutable')
     implementation project(':treebolicLoadBalancer')
 
-    implementation 'androidx.core:core:1.6.0'
-    implementation 'androidx.preference:preference:1.1.1'
-    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'androidx.core:core:1.8.0'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.annotation:annotation:1.4.0'
 }
