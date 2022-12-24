@@ -21,8 +21,8 @@ import java.util.Properties;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import treebolic.ILocator;
-import treebolic.glue.Color;
-import treebolic.glue.Image;
+import treebolic.glue.iface.Colors;
+import treebolic.glue.iface.Image;
 import treebolic.model.IEdge;
 import treebolic.model.INode;
 import treebolic.model.Model;
@@ -56,10 +56,10 @@ public class Provider implements IProvider
 	 */
 	@Nullable
 	private static final Image[] images = new Image[]{ //
-			Image.try_make(Provider.class.getResource("images/root.png")), // ROOT
-			Image.try_make(Provider.class.getResource("images/folder.png")), // FOLDER
-			Image.try_make(Provider.class.getResource("images/contact.png")), // CONTACT
-			Image.try_make(Provider.class.getResource("images/group.png")), // GROUP
+			new treebolic.glue.Image(Provider.class.getResource("images/root.png")), // ROOT
+			new treebolic.glue.Image(Provider.class.getResource("images/folder.png")), // FOLDER
+			new treebolic.glue.Image(Provider.class.getResource("images/contact.png")), // CONTACT
+			new treebolic.glue.Image(Provider.class.getResource("images/group.png")), // GROUP
 	};
 
 	private static final String NL = "<br>";
@@ -69,75 +69,75 @@ public class Provider implements IProvider
 	/**
 	 * Background color
 	 */
-	static private final Color backgroundColor = new Color(0x004C41);
+	static private final Integer backgroundColor = 0x004C41;
 
 	// contact
 
 	/**
 	 * Contact background color
 	 */
-	private static final Color contactBackColor = new Color(0x00968C);
+	private static final Integer contactBackColor = 0x00968C;
 
 	/**
 	 * Contact foreground color
 	 */
-	private static final Color contactForeColor = Color.LIGHT_GRAY;
+	private static final Integer contactForeColor = Colors.LIGHT_GRAY;
 
 	/**
 	 * Contact treeedge color
 	 */
-	private static final Color contactEdgeColor = Color.LIGHT_GRAY;
+	private static final Integer contactEdgeColor = Colors.LIGHT_GRAY;
 
 	// group
 
 	/**
 	 * Group background color
 	 */
-	private static final Color groupBackColor = Color.LIGHT_GRAY;
+	private static final Integer groupBackColor = Colors.LIGHT_GRAY;
 
 	/**
 	 * Group foreground color
 	 */
-	private static final Color groupForeColor = new Color(0x00968C);
+	private static final Integer groupForeColor = 0x00968C;
 
 	/**
 	 * Group treeedge color
 	 */
-	private static final Color groupEdgeColor = Color.LIGHT_GRAY;
+	private static final Integer groupEdgeColor = Colors.LIGHT_GRAY;
 
 	// folder
 
 	/**
 	 * Folder root background color
 	 */
-	private static final Color folderBackColor = contactForeColor;
+	private static final Integer folderBackColor = contactForeColor;
 
 	/**
 	 * Folder foreground color
 	 */
-	private static final Color folderForeColor = contactBackColor;
+	private static final Integer folderForeColor = contactBackColor;
 
 	/**
 	 * Folder treeedge color
 	 */
-	private static final Color folderEdgeColor = Color.CYAN;
+	private static final Integer folderEdgeColor = Colors.CYAN;
 
 	// root
 
 	/**
 	 * Top root background color
 	 */
-	private static final Color rootBackColor = Color.ORANGE;
+	private static final Integer rootBackColor = Colors.ORANGE;
 
 	/**
 	 * Top root root foreground color
 	 */
-	private static final Color rootForeColor = Color.WHITE;
+	private static final Integer rootForeColor = Colors.WHITE;
 
 	/**
 	 * Root treeedge color
 	 */
-	private static final Color rootEdgeColor = Color.WHITE;
+	private static final Integer rootEdgeColor = Colors.WHITE;
 
 	// P A R A M E T E R S
 
@@ -154,7 +154,7 @@ public class Provider implements IProvider
 	/**
 	 * LoadBalancer : edge color
 	 */
-	static private final Color LOADBALANCING_EDGE_COLOR = Color.WHITE;
+	static private final Integer LOADBALANCING_EDGE_COLOR = Colors.WHITE;
 
 	/**
 	 * LoadBalancer : Edge style
@@ -207,7 +207,7 @@ public class Provider implements IProvider
 	public Provider()
 	{
 		this.loadBalancer = new LoadBalancer(TREE_MAX_NODES_AT_LEVEL, LABEL_TRUNCATE_AT);
-		this.loadBalancer.setGroupNode(null, null, null, LOADBALANCING_EDGE_COLOR, LOADBALANCING_EDGE_STYLE, -1 /*ImageIndices.FOLDER.ordinal() */, null);
+		this.loadBalancer.setGroupNode(null, null, null, LOADBALANCING_EDGE_COLOR, LOADBALANCING_EDGE_STYLE, -1 /*ImageIndices.FOLDER.ordinal() */, null, null);
 	}
 
 	// C O U N T
@@ -946,7 +946,7 @@ public class Provider implements IProvider
 			final Bitmap roundBitmap = Utils.roundCrop(bitmap);
 			final Bitmap scaledUpBitmap = Utils.scale(roundBitmap, 200, 200);
 			final Bitmap scaledDownBitmap = Utils.scale(roundBitmap, 50, 50);
-			final Image image = new Image(scaledUpBitmap);
+			final Image image = new treebolic.glue.Image(scaledUpBitmap);
 			node.setImage(image);
 
 			final String data = Utils.bitmapToUrl(scaledDownBitmap);
@@ -1097,7 +1097,6 @@ public class Provider implements IProvider
 		settings.nodeBackColor = Provider.contactBackColor;
 		settings.nodeForeColor = Provider.contactForeColor;
 		settings.orientation = "radial";
-		settings.hasToolbarFlag = true;
 		settings.fontFace = "SansSerif";
 		settings.expansion = .8F;
 		settings.sweep = 1.3F;

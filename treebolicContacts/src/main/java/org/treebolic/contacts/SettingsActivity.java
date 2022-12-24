@@ -108,6 +108,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 
 			final Context context = preference.getContext();
 			final SharedPreferences prefs = preference.getSharedPreferences();
+			assert prefs != null;
 			final String desc = context.getString(R.string.pref_description_source);
 			String value = prefs.getString(preference.getKey(), null);
 			if (value == null || value.isEmpty())
@@ -140,7 +141,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 		private static final String DIALOG_FRAGMENT_TAG = "GroupPreference";
 
 		@Override
-		public void onDisplayPreferenceDialog(final Preference pref)
+		public void onDisplayPreferenceDialog(@NonNull final Preference pref)
 		{
 			final FragmentManager manager;
 			try

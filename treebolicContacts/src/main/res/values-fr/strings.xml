@@ -74,14 +74,17 @@
 	<plurals name="format_count">
 		<item quantity="one">%1$d contact sélectionné</item>
 		<item quantity="other">%1$d contacts sélectionnés</item>
+		<item quantity="many">%1$d de contacts sélectionnés</item>
 	</plurals>
 	<plurals name="format_count_contacts">
 		<item quantity="one">%1$d contact</item>
 		<item quantity="other">%1$d contacts</item>
+		<item quantity="many">%1$d de contacts</item>
 	</plurals>
 	<plurals name="format_count_groups">
 		<item quantity="one">%1$d groupe</item>
 		<item quantity="other">%1$d groupes</item>
+		<item quantity="many">%1$d de groupes</item>
 	</plurals>
 
 	<string name="status">%1$s dans %2$s.\n%3$s.</string>

@@ -287,10 +287,18 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 				Row<String> row = null;
 				do
 				{
-					final String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID));
-					final String groupId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID));
-					final String photoThumbnailUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI));
-					final String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI));
+					final int contactIdIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID);
+					final int groupIdIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID);
+					final int photoThumbnailUriIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI);
+					final int photoUriIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI);
+					assert contactIdIdx != -1;
+					assert groupIdIdx != -1;
+					assert photoThumbnailUriIdx != -1;
+					assert photoUriIdx != -1;
+					final String contactId = cursor.getString(contactIdIdx);
+					final String groupId = cursor.getString(groupIdIdx);
+					final String photoThumbnailUri = cursor.getString(photoThumbnailUriIdx);
+					final String photoUri = cursor.getString(photoUriIdx);
 
 					// contact id
 					if (!contactId.equals(contactIdCurrent))
