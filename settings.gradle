@@ -1,29 +1,8 @@
 /*
- * Copyright (c) 2019. Bernard Bou <1313ou@gmail.com>
+ * Copyright (c) 2022. Bernard Bou <1313ou@gmail.com>
  */
 
 // CORE
-
-//include ':treebolicLib'
-//project(':treebolicLib').projectDir = new File('../TreebolicLib/treebolicLib/')
-
-//include ':treebolicLibModel'
-//project(':treebolicLibModel').projectDir = new File('../TreebolicLib/treebolicLibModel/')
-
-//include ':treebolicLibView'
-//project(':treebolicLibView').projectDir = new File('../TreebolicLib/treebolicLibView/')
-
-//include ':treebolicMutable'
-//project(':treebolicMutable').projectDir = new File('../TreebolicLib/treebolicMutable/')
-
-//include ':treebolicGlueIface'
-//project(':treebolicGlueIface').projectDir = new File('../TreebolicLib/treebolicGlueIface/')
-
-//include ':treebolicGraph'
-//project(':treebolicGraph').projectDir = new File('../TreebolicLib/treebolicGraph/')
-
-//include ':treebolicLoadBalancer'
-//project(':treebolicLoadBalancer').projectDir = new File('../TreebolicLib/treebolicLoadBalancer/')
 
 include ':treebolicGlue'
 project(':treebolicGlue').projectDir = new File('../TreebolicLib/treebolicGlue/')
