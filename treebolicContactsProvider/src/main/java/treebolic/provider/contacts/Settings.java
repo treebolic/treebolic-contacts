@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
@@ -152,7 +153,7 @@ public class Settings
 	 * @return value
 	 */
 	@Nullable
-	static public String getStringPref(final Context context, final String key)
+	static public String getStringPref(@NonNull final Context context, final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPref.getString(key, null);
@@ -165,7 +166,7 @@ public class Settings
 	 * @param key     key
 	 * @return value
 	 */
-	static public boolean getBooleanPref(final Context context, final String key)
+	static public boolean getBooleanPref(@NonNull final Context context, final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPref.getBoolean(key, false);

@@ -94,7 +94,7 @@ class Settings
 	 * @param context context
 	 * @param source  source
 	 */
-	public static void save(final Context context, final String source)
+	public static void save(@NonNull final Context context, final String source)
 	{
 		Settings.putStringPref(context, TreebolicIface.PREF_SOURCE, source);
 	}
@@ -107,7 +107,7 @@ class Settings
 	 * @return value
 	 */
 	@Nullable
-	static public String getStringPref(final Context context, final String key)
+	static public String getStringPref(@NonNull final Context context, final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPref.getString(key, null);
@@ -121,7 +121,7 @@ class Settings
 	 * @param value   value
 	 */
 	@SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
-	private static void putStringPref(final Context context, @SuppressWarnings("SameParameterValue") final String key, final String value)
+	private static void putStringPref(@NonNull final Context context, @SuppressWarnings("SameParameterValue") final String key, final String value)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		sharedPref.edit().putString(key, value).commit();
@@ -135,7 +135,7 @@ class Settings
 	 * @return value
 	 */
 	@Nullable
-	static public String getStringsPref(final Context context, @SuppressWarnings("SameParameterValue") final String key)
+	static public String getStringsPref(@NonNull final Context context, @SuppressWarnings("SameParameterValue") final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		final Set<String> values = sharedPref.getStringSet(key, null);
@@ -154,7 +154,7 @@ class Settings
 	 * @return value
 	 */
 	@SuppressWarnings("WeakerAccess")
-	static public boolean getBooleanPref(final Context context, final String key)
+	static public boolean getBooleanPref(@NonNull final Context context, final String key)
 	{
 		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		return sharedPref.getBoolean(key, false);
@@ -197,7 +197,7 @@ class Settings
 	 * @return properties
 	 */
 	@NonNull
-	static public Properties settingsToProperties(final Context context)
+	static public Properties settingsToProperties(@NonNull final Context context)
 	{
 		final String source = getStringPref(context, TreebolicIface.PREF_SOURCE);
 		final boolean groups = getBooleanPref(context, PREF_GROUPED);

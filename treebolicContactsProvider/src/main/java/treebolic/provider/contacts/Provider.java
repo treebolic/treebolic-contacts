@@ -382,6 +382,7 @@ public class Provider implements IProvider
 
 	// I P R O V I D E R  I N T E R F A C E   (M O D E L)
 
+	@NonNull
 	@Override
 	public Model makeModel(@Nullable final String source, final URL base, final Properties parameters)
 	{
@@ -391,6 +392,7 @@ public class Provider implements IProvider
 		return new Model(tree, settings, images);
 	}
 
+	@NonNull
 	@SuppressWarnings("WeakerAccess")
 	@Override
 	public Tree makeTree(@Nullable final String source, final URL base, final Properties parameters, final boolean checkRecursion)

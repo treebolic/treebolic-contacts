@@ -50,16 +50,19 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 	/**
 	 * Column names in the Cursor mapping to the ListView ids
 	 */
+	@NonNull
 	static private final String[] FROM_COLUMNS;
 
 	/**
 	 * Column names in the Cursor mapping to the ListView ids (alternative)
 	 */
+	@NonNull
 	static private final String[] FROM_COLUMNS_ALT;
 
 	/*
 	 * Mapped-to ListView ids
 	 */
+	@NonNull
 	static private final int[] TO_IDS;
 
 	static
