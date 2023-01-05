@@ -112,7 +112,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		LoaderManager.getInstance(this).initLoader(0, null, this);
 
 		// Gets adapter's source columns
-		final String displayPref = Settings.getStringPref(getContext(), Settings.PREF_DISPLAY);
+		final String displayPref = Settings.getStringPref(requireContext(), Settings.PREF_DISPLAY);
 		final String firstLastValue = getString(R.string.pref_display_value_first_last);
 		final int displayCode = firstLastValue.equals(displayPref) ? 1 : 2;
 		final String[] from = displayCode == 1 ? FROM_COLUMNS : FROM_COLUMNS_ALT;
@@ -139,12 +139,12 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
 		// selection
-		final String source = Settings.getStringPref(getContext(), TreebolicIface.PREF_SOURCE);
+		final String source = Settings.getStringPref(requireContext(), TreebolicIface.PREF_SOURCE);
 		final boolean nullSource = source == null || source.isEmpty();
 		String selection = nullSource ? null : treebolic.provider.contacts.Settings.SELECTION_DN_LIKE;
 		final String[] selectionArgs = nullSource ? null : new String[]{"%" + source + "%"};
 		String extraSelection = ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'";
-		final String groups = Settings.getStringsPref(getContext(), Settings.PREF_FILTER_GROUPS);
+		final String groups = Settings.getStringsPref(requireContext(), Settings.PREF_FILTER_GROUPS);
 		if (groups != null)
 		{
 			extraSelection += " AND " + ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groups;

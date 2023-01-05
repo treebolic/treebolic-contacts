@@ -98,7 +98,7 @@ public class ListGroupsFragment extends Fragment implements LoaderManager.Loader
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
 	{
 		String selection = null;
-		final String groups = Settings.getStringsPref(getActivity(), Settings.PREF_FILTER_GROUPS);
+		final String groups = Settings.getStringsPref(requireActivity(), Settings.PREF_FILTER_GROUPS);
 		if (groups != null)
 		{
 			selection = ContactsContract.Groups._ID + " IN " + groups;
