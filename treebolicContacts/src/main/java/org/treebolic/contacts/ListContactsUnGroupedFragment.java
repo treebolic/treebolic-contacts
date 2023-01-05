@@ -152,7 +152,7 @@ public class ListContactsUnGroupedFragment extends AbstractListContactsCursorFra
 		selection = selection == null ? extraSelection : selection + " AND " + extraSelection;
 
 		// sort
-		final String sortPref = Settings.getStringPref(getContext(), Settings.PREF_SORT);
+		final String sortPref = Settings.getStringPref(requireContext(), Settings.PREF_SORT);
 		final String firstValue = getString(R.string.pref_sort_value_first);
 		final int sortCode = firstValue.equals(sortPref) ? 1 : 2;
 		String sort = sortCode == 1 ? ContactsContract.Contacts.DISPLAY_NAME : ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE + " COLLATE LOCALIZED ASC";
