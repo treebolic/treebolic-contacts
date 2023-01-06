@@ -5,9 +5,9 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -26,7 +26,7 @@
 			android:focusable="false"
 			android:focusableInTouchMode="false"
 			android:scaleType="fitXY"
-			android:src="@drawable/ic_contact"/>
+			android:src="@drawable/ic_contact" />
 
 		<TextView
 			android:id="@+id/display_name"
@@ -40,7 +40,7 @@
 			android:focusableInTouchMode="false"
 			android:text="@string/name"
 			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:textStyle="bold"/>
+			android:textStyle="bold" />
 
 	</LinearLayout>
 
@@ -61,7 +61,7 @@
 			android:focusable="false"
 			android:focusableInTouchMode="false"
 			android:text="@string/group"
-			android:textAppearance="?android:attr/textAppearanceSmall"/>
+			android:textAppearance="?android:attr/textAppearanceSmall" />
 
 		<TextView
 			android:id="@+id/account"
@@ -75,6 +75,6 @@
 			android:focusable="false"
 			android:focusableInTouchMode="false"
 			android:text="@string/account"
-			android:textAppearance="?android:attr/textAppearanceSmall"/>
+			android:textAppearance="?android:attr/textAppearanceSmall" />
 	</LinearLayout>
 </LinearLayout>

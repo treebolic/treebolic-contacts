@@ -10,15 +10,6 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +20,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 /**
  * Fragment with list of contacts

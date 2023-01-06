@@ -7,12 +7,6 @@ package org.treebolic.contacts;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import treebolic.provider.contacts.Permissions;
-import treebolic.provider.contacts.Provider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +15,11 @@ import android.widget.TextView;
 import org.treebolic.TreebolicIface;
 
 import java.util.Properties;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import treebolic.provider.contacts.Permissions;
+import treebolic.provider.contacts.Provider;
 
 /**
  * Main activity fragment

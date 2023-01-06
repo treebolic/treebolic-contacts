@@ -5,10 +5,10 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="16dp">
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="16dp">
 
 	<ImageView
 		android:id="@+id/photo"
@@ -17,7 +17,7 @@
 		android:adjustViewBounds="true"
 		android:contentDescription="@string/photo"
 		android:scaleType="fitCenter"
-		android:src="@drawable/ic_contact_large"/>
+		android:src="@drawable/ic_contact_large" />
 
 	<ScrollView
 		android:layout_width="match_parent"
@@ -26,6 +26,6 @@
 		<TextView
 			android:id="@android:id/text1"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"/>
+			android:layout_height="wrap_content" />
 	</ScrollView>
 </LinearLayout>

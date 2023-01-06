@@ -12,11 +12,11 @@
 		android:selectAllOnFocus="true"
 		android:singleLine="true"
 		android:summary="@string/pref_description_source"
-		android:title="@string/pref_title_source"/>
+		android:title="@string/pref_title_source" />
 
 	<org.treebolic.contacts.GroupPreference
 		android:key="pref_filter_groups"
 		android:summary="@string/pref_description_group_filter"
-		android:title="@string/pref_title_group_filter"/>
+		android:title="@string/pref_title_group_filter" />
 
 </PreferenceScreen>

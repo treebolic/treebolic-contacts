@@ -5,10 +5,10 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:orientation="horizontal">
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="fill_horizontal"
+	android:orientation="horizontal">
 
 	<CheckBox
 		android:id="@android:id/checkbox"
@@ -16,7 +16,7 @@
 		android:layout_height="wrap_content"
 		android:layout_centerVertical="true"
 		android:layout_gravity="start|center_vertical"
-		android:contentDescription="@null"/>
+		android:contentDescription="@null" />
 
 	<ImageView
 		android:id="@android:id/icon"
@@ -32,7 +32,7 @@
 		android:focusable="false"
 		android:focusableInTouchMode="false"
 		android:scaleType="fitXY"
-		android:src="@drawable/ic_group"/>
+		android:src="@drawable/ic_group" />
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -64,7 +64,7 @@
 				android:clickable="false"
 				android:focusable="false"
 				android:focusableInTouchMode="false"
-				android:minWidth="25dp"/>
+				android:minWidth="25dp" />
 
 			<TextView
 				android:id="@+id/display_name"
@@ -77,7 +77,7 @@
 				android:clickable="false"
 				android:focusable="false"
 				android:focusableInTouchMode="false"
-				android:textStyle="bold"/>
+				android:textStyle="bold" />
 
 			<TextView
 				android:id="@+id/count"
@@ -92,7 +92,7 @@
 				android:focusableInTouchMode="false"
 				android:gravity="end"
 				android:minWidth="40dp"
-				android:textStyle="italic"/>
+				android:textStyle="italic" />
 
 		</LinearLayout>
 
@@ -112,7 +112,7 @@
 				android:clickable="false"
 				android:focusable="false"
 				android:focusableInTouchMode="false"
-				android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+				android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
 			<TextView
 				android:id="@+id/account_type"
@@ -125,8 +125,7 @@
 				android:clickable="false"
 				android:focusable="false"
 				android:focusableInTouchMode="false"
-				android:textAppearance="@style/TextAppearance.AppCompat.Small"
-				/>
+				android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
 		</LinearLayout>
 

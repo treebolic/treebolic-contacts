@@ -9,13 +9,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +17,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import org.treebolic.TreebolicIface;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 /**
  * Fragment with list of contacts

@@ -7,12 +7,12 @@ package org.treebolic.contacts;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import org.treebolic.TreebolicIface;
 
 import java.util.Properties;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Treebolic source activity

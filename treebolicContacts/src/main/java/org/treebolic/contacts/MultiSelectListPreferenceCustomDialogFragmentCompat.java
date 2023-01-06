@@ -120,8 +120,10 @@ public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extend
 			checkBox.setTag(position);
 			checkBox.setOnClickListener((v) -> {
 
-				if(mEntryValues == null)
+				if (mEntryValues == null)
+				{
 					return;
+				}
 				final CheckBox checkBox2 = (CheckBox) v;
 				int position2 = (Integer) checkBox2.getTag();
 				boolean isChecked = checkBox2.isChecked();

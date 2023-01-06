@@ -12,10 +12,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import treebolic.provider.contacts.Utils;
 
 /**

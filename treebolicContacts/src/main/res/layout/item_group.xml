@@ -5,10 +5,10 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:orientation="horizontal">
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_weight="1"
+	android:orientation="horizontal">
 
 	<ImageView
 		android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
 		android:focusable="false"
 		android:focusableInTouchMode="false"
 		android:scaleType="fitXY"
-		android:src="@drawable/ic_group"/>
+		android:src="@drawable/ic_group" />
 
 	<TextView
 		android:id="@+id/group_id"
@@ -32,7 +32,7 @@
 		android:layout_weight=".1"
 		android:clickable="false"
 		android:focusable="false"
-		android:focusableInTouchMode="false"/>
+		android:focusableInTouchMode="false" />
 
 	<TextView
 		android:id="@+id/display_name"
@@ -45,7 +45,7 @@
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"
-		android:textStyle="bold"/>
+		android:textStyle="bold" />
 
 	<TextView
 		android:id="@+id/account_name"
@@ -57,7 +57,7 @@
 		android:layout_weight=".25"
 		android:clickable="false"
 		android:focusable="false"
-		android:focusableInTouchMode="false"/>
+		android:focusableInTouchMode="false" />
 
 	<TextView
 		android:id="@+id/account_type"
@@ -70,6 +70,6 @@
 		android:clickable="false"
 		android:focusable="false"
 		android:focusableInTouchMode="false"
-		android:textStyle="italic"/>
+		android:textStyle="italic" />
 
 </LinearLayout>
