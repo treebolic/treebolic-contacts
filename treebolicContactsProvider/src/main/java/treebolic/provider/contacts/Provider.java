@@ -260,7 +260,7 @@ public class Provider implements IProvider
 	 * @param context     context
 	 * @param source      selection
 	 * @param groupFilter group filter
-	 * @return list of contact nodes
+	 * @return count of contact nodes
 	 */
 	static private long countContacts(@NonNull final Context context, @Nullable final String source, final String groupFilter)
 	{
