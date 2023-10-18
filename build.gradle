@@ -13,8 +13,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.2'
-        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.android.tools.build:gradle:8.1.2'
+        classpath 'com.google.gms:google-services:4.4.0'
     }
 }
 
@@ -31,14 +31,16 @@ allprojects {
         versionName = '0.1'
         minSdkVersion = 14
         targetSdkVersion = 33
-        compileSdkVersion = 33
+        compileSdk = 34
         multiDexEnabled = true
     }
 
     gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:deprecation"
-            options.compilerArgs << "-Xlint:unchecked"
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                options.compilerArgs << "-Xlint:deprecation"
+                options.compilerArgs << "-Xlint:unchecked"
+            }
         }
     }
 }
