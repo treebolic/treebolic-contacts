@@ -50,9 +50,9 @@ android {
 }
 
 dependencies {
-    implementation 'io.github.treebolic:treebolic-view:4.0-1'
-    implementation 'io.github.treebolic:treebolic-model:4.0-1'
-    implementation 'io.github.treebolic:treebolic-graph:4.0-1'
+    implementation 'io.github.treebolic:treebolic-view:4.1-1'
+    implementation 'io.github.treebolic:treebolic-model:4.1-1'
+    implementation 'io.github.treebolic:treebolic-graph:4.1-1'
 
     implementation project(':treebolicGlue')
     implementation project(':treebolicIface')
@@ -73,7 +73,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     implementation "androidx.multidex:multidex:2.0.1"
 
     constraints {
