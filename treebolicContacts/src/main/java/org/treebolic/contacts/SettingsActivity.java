@@ -161,6 +161,7 @@ public class SettingsActivity extends AppCompatCommonPreferenceActivity
 			if (pref instanceof GroupPreference)
 			{
 				final DialogFragment dialogFragment = GroupPreferenceDialogFragmentCompat.newInstance((GroupPreference) pref);
+				//noinspection deprecation
 				dialogFragment.setTargetFragment(this, 0);
 				dialogFragment.show(manager, DIALOG_FRAGMENT_TAG);
 				return;
