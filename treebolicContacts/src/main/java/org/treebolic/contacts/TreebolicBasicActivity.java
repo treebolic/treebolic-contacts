@@ -695,10 +695,10 @@ abstract public class TreebolicBasicActivity extends AppCompatCommonActivity imp
 		{
 			for (String key : this.more.keySet())
 			{
-				final Object value = this.more.get(key);
+				final String value = this.more.getString(key);
 				if (value != null)
 				{
-					parameters.setProperty(key, value.toString());
+					parameters.setProperty(key, value);
 				}
 			}
 		}
