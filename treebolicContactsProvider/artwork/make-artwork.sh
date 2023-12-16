@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "../../../make-artwork-lib.sh"
+source "lib-artwork.sh"
 
 subdir="treebolic/provider/contacts/images"
 
@@ -9,4 +9,6 @@ root="root*.svg"
 
 make_resource "${icon}" 64 "${subdir}"
 make_resource "${root}" 256 "${subdir}"
+
+check_dir "${dirres}"
 
