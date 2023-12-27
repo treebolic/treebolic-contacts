@@ -111,6 +111,7 @@ public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extend
 			this.checkId = checkId;
 		}
 
+		@NonNull
 		@Override
 		public View getView(final int position, final View convertView, final ViewGroup parent)
 		{

@@ -126,6 +126,7 @@ public class ListContactsGroupedFragment extends AbstractListContactsFragment im
 			super(context, data, resource, from, to);
 		}
 
+		@NonNull
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
