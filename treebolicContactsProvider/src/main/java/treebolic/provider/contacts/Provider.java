@@ -687,7 +687,7 @@ public class Provider implements IProvider
 
 					// members
 					final List<INode> memberNodes = collectGroupMembers(groupId, contactFilter);
-					if (memberNodes != null && memberNodes.size() > 0)
+					if (memberNodes != null && !memberNodes.isEmpty())
 					{
 						// group
 						final TreeMutableNode node = makeGroupNode(groupId, groupSystemId, title == null ? "?" : title.toString(), accountName, accountType);
