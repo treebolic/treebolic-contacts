@@ -1,261 +1,232 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
-
-import org.treebolic.TreebolicIface;
-
-import java.util.Properties;
-import java.util.Set;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import androidx.preference.PreferenceManager
+import org.treebolic.TreebolicIface
+import treebolic.provider.contacts.Settings
+import java.util.Properties
 
 /**
  * Settings
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-class Settings
-{
-	/**
-	 * Initialized preference key
-	 */
-	public static final String PREF_INITIALIZED = "pref_initialized";
+internal object Settings {
 
-	/**
-	 * First preference key
-	 */
-	public static final String PREF_FIRSTRUN = "pref_first_run";
+    /**
+     * Initialized preference key
+     */
+    const val PREF_INITIALIZED: String = "pref_initialized"
 
-	/**
-	 * Grouped preference key
-	 */
-	public static final String PREF_GROUPED = "pref_grouped";
+    /**
+     * First preference key
+     */
+    const val PREF_FIRSTRUN: String = "pref_first_run"
 
-	/**
-	 * Display preference key
-	 */
-	public static final String PREF_DISPLAY = "pref_display";
+    /**
+     * Grouped preference key
+     */
+    const val PREF_GROUPED: String = "pref_grouped"
 
-	/**
-	 * Sort preference key
-	 */
-	public static final String PREF_SORT = "pref_sort";
+    /**
+     * Display preference key
+     */
+    const val PREF_DISPLAY: String = "pref_display"
 
-	/**
-	 * Group merging preference key
-	 */
-	public static final String PREF_MERGE_GROUPS = "pref_merge_groups";
+    /**
+     * Sort preference key
+     */
+    const val PREF_SORT: String = "pref_sort"
 
-	/**
-	 * Group filter preference key
-	 */
-	public static final String PREF_FILTER_GROUPS = "pref_filter_groups";
+    /**
+     * Group merging preference key
+     */
+    const val PREF_MERGE_GROUPS: String = "pref_merge_groups"
 
-	/**
-	 * Photo preference key
-	 */
-	public static final String PREF_PHOTO = "pref_photo";
+    /**
+     * Group filter preference key
+     */
+    const val PREF_FILTER_GROUPS: String = "pref_filter_groups"
 
-	/**
-	 * Default CSS
-	 */
-	public static final String STYLE_DEFAULT = ".content { }\n" + //
-			".link {color: #FFA500;font-size: small;}\n" + //
-			".linking {color: #FFA500; font-size: small; }" + //
-			".mount {color: #CD5C5C; font-size: small;}" + //
-			".mounting {color: #CD5C5C; font-size: small; }" + //
-			".searching {color: #FF7F50; font-size: small; }";
+    /**
+     * Photo preference key
+     */
+    const val PREF_PHOTO: String = "pref_photo"
 
-	/**
-	 * Set default initial settings
-	 *
-	 * @param context context
-	 */
-	@SuppressWarnings("EmptyMethod")
-	static public void setDefaults(@SuppressWarnings("unused") final Context context)
-	{
-		//
-	}
+    /**
+     * Default CSS
+     */
+    const val STYLE_DEFAULT: String = ".content { }\n" +  //
+            ".link {color: #FFA500;font-size: small;}\n" +  //
+            ".linking {color: #FFA500; font-size: small; }" +  //
+            ".mount {color: #CD5C5C; font-size: small;}" +  //
+            ".mounting {color: #CD5C5C; font-size: small; }" +  //
+            ".searching {color: #FF7F50; font-size: small; }"
 
-	/**
-	 * Save source and base to preferences
-	 *
-	 * @param context context
-	 * @param source  source
-	 */
-	public static void save(@NonNull final Context context, final String source)
-	{
-		Settings.putStringPref(context, TreebolicIface.PREF_SOURCE, source);
-	}
+    /**
+     * Set default initial settings
+     *
+     * @param context context
+     */
+    @JvmStatic
+    fun setDefaults(@Suppress("unused") context: Context?) {
+        //
+    }
 
-	/**
-	 * Get string preference
-	 *
-	 * @param context context
-	 * @param key     key
-	 * @return value
-	 */
-	@Nullable
-	static public String getStringPref(@NonNull final Context context, final String key)
-	{
-		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		return sharedPref.getString(key, null);
-	}
+    /**
+     * Save source and base to preferences
+     *
+     * @param context context
+     * @param source  source
+     */
+    fun save(context: Context, source: String) {
+        putStringPref(context, TreebolicIface.PREF_SOURCE, source)
+    }
 
-	/**
-	 * Put string preference
-	 *
-	 * @param context context
-	 * @param key     key
-	 * @param value   value
-	 */
-	@SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
-	private static void putStringPref(@NonNull final Context context, @SuppressWarnings("SameParameterValue") final String key, final String value)
-	{
-		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		sharedPref.edit().putString(key, value).commit();
-	}
+    /**
+     * Get string preference
+     *
+     * @param context context
+     * @param key     key
+     * @return value
+     */
+    @JvmStatic
+    fun getStringPref(context: Context, key: String?): String? {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPref.getString(key, null)
+    }
 
-	/**
-	 * Get strings preference
-	 *
-	 * @param context context
-	 * @param key     key
-	 * @return value
-	 */
-	@Nullable
-	static public String getStringsPref(@NonNull final Context context, @SuppressWarnings("SameParameterValue") final String key)
-	{
-		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		final Set<String> values = sharedPref.getStringSet(key, null);
-		if (values == null || values.isEmpty())
-		{
-			return null;
-		}
-		return joinForIn(values);
-	}
+    /**
+     * Put string preference
+     *
+     * @param context context
+     * @param key     key
+     * @param value   value
+     */
+    @SuppressLint("CommitPrefEdits", "ApplySharedPref")
+    private fun putStringPref(context: Context, key: String, value: String) {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        sharedPref.edit().putString(key, value).commit()
+    }
 
-	/**
-	 * Get boolean preference
-	 *
-	 * @param context context
-	 * @param key     key
-	 * @return value
-	 */
-	@SuppressWarnings("WeakerAccess")
-	static public boolean getBooleanPref(@NonNull final Context context, final String key)
-	{
-		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		return sharedPref.getBoolean(key, false);
-	}
+    /**
+     * Get strings preference
+     *
+     * @param context context
+     * @param key     key
+     * @return value
+     */
+    @JvmStatic
+    fun getStringsPref(context: Context, key: String?): String? {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        val values = sharedPref.getStringSet(key, null)
+        if (values.isNullOrEmpty()) {
+            return null
+        }
+        return joinForIn(values)
+    }
 
-	/**
-	 * Join for 'in' selection clause
-	 *
-	 * @param strings values
-	 * @return 'in' clause
-	 */
-	@NonNull
-	static private String joinForIn(@NonNull final Iterable<String> strings)
-	{
-		final StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		sb.append('(');
-		for (String str : strings)
-		{
-			if (first)
-			{
-				first = false;
-			}
-			else
-			{
-				sb.append(',');
-			}
-			sb.append(str);
-		}
-		sb.append(')');
-		return sb.toString();
-	}
+    /**
+     * Get boolean preference
+     *
+     * @param context context
+     * @param key     key
+     * @return value
+     */
+    private fun getBooleanPref(context: Context, key: String?): Boolean {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPref.getBoolean(key, false)
+    }
 
-	// U T I L S
+    /**
+     * Join for 'in' selection clause
+     *
+     * @param strings values
+     * @return 'in' clause
+     */
+    private fun joinForIn(strings: Iterable<String>): String {
+        val sb = StringBuilder()
+        var first = true
+        sb.append('(')
+        for (str in strings) {
+            if (first) {
+                first = false
+            } else {
+                sb.append(',')
+            }
+            sb.append(str)
+        }
+        sb.append(')')
+        return sb.toString()
+    }
 
-	/**
-	 * Collect preferences to properties
-	 *
-	 * @param context context
-	 * @return properties
-	 */
-	@NonNull
-	static public Properties settingsToProperties(@NonNull final Context context)
-	{
-		final String source = getStringPref(context, TreebolicIface.PREF_SOURCE);
-		final boolean groups = getBooleanPref(context, PREF_GROUPED);
-		final boolean mergeGroups = getBooleanPref(context, PREF_MERGE_GROUPS);
-		final boolean photo = getBooleanPref(context, PREF_PHOTO);
-		final String display = getStringPref(context, PREF_DISPLAY);
-		final String sort = getStringPref(context, PREF_SORT);
-		final String filterGroups = getStringsPref(context, PREF_FILTER_GROUPS);
+    // U T I L S
 
-		final Properties properties = new Properties();
-		if (source != null)
-		{
-			properties.setProperty(TreebolicIface.PREF_SOURCE, source);
-		}
-		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_GROUPS, groups ? "true" : "false");
-		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_MERGE_GROUPS, mergeGroups ? "true" : "false");
-		properties.setProperty(treebolic.provider.contacts.Settings.PARAM_PHOTO, photo ? "true" : "false");
-		if (display != null)
-		{
-			properties.setProperty(treebolic.provider.contacts.Settings.PARAM_DISPLAY, display);
-		}
-		if (sort != null)
-		{
-			properties.setProperty(treebolic.provider.contacts.Settings.PARAM_SORT, sort);
-		}
-		if (filterGroups != null)
-		{
-			properties.setProperty(treebolic.provider.contacts.Settings.PARAM_FILTER_GROUPS, filterGroups);
-		}
-		return properties;
-	}
+    /**
+     * Collect preferences to properties
+     *
+     * @param context context
+     * @return properties
+     */
+    @JvmStatic
+    fun settingsToProperties(context: Context): Properties {
+        val source = getStringPref(context, TreebolicIface.PREF_SOURCE)
+        val groups = getBooleanPref(context, PREF_GROUPED)
+        val mergeGroups = getBooleanPref(context, PREF_MERGE_GROUPS)
+        val photo = getBooleanPref(context, PREF_PHOTO)
+        val display = getStringPref(context, PREF_DISPLAY)
+        val sort = getStringPref(context, PREF_SORT)
+        val filterGroups = getStringsPref(context, PREF_FILTER_GROUPS)
 
-	/**
-	 * Application settings
-	 *
-	 * @param context context
-	 * @param pkgName package name
-	 */
-	static public void applicationSettings(@NonNull final Context context, @SuppressWarnings("SameParameterValue") final String pkgName)
-	{
-		final int apiLevel = Build.VERSION.SDK_INT;
-		final Intent intent = new Intent();
+        val properties = Properties()
+        if (source != null) {
+            properties.setProperty(TreebolicIface.PREF_SOURCE, source)
+        }
+        properties.setProperty(Settings.PARAM_GROUPS, if (groups) "true" else "false")
+        properties.setProperty(Settings.PARAM_MERGE_GROUPS, if (mergeGroups) "true" else "false")
+        properties.setProperty(Settings.PARAM_PHOTO, if (photo) "true" else "false")
+        if (display != null) {
+            properties.setProperty(Settings.PARAM_DISPLAY, display)
+        }
+        if (sort != null) {
+            properties.setProperty(Settings.PARAM_SORT, sort)
+        }
+        if (filterGroups != null) {
+            properties.setProperty(Settings.PARAM_FILTER_GROUPS, filterGroups)
+        }
+        return properties
+    }
 
-		if (apiLevel >= 9)
-		{
-			intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-			intent.setData(Uri.parse("package:" + pkgName));
-		}
-		else
-		{
-			final String appPkgName = apiLevel == 8 ? "pkg" : "com.android.settings.ApplicationPkgName";
+    /**
+     * Application settings
+     *
+     * @param context context
+     * @param pkgName package name
+     */
+    @JvmStatic
+    fun applicationSettings(context: Context, pkgName: String) {
+        val apiLevel = Build.VERSION.SDK_INT
+        val intent = Intent()
 
-			intent.setAction(Intent.ACTION_VIEW);
-			intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-			intent.putExtra(appPkgName, pkgName);
-		}
+        if (apiLevel >= 9) {
+            intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.setData(Uri.parse("package:$pkgName"))
+        } else {
+            val appPkgName = if (apiLevel == 8) "pkg" else "com.android.settings.ApplicationPkgName"
 
-		// start activity
-		context.startActivity(intent);
-	}
+            intent.setAction(Intent.ACTION_VIEW)
+            intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails")
+            intent.putExtra(appPkgName, pkgName)
+        }
+
+        // start activity
+        context.startActivity(intent)
+    }
 }

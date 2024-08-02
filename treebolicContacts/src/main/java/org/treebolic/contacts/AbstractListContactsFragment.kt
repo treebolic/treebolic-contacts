@@ -1,372 +1,292 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.DialogInterface
+import android.graphics.Typeface
+import android.net.Uri
+import android.os.Bundle
+import android.provider.ContactsContract
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 
 /**
  * Abstract fragment for list of contacts
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-@SuppressWarnings("WeakerAccess")
-abstract public class AbstractListContactsFragment extends Fragment
-{
-	// --Commented out by Inspection (9/23/17 5:48 PM):static private final String TAG = "AListContactsF";
+abstract class AbstractListContactsFragment : Fragment() {
 
-	// C R E A T E
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_list, container, false)
+    }
 
-	/**
-	 * Constructor
-	 */
-	@SuppressWarnings("WeakerAccess")
-	public AbstractListContactsFragment()
-	{
-	}
+    // D I A L O G
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
-	{
-		return inflater.inflate(R.layout.fragment_list, container, false);
-	}
+    /**
+     * Show dialog for contact info
+     *
+     * @param sb        string buffer
+     * @param contactId contact id
+     * @param photoUri  photo uri
+     * @param labels    labels
+     * @param values    values
+     */
+    fun showDialog(sb: XSpannableStringBuilder, contactId: String, photoUri: Uri?, labels: Array<String>, vararg values: String?) {
+        // id
+        sb.append("ID", StyleSpan(Typeface.BOLD), 0)
+            .append('\n')
+            .append(contactId).append('\n')
 
-	// D I A L O G
+        // extra info
+        getNames(contactId, sb)
+        getPhones(contactId, sb)
+        getEmails(contactId, sb)
+        getAddresses(contactId, sb)
 
-	/**
-	 * Show dialog for contact info
-	 *
-	 * @param sb        string buffer
-	 * @param contactId contact id
-	 * @param photoUri  photo uri
-	 * @param labels    labels
-	 * @param values    values
-	 */
-	void showDialog(@NonNull final XSpannableStringBuilder sb, final String contactId, @Nullable final Uri photoUri, @NonNull final String[] labels, final String... values)
-	{
-		// id
-		sb.append("ID", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(contactId).append('\n');
+        // info
+        for (i in labels.indices) {
+            val label = labels[i]
+            val value = values[i]
 
-		// extra info
-		getNames(contactId, sb);
-		getPhones(contactId, sb);
-		getEmails(contactId, sb);
-		getAddresses(contactId, sb);
+            sb.append(label, StyleSpan(Typeface.BOLD), 0)
+                .append('\n')
+                .append(value ?: "null")
+                .append('\n')
+        }
 
-		// info
-		for (int i = 0; i < labels.length; i++)
-		{
-			String label = labels[i];
-			String value = values[i];
+        // view
+        val activity: Activity = requireActivity()
+        val builder = AlertDialog.Builder(activity)
+        val inflater = activity.layoutInflater
+        @SuppressLint("InflateParams") val dialogView = inflater.inflate(R.layout.detail_contact, null)
+        val textView = dialogView.findViewById<TextView>(android.R.id.text1)
+        val imageView = dialogView.findViewById<ImageView>(R.id.photo)
+        textView.text = sb
+        if (photoUri != null) {
+            imageView.setImageURI(photoUri)
+        } else {
+            imageView.setImageResource(R.drawable.ic_contact_large)
+        }
 
-			sb.append(label, new StyleSpan(Typeface.BOLD), 0) //
-					.append('\n') //
-					.append(value == null ? "null" : value) //
-					.append('\n');
-		}
+        builder.setView(dialogView).setCancelable(false).setPositiveButton("OK") { _: DialogInterface?, _: Int -> }
+        builder.show()
+    }
 
-		// view
-		final Activity activity = getActivity();
-		assert activity != null;
-		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		final LayoutInflater inflater = activity.getLayoutInflater();
-		@SuppressLint("InflateParams") final View dialogView = inflater.inflate(R.layout.detail_contact, null);
-		final TextView textView = dialogView.findViewById(android.R.id.text1);
-		final ImageView imageView = dialogView.findViewById(R.id.photo);
-		textView.setText(sb);
-		if (photoUri != null)
-		{
-			imageView.setImageURI(photoUri);
-		}
-		else
-		{
-			imageView.setImageResource(R.drawable.ic_contact_large);
-		}
+    // M O R E
 
-		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", (dialog, id) -> {
-			//do things
-		});
-		builder.show();
-	}
+    /**
+     * Get contact names
+     *
+     * @param contactId contact id
+     * @param sb        string buffer
+     */
+    private fun getNames(contactId: String, sb: XSpannableStringBuilder) {
+        val context = requireContext()
+        val contentResolver = context.contentResolver
+        val cursor = contentResolver.query(
+            ContactsContract.Data.CONTENT_URI,
+            null,
+            ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?",
+            arrayOf(ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, contactId),
+            null
+        )
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val idxGiven = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME) // first
+                val idxFamily = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME) // last
+                val idxDisplay = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME) // display
 
-	// M O R E
+                sb.append("names", StyleSpan(Typeface.BOLD), 0)
+                    .append('\n')
+                do {
+                    val given = cursor.getString(idxGiven)
+                    if (given != null && given.isNotEmpty()) {
+                        sb.append(given)
+                            .append('\n')
+                    }
+                    val family = cursor.getString(idxFamily)
+                    if (family != null && family.isNotEmpty()) {
+                        sb.append(family)
+                            .append('\n')
+                    }
+                    val display = cursor.getString(idxDisplay)
+                    if (display != null && display.isNotEmpty()) {
+                        sb.append(display)
+                            .append('\n')
+                    }
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        }
+    }
 
-	/**
-	 * Get contact names
-	 *
-	 * @param contactId contact id
-	 * @param sb        string buffer
-	 */
-	private void getNames(final String contactId, @NonNull final XSpannableStringBuilder sb)
-	{
-		final Context context = getContext();
-		assert context != null;
-		final ContentResolver contentResolver = context.getContentResolver();
-		final Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, contactId}, null);
-		if (cursor != null)
-		{
-			if (cursor.moveToFirst())
-			{
-				final int idxGiven = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME); // first
-				final int idxFamily = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME); // last
-				final int idxDisplay = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME); // display
+    /**
+     * Get contact addresses
+     *
+     * @param contactId contact id
+     * @param sb        string buffer
+     */
+    private fun getAddresses(contactId: String, sb: XSpannableStringBuilder) {
+        val context = requireContext()
+        val contentResolver = context.contentResolver
+        val cursor = contentResolver.query(
+            ContactsContract.Data.CONTENT_URI,
+            null,
+            ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?",
+            arrayOf(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, contactId),
+            null
+        )
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val idxFormatted = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS)
+                val idxStreet = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET)
+                val idxCity = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY)
+                val idxPostCode = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE)
+                val idxCountry = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY)
+                do {
+                    sb.append("address", StyleSpan(Typeface.BOLD), 0)
+                        .append('\n')
 
-				sb.append("names", new StyleSpan(Typeface.BOLD), 0) //
-						.append('\n');
-				do
-				{
-					final String given = cursor.getString(idxGiven);
-					if (given != null && !given.isEmpty())
-					{
-						sb.append(given) //
-								.append('\n');
-					}
-					final String family = cursor.getString(idxFamily);
-					if (family != null && !family.isEmpty())
-					{
-						sb.append(family) //
-								.append('\n');
-					}
-					final String display = cursor.getString(idxDisplay);
-					if (display != null && !display.isEmpty())
-					{
-						sb.append(display) //
-								.append('\n');
-					}
-				}
-				while (cursor.moveToNext());
-			}
-			cursor.close();
-		}
-	}
+                    val formatted = cursor.getString(idxFormatted)
+                    if (formatted != null && formatted.isNotEmpty()) {
+                        sb.append(formatted)
+                            .append(" (formatted)\n")
+                    }
+                    val street = cursor.getString(idxStreet)
+                    if (street != null && street.isNotEmpty()) {
+                        sb.append(street)
+                            .append(" (street)\n")
+                    }
+                    val city = cursor.getString(idxCity)
+                    if (city != null && city.isNotEmpty()) {
+                        sb.append(city)
+                            .append(" (city)\n")
+                    }
+                    val postCode = cursor.getString(idxPostCode)
+                    if (postCode != null && postCode.isNotEmpty()) {
+                        sb.append(postCode)
+                            .append(" (postcode)\n")
+                    }
+                    val country = cursor.getString(idxCountry)
+                    if (country != null && country.isNotEmpty()) {
+                        sb.append(country)
+                            .append(" (country)\n")
+                    }
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        }
+    }
 
-	/**
-	 * Get contact addresses
-	 *
-	 * @param contactId contact id
-	 * @param sb        string buffer
-	 */
-	private void getAddresses(final String contactId, @NonNull final XSpannableStringBuilder sb)
-	{
-		final Context context = getContext();
-		assert context != null;
-		final ContentResolver contentResolver = context.getContentResolver();
-		final Cursor cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE, contactId}, null);
-		if (cursor != null)
-		{
-			if (cursor.moveToFirst())
-			{
-				final int idxFormatted = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS);
-				final int idxStreet = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET);
-				final int idxCity = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY);
-				final int idxPostCode = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE);
-				final int idxCountry = cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY);
-				do
-				{
-					sb.append("address", new StyleSpan(Typeface.BOLD), 0) //
-							.append('\n');
+    /**
+     * Get contact emails
+     *
+     * @param contactId contact id
+     * @param sb        string buffer
+     */
+    private fun getEmails(contactId: String, sb: XSpannableStringBuilder) {
+        val context = requireContext()
+        val cr = context.contentResolver
+        val cursor = cr.query(
+            ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+            null,
+            ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+            arrayOf(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE, contactId),
+            null
+        )
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val idxEmail = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)
 
-					final String formatted = cursor.getString(idxFormatted);
-					if (formatted != null && !formatted.isEmpty())
-					{
-						sb.append(formatted) //
-								.append(" (formatted)\n");
-					}
-					final String street = cursor.getString(idxStreet);
-					if (street != null && !street.isEmpty())
-					{
-						sb.append(street) //
-								.append(" (street)\n");
-					}
-					final String city = cursor.getString(idxCity);
-					if (city != null && !city.isEmpty())
-					{
-						sb.append(city) //
-								.append(" (city)\n");
-					}
-					final String postCode = cursor.getString(idxPostCode);
-					if (postCode != null && !postCode.isEmpty())
-					{
-						sb.append(postCode) //
-								.append(" (postcode)\n");
-					}
-					final String country = cursor.getString(idxCountry);
-					if (country != null && !country.isEmpty())
-					{
-						sb.append(country) //
-								.append(" (country)\n");
-					}
-				}
-				while (cursor.moveToNext());
-			}
-			cursor.close();
-		}
-	}
+                sb.append("email", StyleSpan(Typeface.BOLD), 0)
+                    .append('\n')
+                do {
+                    val email = cursor.getString(idxEmail)
+                    if (email != null && email.isNotEmpty()) {
+                        sb.append(email)
+                            .append('\n')
+                    }
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        }
+    }
 
-	/**
-	 * Get contact emails
-	 *
-	 * @param contactId contact id
-	 * @param sb        string buffer
-	 */
-	private void getEmails(final String contactId, @NonNull final XSpannableStringBuilder sb)
-	{
-		final Context context = getContext();
-		assert context != null;
-		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE, contactId}, null);
-		if (cursor != null)
-		{
-			if (cursor.moveToFirst())
-			{
-				final int idxEmail = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+    /**
+     * Get contact phones
+     *
+     * @param contactId contact id
+     * @param sb        string buffer
+     */
+    private fun getPhones(contactId: String, sb: XSpannableStringBuilder) {
+        val context = requireContext()
+        val cr = context.contentResolver
+        val cursor = cr.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+            arrayOf(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, contactId),
+            null
+        )
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val idxPhoneNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val idxPhoneType = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE)
+                sb.append("phone", StyleSpan(Typeface.BOLD), 0)
+                    .append('\n')
+                do {
+                    val phoneNumber = if (idxPhoneNumber == -1) "" else cursor.getString(idxPhoneNumber)
+                    val phoneType = if (idxPhoneNumber == -1) -1 else cursor.getInt(idxPhoneType)
+                    if (phoneNumber != null && phoneNumber.isNotEmpty()) {
+                        // phone
+                        when (phoneType) {
+                            ContactsContract.CommonDataKinds.Phone.TYPE_HOME -> sb
+                                .append(phoneNumber)
+                                .append(" (home)\n")
 
-				sb.append("email", new StyleSpan(Typeface.BOLD), 0) //
-						.append('\n');
-				do
-				{
-					final String email = cursor.getString(idxEmail);
-					if (email != null && !email.isEmpty())
-					{
-						sb.append(email) //
-								.append('\n');
-					}
-				}
-				while (cursor.moveToNext());
-			}
-			cursor.close();
-		}
-	}
+                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE -> sb
+                                .append(phoneNumber)
+                                .append(" (mobile)\n")
 
-	/**
-	 * Get contact phones
-	 *
-	 * @param contactId contact id
-	 * @param sb        string buffer
-	 */
-	private void getPhones(String contactId, @NonNull final XSpannableStringBuilder sb)
-	{
-		final Context context = getContext();
-		assert context != null;
-		final ContentResolver cr = context.getContentResolver();
-		final Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.Data.MIMETYPE + " = ?" + " AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE, contactId}, null);
-		if (cursor != null)
-		{
-			if (cursor.moveToFirst())
-			{
-				final int idxPhoneNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-				final int idxPhoneType = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
-				sb.append("phone", new StyleSpan(Typeface.BOLD), 0) //
-						.append('\n');
-				do
-				{
-					final String phoneNumber = idxPhoneNumber == -1 ? "" : cursor.getString(idxPhoneNumber);
-					final int phoneType = idxPhoneNumber == -1 ? -1 : cursor.getInt(idxPhoneType);
-					if (phoneNumber != null && !phoneNumber.isEmpty())
-					{
-						// phone
-						switch (phoneType)
-						{
-							case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-								sb.append(phoneNumber) //
-										.append(" (home)\n");
-								break;
-							case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-								sb.append(phoneNumber) //
-										.append(" (mobile)\n");
-								break;
-							case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-								sb.append(phoneNumber) //
-										.append(" (work)\n");
-								break;
-							default:
-							case -1:
-								sb.append(phoneNumber) //
-										.append(" (other)\n");
-								break;
-						}
-					}
-				}
-				while (cursor.moveToNext());
-			}
-			cursor.close();
-		}
-	}
+                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK -> sb
+                                .append(phoneNumber)
+                                .append(" (work)\n")
 
-	// U T I L S
+                            -1 -> sb
+                                .append(phoneNumber)
+                                .append(" (other)\n")
 
-	static public class XSpannableStringBuilder extends SpannableStringBuilder
-	{
-		@NonNull
-		public SpannableStringBuilder append(CharSequence text, Object what, int flags)
-		{
-			int start = length();
-			append(text);
-			setSpan(what, start, length(), flags);
-			return this;
-		}
-	}
+                            else -> sb
+                                .append(phoneNumber)
+                                .append(" (other)\n")
+                        }
+                    }
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        }
+    }
 
-	// H E L P E R S
+    // U T I L S
 
-	// --Commented out by Inspection START (9/23/17 5:48 PM):
-	//	private void str2sb(final String header, final String[] strings, final XSpannableStringBuilder sb)
-	//	{
-	//		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
-	//		sb.append(join(strings)).append('\n');
-	//	}
-	// --Commented out by Inspection STOP (9/23/17 5:48 PM)
+    class XSpannableStringBuilder : SpannableStringBuilder() {
 
-	// --Commented out by Inspection START (9/23/17 5:56 PM):
-	//	/**
-	//	 * Join strings
-	//	 *
-	//	 * @param strings strings
-	//	 * @return joined strings
-	//	 */
-	//	private String join(final String[] strings)
-	//	{
-	//		final StringBuilder sb = new StringBuilder();
-	//		boolean first = true;
-	//		sb.append('{');
-	//		for (String str : strings)
-	//		{
-	//			if (first)
-	//			{
-	//				first = false;
-	//			}
-	//			else
-	//			{
-	//				sb.append(',');
-	//			}
-	//			sb.append(str);
-	//		}
-	//		sb.append('}');
-	//		return sb.toString();
-	//	}
-	// --Commented out by Inspection STOP (9/23/17 5:56 PM)
+        override fun append(text: CharSequence, what: Any, flags: Int): SpannableStringBuilder {
+            val start = length
+            append(text)
+            setSpan(what, start, length, flags)
+            return this
+        }
+    }
 }

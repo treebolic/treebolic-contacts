@@ -1,75 +1,60 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
+import android.os.Bundle
+import android.widget.ListAdapter
 
-import android.os.Bundle;
-import android.widget.ListAdapter;
+class GroupPreferenceDialogFragmentCompat : MultiSelectListPreferenceCustomDialogFragmentCompat() {
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+    private val accountNames: MutableList<String> = ArrayList()
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+    private val accountTypes: MutableList<String> = ArrayList()
 
-public class GroupPreferenceDialogFragmentCompat extends MultiSelectListPreferenceCustomDialogFragmentCompat
-{
-	private final List<String> accountNames = new ArrayList<>();
+    private val counts: MutableList<Long> = ArrayList()
 
-	private final List<String> accountTypes = new ArrayList<>();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-	private final List<Long> counts = new ArrayList<>();
+        val preference = preference as GroupPreference
+        accountNames.clear()
+        accountNames.addAll(preference.accountNames)
+        accountTypes.clear()
+        accountTypes.addAll(preference.accountTypes)
+        counts.clear()
+        counts.addAll(preference.counts)
+    }
 
-	@NonNull
-	public static MultiSelectListPreferenceCustomDialogFragmentCompat newInstance(@NonNull final GroupPreference pref)
-	{
-		final GroupPreferenceDialogFragmentCompat fragment = new GroupPreferenceDialogFragmentCompat();
-		final Bundle bundle = new Bundle(1);
-		bundle.putString(ARG_KEY, pref.getKey());
-		fragment.setArguments(bundle);
-		return fragment;
-	}
+    override fun getAdapter(): ListAdapter {
+        val entryCount = if (entryValues == null) 0 else entryValues!!.size
+        val data: MutableList<Map<String, Any?>> = ArrayList()
+        for (i in 0 until entryCount) {
+            val row: MutableMap<String, Any?> = HashMap()
+            val checked = newValues.contains(entryValues!![i].toString())
+            row["checkAndRequest"] = checked
+            row["group_id"] = entryValues!![i].toString()
+            checkNotNull(entries)
+            row["display_name"] = entries!![i]
+            row["account_name"] = accountNames[i]
+            row["account_type"] = accountTypes[i]
+            row["count"] = counts[i]
+            data.add(row)
+        }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
+        val from = arrayOf("checkAndRequest", "group_id", "display_name", "account_name", "account_type", "count")
+        val to = intArrayOf(android.R.id.checkbox, R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type, R.id.count)
+        return CheckBoxSimpleAdapter(context, data, R.layout.item_group_select, from, to, android.R.id.checkbox)
+    }
 
-		final GroupPreference preference = (GroupPreference) getPreference();
-		accountNames.clear();
-		accountNames.addAll(preference.accountNames);
-		accountTypes.clear();
-		accountTypes.addAll(preference.accountTypes);
-		counts.clear();
-		counts.addAll(preference.counts);
-	}
+    companion object {
 
-	@Nullable
-	@Override
-	protected ListAdapter getAdapter()
-	{
-		final int entryCount = mEntryValues == null ? 0 : mEntryValues.length;
-		final List<Map<String, Object>> data = new ArrayList<>();
-		for (int i = 0; i < entryCount; i++)
-
-		{
-			final Map<String, Object> row = new HashMap<>();
-			boolean checked = mNewValues.contains(mEntryValues[i].toString());
-			row.put("checkAndRequest", checked);
-			row.put("group_id", mEntryValues[i].toString());
-			assert mEntries != null;
-			row.put("display_name", mEntries[i]);
-			row.put("account_name", accountNames.get(i));
-			row.put("account_type", accountTypes.get(i));
-			row.put("count", counts.get(i));
-			data.add(row);
-		}
-
-		final String[] from = {"checkAndRequest", "group_id", "display_name", "account_name", "account_type", "count"};
-		final int[] to = {android.R.id.checkbox, R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type, R.id.count};
-		return new CheckBoxSimpleAdapter(getContext(), data, R.layout.item_group_select, from, to, android.R.id.checkbox);
-	}
+        fun newInstance(pref: GroupPreference): MultiSelectListPreferenceCustomDialogFragmentCompat {
+            val fragment = GroupPreferenceDialogFragmentCompat()
+            val bundle = Bundle(1)
+            bundle.putString(ARG_KEY, pref.key)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
 }

@@ -1,172 +1,133 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-
-import org.treebolic.AppCompatCommonPreferenceActivity;
-import org.treebolic.TreebolicIface;
-
-import java.util.Set;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.preference.EditTextPreference;
-import androidx.preference.ListPreference;
-import androidx.preference.MultiSelectListPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
+import android.os.Bundle
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
+import androidx.preference.Preference
+import androidx.preference.Preference.SummaryProvider
+import androidx.preference.PreferenceFragmentCompat
+import org.treebolic.AppCompatCommonPreferenceActivity
+import org.treebolic.TreebolicIface
 
 /**
  * Settings activity
  *
  * @author Bernard Bou
  */
-public class SettingsActivity extends AppCompatCommonPreferenceActivity
-{
-	// S U M M A R Y
+object SettingsActivity : AppCompatCommonPreferenceActivity() {
 
-	/**
-	 * A list preference summary provider.
-	 */
-	private static final Preference.SummaryProvider<MultiSelectListPreference> LIST_SUMMARY_PROVIDER = (preference) -> {
+    // S U M M A R Y
 
-		final Context context = preference.getContext();
-		final CharSequence header = context.getString(R.string.pref_description_group_filter);
-		final Set<String> values = preference.getPersistedStringSet(null);
-		String summary = header.toString() + '\n';
-		if (values == null || values.isEmpty())
-		{
-			summary += context.getString(R.string.all);
-		}
-		else
-		{
-			summary += setToString(values);
-		}
-		return summary;
-	};
+    /**
+     * A list preference summary provider.
+     */
+    private val LIST_SUMMARY_PROVIDER = SummaryProvider { preference: MultiSelectListPreference ->
+        val context = preference.context
+        val header: CharSequence = context.getString(R.string.pref_description_group_filter)
+        val values = preference.getPersistedStringSet(null)
+        var summary = header.toString() + '\n'
+        if (values == null || values.isEmpty()) {
+            summary += context.getString(R.string.all)
+        } else {
+            summary += setToString(values)
+        }
+        summary
+    }
 
-	static @NonNull
-	private CharSequence setToString(@Nullable final Set<String> values)
-	{
-		if (values == null)
-		{
-			return "";
-		}
-		final StringBuilder sb = new StringBuilder();
-		boolean isFirst = true;
-		for (String value : values)
-		{
-			if (isFirst)
-			{
-				isFirst = false;
-			}
-			else
-			{
-				sb.append(' ');
-			}
-			sb.append(value);
-		}
-		return sb;
-	}
+    private fun setToString(values: Set<String>?): CharSequence {
+        if (values == null) {
+            return ""
+        }
+        val sb = StringBuilder()
+        var isFirst = true
+        for (value in values) {
+            if (isFirst) {
+                isFirst = false
+            } else {
+                sb.append(' ')
+            }
+            sb.append(value)
+        }
+        return sb
+    }
 
-	// F R A G M E N T S
+    // F R A G M E N T S
 
-	@SuppressWarnings("WeakerAccess")
-	public static class GeneralPreferenceFragment extends PreferenceFragmentCompat
-	{
-		@Override
-		public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey)
-		{
-			// inflate
-			addPreferencesFromResource(R.xml.pref_general);
+    class GeneralPreferenceFragment : PreferenceFragmentCompat() {
 
-			// bind
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            // inflate
+            addPreferencesFromResource(R.xml.pref_general)
 
-			final ListPreference displayPref = findPreference(Settings.PREF_DISPLAY);
-			assert displayPref != null;
-			displayPref.setSummaryProvider(ListPreference.SimpleSummaryProvider.getInstance());
+            // bind
+            val displayPref = checkNotNull(findPreference<ListPreference>(Settings.PREF_DISPLAY))
+            displayPref.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
 
-			final ListPreference sortPref = findPreference(Settings.PREF_SORT);
-			assert sortPref != null;
-			sortPref.setSummaryProvider(ListPreference.SimpleSummaryProvider.getInstance());
-		}
-	}
+            val sortPref = checkNotNull(findPreference<ListPreference>(Settings.PREF_SORT))
+            sortPref.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        }
+    }
 
-	public static class FilterPreferenceFragment extends PreferenceFragmentCompat
-	{
-		/**
-		 * Source summary provider.
-		 */
-		private static final Preference.SummaryProvider<EditTextPreference> SOURCE_SUMMARY_PROVIDER = (preference) -> {
+    class FilterPreferenceFragment : PreferenceFragmentCompat() {
 
-			final Context context = preference.getContext();
-			final SharedPreferences prefs = preference.getSharedPreferences();
-			assert prefs != null;
-			final String desc = context.getString(R.string.pref_description_source);
-			String value = prefs.getString(preference.getKey(), null);
-			if (value == null || value.isEmpty())
-			{
-				value = context.getString(R.string.none);
-			}
-			else
-			{
-				value = "'" + value + "'";
-			}
-			return desc + " :\n" + value;
-		};
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            // inflate
+            addPreferencesFromResource(R.xml.pref_filter)
 
-		@Override
-		public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey)
-		{
-			// inflate
-			addPreferencesFromResource(R.xml.pref_filter);
+            // bind
+            val sourcePref = checkNotNull(findPreference<EditTextPreference>(TreebolicIface.PREF_SOURCE))
+            sourcePref.summaryProvider = SOURCE_SUMMARY_PROVIDER
 
-			// bind
-			final EditTextPreference sourcePref = findPreference(TreebolicIface.PREF_SOURCE);
-			assert sourcePref != null;
-			sourcePref.setSummaryProvider(SOURCE_SUMMARY_PROVIDER);
+            val pref = checkNotNull(findPreference<MultiSelectListPreference>(Settings.PREF_FILTER_GROUPS))
+            pref.summaryProvider = LIST_SUMMARY_PROVIDER
+        }
 
-			MultiSelectListPreference pref = findPreference(Settings.PREF_FILTER_GROUPS);
-			assert pref != null;
-			pref.setSummaryProvider(LIST_SUMMARY_PROVIDER);
-		}
+        override fun onDisplayPreferenceDialog(pref: Preference) {
+            val manager: FragmentManager
+            try {
+                manager = parentFragmentManager
+            } catch (e: IllegalStateException) {
+                return
+            }
 
-		private static final String DIALOG_FRAGMENT_TAG = "GroupPreference";
+            if (manager.findFragmentByTag(DIALOG_FRAGMENT_TAG) != null) {
+                return
+            }
 
-		@Override
-		public void onDisplayPreferenceDialog(@NonNull final Preference pref)
-		{
-			final FragmentManager manager;
-			try
-			{
-				manager = getParentFragmentManager();
-			}
-			catch (IllegalStateException e)
-			{
-				return;
-			}
+            if (pref is GroupPreference) {
+                val dialogFragment: DialogFragment = GroupPreferenceDialogFragmentCompat.newInstance(pref)
+                dialogFragment.setTargetFragment(this, 0)
+                dialogFragment.show(manager, DIALOG_FRAGMENT_TAG)
+                return
+            }
+            super.onDisplayPreferenceDialog(pref)
+        }
 
-			if (manager.findFragmentByTag(DIALOG_FRAGMENT_TAG) != null)
-			{
-				return;
-			}
+        companion object {
 
-			if (pref instanceof GroupPreference)
-			{
-				final DialogFragment dialogFragment = GroupPreferenceDialogFragmentCompat.newInstance((GroupPreference) pref);
-				//noinspection deprecation
-				dialogFragment.setTargetFragment(this, 0);
-				dialogFragment.show(manager, DIALOG_FRAGMENT_TAG);
-				return;
-			}
-			super.onDisplayPreferenceDialog(pref);
-		}
-	}
+            /**
+             * Source summary provider.
+             */
+            private val SOURCE_SUMMARY_PROVIDER = SummaryProvider { preference: EditTextPreference ->
+                val context = preference.context
+                val prefs = checkNotNull(preference.sharedPreferences)
+                val desc = context.getString(R.string.pref_description_source)
+                var value = prefs.getString(preference.key, null)
+                value = if (value.isNullOrEmpty()) {
+                    context.getString(R.string.none)
+                } else {
+                    "'$value'"
+                }
+                "$desc :\n$value"
+            }
+
+            private const val DIALOG_FRAGMENT_TAG = "GroupPreference"
+        }
+    }
 }

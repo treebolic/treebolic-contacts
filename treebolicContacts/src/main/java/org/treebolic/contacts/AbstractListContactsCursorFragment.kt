@@ -1,186 +1,159 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.app.Activity;
-import android.content.ContentUris;
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import treebolic.provider.contacts.Utils;
+import android.app.Activity
+import android.content.ContentUris
+import android.content.Context
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Bundle
+import android.provider.ContactsContract
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.SimpleCursorAdapter
+import treebolic.provider.contacts.Settings
+import treebolic.provider.contacts.Utils.queryBitmapFromUri
+import treebolic.provider.contacts.Utils.roundCrop
 
 /**
  * Abstract fragment with list of contacts
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-abstract public class AbstractListContactsCursorFragment extends AbstractListContactsFragment implements AdapterView.OnItemClickListener
-{
-	static private final String TAG = "AListContactsF";
+abstract class AbstractListContactsCursorFragment : AbstractListContactsFragment(), OnItemClickListener {
 
-	// A D A P T E R
+    // A D A P T E R
 
-	static class ImageCursorAdapter extends SimpleCursorAdapter
-	{
-		@SuppressWarnings("WeakerAccess")
-		public ImageCursorAdapter(@NonNull Context context, int layout, @SuppressWarnings("SameParameterValue") Cursor cursor, String[] from, int[] to, @SuppressWarnings("SameParameterValue") int flags)
-		{
-			super(context, layout, cursor, from, to, flags);
-		}
+    internal class ImageCursorAdapter(context: Context, layout: Int, cursor: Cursor?, from: Array<String>, to: IntArray?, flags: Int) : SimpleCursorAdapter(context, layout, cursor, from, to, flags) {
 
-		@Override
-		public void bindView(@NonNull View view, @NonNull Context context, @NonNull Cursor cursor)
-		{
-			super.bindView(view, context, cursor);
+        override fun bindView(view: View, context: Context, cursor: Cursor) {
+            super.bindView(view, context, cursor)
 
-			// Photo Uri
-			final ImageView imageView = view.findViewById(R.id.photo);
-			final String photoThumbnailUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
-			if (photoThumbnailUri != null)
-			{
-				Log.d(TAG, "thumbnail is " + photoThumbnailUri);
-				//imageView.setImageURI(Uri.parse(photoThumbnailUri));
-				imageView.setImageBitmap(uri2CircularBitmap(context, photoThumbnailUri));
-				return;
-			}
+            // Photo Uri
+            val imageView = view.findViewById<ImageView>(R.id.photo)
+            val photoThumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX)
+            if (photoThumbnailUri != null) {
+                Log.d(TAG, "thumbnail is $photoThumbnailUri")
+                //imageView.setImageURI(Uri.parse(photoThumbnailUri));
+                imageView.setImageBitmap(uri2CircularBitmap(context, photoThumbnailUri))
+                return
+            }
 
-			final String photoUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
-			if (photoUri != null)
-			{
-				Log.d(TAG, "photo is " + photoUri);
-				//imageView.setImageURI(Uri.parse(photoUri));
-				imageView.setImageBitmap(uri2CircularBitmap(context, photoUri));
-				return;
-			}
+            val photoUri = cursor.getString(Settings.PHOTO_URI_INDEX)
+            if (photoUri != null) {
+                Log.d(TAG, "photo is $photoUri")
+                //imageView.setImageURI(Uri.parse(photoUri));
+                imageView.setImageBitmap(uri2CircularBitmap(context, photoUri))
+                return
+            }
 
-			imageView.setImageResource(R.drawable.ic_contact);
-		}
+            imageView.setImageResource(R.drawable.ic_contact)
+        }
 
-		private Bitmap uri2CircularBitmap(@NonNull final Context context, final String photoUriString)
-		{
-			final Bitmap bitmap = Utils.queryBitmapFromUri(context, photoUriString);
-			assert bitmap != null;
-			return Utils.roundCrop(bitmap);
-		}
-	}
+        private fun uri2CircularBitmap(context: Context, photoUriString: String): Bitmap {
+            val bitmap = checkNotNull(queryBitmapFromUri(context, photoUriString))
+            return roundCrop(bitmap)
+        }
+    }
 
-	// C R E A T E
+    // O V E R R I D E S
 
-	@SuppressWarnings("WeakerAccess")
-	public AbstractListContactsCursorFragment()
-	{
-	}
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-	// O V E R R I D E S
+        // Gets the ListView from the View list of the parent activity
+        val activity: Activity = requireActivity()
+        val contactsListView = activity.findViewById<ListView>(android.R.id.list)
 
-	@Override
-	public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState)
-	{
-		super.onViewCreated(view, savedInstanceState);
+        // Set the item click listener to be the current fragment.
+        contactsListView.onItemClickListener = this
+    }
 
-		// Gets the ListView from the View list of the parent activity
-		final Activity activity = getActivity();
-		assert activity != null;
-		final ListView contactsListView = activity.findViewById(android.R.id.list);
+    // C L I C K
 
-		// Set the item click listener to be the current fragment.
-		contactsListView.setOnItemClickListener(this);
-	}
+    override fun onItemClick(parent: AdapterView<*>, item: View, position: Int, rowID: Long) {
+        // Get the Cursor
+        val adapter = parent.adapter as SimpleCursorAdapter
+        val cursor = adapter.cursor
 
-	// C L I C K
+        // Move to the selected contact
+        cursor.moveToPosition(position)
 
-	@Override
-	public void onItemClick(@NonNull AdapterView<?> parent, View item, int position, long rowID)
-	{
-		// Get the Cursor
-		final SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
-		final Cursor cursor = adapter.getCursor();
+        // Get the _ID value
+        val contactId = cursor.getString(Settings.CONTACT_ID_INDEX)
 
-		// Move to the selected contact
-		cursor.moveToPosition(position);
+        // Get the selected LOOKUP KEY
+        // final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
 
-		// Get the _ID value
-		final String contactId = cursor.getString(treebolic.provider.contacts.Settings.CONTACT_ID_INDEX);
+        // Lookup Uri. You can use it as the content URI for retrieving the details for a contact
+        // final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
 
-		// Get the selected LOOKUP KEY
-		// final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
+        // Content Uri
+        val contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId.toLong())
 
-		// Lookup Uri. You can use it as the content URI for retrieving the details for a contact
-		// final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
+        // IMAGES
 
-		// Content Uri
-		final Uri contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
+        // Get the selected thumbnail Uri
+        val thumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX)
 
-		// IMAGES
+        // Get the selected photo Uri
+        val photoUri = cursor.getString(Settings.PHOTO_URI_INDEX)
 
-		// Get the selected thumbnail Uri
-		final String thumbnailUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_URI_INDEX);
+        // Get the selected photo index
+        val photoId = cursor.getString(Settings.PHOTO_ID_INDEX)
 
-		// Get the selected photo Uri
-		final String photoUri = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_URI_INDEX);
+        // Get the selected thumbnail index
+        val thumbnailId = cursor.getString(Settings.PHOTO_THUMBNAIL_ID_INDEX)
 
-		// Get the selected photo index
-		final String photoId = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_ID_INDEX);
+        // Photo Uri
+        //final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        //final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
+        val sb = XSpannableStringBuilder()
+        val labels = arrayOf("content Uri", "thumbnail Uri", "photo Uri", "thumbnail id", "photo id")
+        showDialog(
+            sb,  //
+            contactId,  //
+            if (thumbnailUri != null) Uri.parse(thumbnailUri) else (if (photoUri != null) Uri.parse(photoUri) else null),  //
+            labels,  //
+            contactContentUri.toString(),  //
+            thumbnailUri,  //
+            photoUri,  //
+            thumbnailId,  //
+            photoId
+        )
+    }
 
-		// Get the selected thumbnail index
-		final String thumbnailId = cursor.getString(treebolic.provider.contacts.Settings.PHOTO_THUMBNAIL_ID_INDEX);
+    // C U R S O R
 
-		// Photo Uri
-		//final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-		//final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
+    private fun dumpCursor(cursor: Cursor?) {
+        if (cursor == null) {
+            return
+        }
+        val columns = cursor.columnNames
+        val indexes = IntArray(columns.size)
+        for (i in indexes.indices) {
+            indexes[i] = cursor.getColumnIndex(columns[i])
+        }
+        cursor.moveToFirst()
+        do {
+            for (i in indexes.indices) {
+                val value = cursor.getString(indexes[i])
+                Log.d(TAG, columns[i] + " " + value)
+            }
+            Log.d(TAG, "\n")
+        } while (cursor.moveToNext())
+        cursor.moveToFirst()
+    }
 
-		final XSpannableStringBuilder sb = new XSpannableStringBuilder();
-		final String[] labels = new String[]{"content Uri", "thumbnail Uri", "photo Uri", "thumbnail id", "photo id"};
-		showDialog(sb, //
-				contactId, //
-				thumbnailUri != null ? Uri.parse(thumbnailUri) : (photoUri != null ? Uri.parse(photoUri) : null), //
-				labels, //
-				contactContentUri.toString(), //
-				thumbnailUri, //
-				photoUri, //
-				thumbnailId, //
-				photoId);
-	}
+    companion object {
 
-	// C U R S O R
-
-	private void dumpCursor(@Nullable final Cursor cursor)
-	{
-		if (cursor == null)
-		{
-			return;
-		}
-		final String[] columns = cursor.getColumnNames();
-		final int[] indexes = new int[columns.length];
-		for (int i = 0; i < indexes.length; i++)
-		{
-			indexes[i] = cursor.getColumnIndex(columns[i]);
-		}
-		cursor.moveToFirst();
-		do
-		{
-			for (int i = 0; i < indexes.length; i++)
-			{
-				String value = cursor.getString(indexes[i]);
-				Log.d(TAG, columns[i] + " " + value);
-			}
-			Log.d(TAG, "\n");
-		}
-		while (cursor.moveToNext());
-		cursor.moveToFirst();
-	}
+        private const val TAG = "AListContactsF"
+    }
 }

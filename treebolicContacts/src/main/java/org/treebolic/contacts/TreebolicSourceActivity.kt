@@ -1,123 +1,93 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.content.Intent;
-import android.os.Bundle;
-
-import org.treebolic.TreebolicIface;
-
-import java.util.Properties;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.content.Intent
+import android.os.Bundle
+import org.treebolic.TreebolicIface
+import java.util.Properties
 
 /**
  * Treebolic source activity
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-public abstract class TreebolicSourceActivity extends TreebolicBasicActivity
-{
-	/**
-	 * Parameter : source (interpreted by provider)
-	 */
-	@Nullable
-	@SuppressWarnings("WeakerAccess")
-	protected String source;
+abstract class TreebolicSourceActivity(menuId0: Int) : TreebolicBasicActivity(menuId0) {
 
-	/**
-	 * Parameter : data provider
-	 */
-	@Nullable
-	@SuppressWarnings("WeakerAccess")
-	protected String providerName;
+    /**
+     * Parameter : source (interpreted by provider)
+     */
+    @JvmField
+    protected var source: String? = null
 
-	/**
-	 * Restoring
-	 */
-	@SuppressWarnings("WeakerAccess")
-	protected boolean restoring;
+    /**
+     * Parameter : data provider
+     */
+    @JvmField
+    protected var providerName: String? = null
 
-	// C O N S T R U C T O R
+    /**
+     * Restoring
+     */
+    @JvmField
+    protected var restoring: Boolean = false
 
-	@SuppressWarnings("WeakerAccess")
-	public TreebolicSourceActivity(int menuId0)
-	{
-		super(menuId0);
-	}
+    // L I F E C Y C L E
 
-	// L I F E C Y C L E
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-	@Override
-	protected void onCreate(@Nullable final Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
+        // restoring status
+        this.restoring = savedInstanceState != null
+    }
 
-		// restoring status
-		this.restoring = savedInstanceState != null;
-	}
+    public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        // always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState)
 
-	@Override
-	public void onRestoreInstanceState(@NonNull final Bundle savedInstanceState)
-	{
-		// always call the superclass so it can restore the view hierarchy
-		super.onRestoreInstanceState(savedInstanceState);
+        // restore
+        this.source = savedInstanceState.getString(TreebolicIface.ARG_SOURCE)
+    }
 
-		// restore
-		this.source = savedInstanceState.getString(TreebolicIface.ARG_SOURCE);
-	}
+    public override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        // save
+        savedInstanceState.putString(TreebolicIface.ARG_SOURCE, this.source)
 
-	@Override
-	public void onSaveInstanceState(@NonNull final Bundle savedInstanceState)
-	{
-		// save
-		savedInstanceState.putString(TreebolicIface.ARG_SOURCE, this.source);
+        // always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState)
+    }
 
-		// always call the superclass so it can save the view hierarchy state
-		super.onSaveInstanceState(savedInstanceState);
-	}
+    // T R E E B O L I C   C O N T E X T
 
-	// T R E E B O L I C C O N T E X T
+    override fun makeParameters(): Properties? {
+        val parameters = super.makeParameters()
 
-	@Override
-	protected Properties makeParameters()
-	{
-		final Properties parameters = super.makeParameters();
+        if (this.source != null) {
+            parameters!!.setProperty("source", this.source)
+            parameters.setProperty("doc", this.source)
+        }
+        if (this.providerName != null) {
+            parameters!!.setProperty("provider", this.providerName)
+        }
+        return parameters
+    }
 
-		if (this.source != null)
-		{
-			parameters.setProperty("source", this.source);
-			parameters.setProperty("doc", this.source);
-		}
-		if (this.providerName != null)
-		{
-			parameters.setProperty("provider", this.providerName);
-		}
-		return parameters;
-	}
+    // U N M A R S H A L
 
-	// U N M A R S H A L
+    /**
+     * Unmarshal parameters from intent
+     *
+     * @param intent intent
+     */
+    override fun unmarshalArgs(intent: Intent) {
+        val params = checkNotNull(intent.extras)
+        this.providerName = params.getString(TreebolicIface.ARG_PROVIDER)
+        if (!this.restoring) {
+            this.source = params.getString(TreebolicIface.ARG_SOURCE)
+        }
 
-	/**
-	 * Unmarshal parameters from intent
-	 *
-	 * @param intent intent
-	 */
-	@Override
-	protected void unmarshalArgs(@NonNull final Intent intent)
-	{
-		final Bundle params = intent.getExtras();
-		assert params != null;
-		this.providerName = params.getString(TreebolicIface.ARG_PROVIDER);
-		if (!this.restoring)
-		{
-			this.source = params.getString(TreebolicIface.ARG_SOURCE);
-		}
-
-		// super
-		super.unmarshalArgs(intent);
-	}
+        // super
+        super.unmarshalArgs(intent)
+    }
 }

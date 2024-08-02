@@ -1,123 +1,95 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.annotation.TargetApi;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
-import android.os.Build;
-import android.provider.ContactsContract;
-import android.util.AttributeSet;
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.preference.MultiSelectListPreference;
-import treebolic.provider.contacts.Provider;
+import android.content.Context
+import android.provider.ContactsContract
+import android.util.AttributeSet
+import android.util.Log
+import androidx.preference.MultiSelectListPreference
+import treebolic.provider.contacts.Provider.Companion.countGroupMembers
+import treebolic.provider.contacts.Settings
 
 /**
  * Group preference
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-@SuppressWarnings("WeakerAccess")
-public class GroupPreference extends MultiSelectListPreference
-{
-	public final List<String> accountNames = new ArrayList<>();
+class GroupPreference : MultiSelectListPreference {
 
-	public final List<String> accountTypes = new ArrayList<>();
+    @JvmField
+    val accountNames: MutableList<String> = ArrayList()
 
-	public final List<Long> counts = new ArrayList<>();
+    @JvmField
+    val accountTypes: MutableList<String> = ArrayList()
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public GroupPreference(@NonNull final Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes)
-	{
-		super(context, attrs, defStyleAttr, defStyleRes);
-		init(context);
-	}
+    @JvmField
+    val counts: MutableList<Long> = ArrayList()
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public GroupPreference(@NonNull final Context context, @Nullable AttributeSet attrs, int defStyleAttr)
-	{
-		super(context, attrs, defStyleAttr);
-		init(context);
-	}
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+        init(context)
+    }
 
-	public GroupPreference(@NonNull final Context context, @Nullable AttributeSet attrs)
-	{
-		super(context, attrs);
-		init(context);
-	}
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        init(context)
+    }
 
-	public GroupPreference(@NonNull final Context context)
-	{
-		super(context);
-		init(context);
-	}
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context)
+    }
 
-	private void init(@NonNull Context context)
-	{
-		final String sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
+    constructor(context: Context) : super(context) {
+        init(context)
+    }
 
-		final ContentResolver contentResolver = context.getContentResolver();
-		final Cursor cursor = contentResolver.query( //
-				ContactsContract.Groups.CONTENT_URI, //
-				treebolic.provider.contacts.Settings.GROUP_PROJECTION, //
-				null, //
-				null, //
-				sort);
+    private fun init(context: Context) {
+        val sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC"
 
-		final List<String> labels = new ArrayList<>();
-		final List<String> values = new ArrayList<>();
-		if (cursor != null)
-		{
-			if (cursor.moveToFirst())
-			{
-				do
-				{
-					final String groupId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ID_INDEX);
-					CharSequence title = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_INDEX);
+        val contentResolver = context.contentResolver
+        val cursor = contentResolver.query( //
+            ContactsContract.Groups.CONTENT_URI,  //
+            Settings.GROUP_PROJECTION,  //
+            null,  //
+            null,  //
+            sort
+        )
 
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-					{
-						final String titleRes = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_RES_INDEX);
-						if (titleRes != null)
-						{
-							int resId = Integer.parseInt(titleRes);
-							final String resPackage = cursor.getString(treebolic.provider.contacts.Settings.GROUP_RES_PACKAGE_INDEX);
-							if (resPackage != null)
-							{
-								title = context.getPackageManager().getText(resPackage, resId, null);
-							}
-						}
-					}
+        val labels: MutableList<String> = ArrayList()
+        val values: MutableList<String> = ArrayList()
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    val groupId = cursor.getString(Settings.GROUP_ID_INDEX)
+                    var title: CharSequence? = cursor.getString(Settings.GROUP_TITLE_INDEX)
 
-					if (title != null && "Starred in Android".contentEquals(title))
-					{
-						title = "Starred";
-					}
-					final String accountName = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_NAME);
-					final String accountType = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_TYPE);
-					Log.d("group ", groupId + " " + title + " " + accountName + " " + accountType);
+                    val titleRes = cursor.getString(Settings.GROUP_TITLE_RES_INDEX)
+                    if (titleRes != null) {
+                        val resId = titleRes.toInt()
+                        val resPackage = cursor.getString(Settings.GROUP_RES_PACKAGE_INDEX)
+                        if (resPackage != null) {
+                            title = context.packageManager.getText(resPackage, resId, null)
+                        }
+                    }
 
-					labels.add(title == null ? "?" : title.toString());
-					values.add(groupId);
-					this.accountNames.add(accountName);
-					this.accountTypes.add(accountType);
-					this.counts.add(Provider.countGroupMembers(context, groupId, null));
-				}
-				while (cursor.moveToNext());
-			}
-			cursor.close();
-		}
+                    if (title != null && "Starred in Android".contentEquals(title)) {
+                        title = "Starred"
+                    }
+                    val accountName = cursor.getString(Settings.GROUP_ACCOUNT_NAME)
+                    val accountType = cursor.getString(Settings.GROUP_ACCOUNT_TYPE)
+                    Log.d("group ", "$groupId $title $accountName $accountType")
 
-		setEntries(labels.toArray(new String[0]));
-		setEntryValues(values.toArray(new String[0]));
-	}
+                    labels.add(title?.toString() ?: "?")
+                    values.add(groupId)
+                    accountNames.add(accountName)
+                    accountTypes.add(accountType)
+                    counts.add(countGroupMembers(context, groupId, null))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        }
+
+        entries = labels.toTypedArray<String>()
+        entryValues = values.toTypedArray<String>()
+    }
 }

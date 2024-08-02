@@ -1,44 +1,37 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
+import android.os.Bundle
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import org.treebolic.AppCompatCommonActivity
+import org.treebolic.contacts.SettingsActivity.FilterPreferenceFragment
 
-import android.os.Bundle;
+class FilterActivity : AppCompatCommonActivity() {
 
-import org.treebolic.AppCompatCommonActivity;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
+        // layout
+        setContentView(R.layout.activity_sub_settings)
 
-public class FilterActivity extends AppCompatCommonActivity
-{
-	@Override
-	protected void onCreate(@Nullable Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
+        // toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-		// layout
-		setContentView(R.layout.activity_sub_settings);
+        // show the Up button in the action bar.
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.displayOptions = ActionBar.DISPLAY_USE_LOGO or ActionBar.DISPLAY_SHOW_TITLE or ActionBar.DISPLAY_SHOW_HOME or ActionBar.DISPLAY_HOME_AS_UP
+        }
 
-		// toolbar
-		final Toolbar toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-
-		// show the Up button in the action bar.
-		final ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null)
-		{
-			actionBar.setDisplayOptions(ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);
-		}
-
-		// fragment
-		if (savedInstanceState == null)
-		{
-			final Fragment fragment = new SettingsActivity.FilterPreferenceFragment();
-			getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
-		}
-	}
+        // fragment
+        if (savedInstanceState == null) {
+            val fragment: Fragment = FilterPreferenceFragment()
+            supportFragmentManager.beginTransaction().add(R.id.container, fragment).commit()
+        }
+    }
 }

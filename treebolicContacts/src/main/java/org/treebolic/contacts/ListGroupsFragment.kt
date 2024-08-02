@@ -1,228 +1,190 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.database.Cursor;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.style.StyleSpan;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.DialogInterface
+import android.database.Cursor
+import android.graphics.Typeface
+import android.os.Bundle
+import android.provider.ContactsContract
+import android.text.style.StyleSpan
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.SimpleCursorAdapter
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.CursorLoader
+import androidx.loader.content.Loader
+import org.treebolic.contacts.AbstractListContactsFragment.XSpannableStringBuilder
+import org.treebolic.contacts.Settings.getStringsPref
 
 /**
  * Fragment with list of contacts
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-public class ListGroupsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener
-{
-	static private final String TAG = "ListGroupsF";
+class ListGroupsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 
-	// A D A P T E R
+    /**
+     * Adapter that binds the result Cursor to the ListView
+     */
+    private var adapter: SimpleCursorAdapter? = null
 
-	/**
-	 * Column names in the Cursor mapping to the ListView ids
-	 */
-	private final static String[] FROM_COLUMNS = {ContactsContract.Groups._ID, ContactsContract.Groups.TITLE, ContactsContract.Groups.ACCOUNT_NAME, ContactsContract.Groups.ACCOUNT_TYPE};
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_list, container, false)
+    }
 
-	/**
-	 * Column names in the Cursor mapping to the ListView ids
-	 */
-	private final static int[] TO_IDS = {R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type};
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-	/**
-	 * Adapter that binds the result Cursor to the ListView
-	 */
-	private SimpleCursorAdapter adapter;
+        // Initializes the loader
+        LoaderManager.getInstance(this).initLoader(0, null, this)
 
-	// C R E A T E
+        // Gets a CursorAdapter
+        val activity: Activity = requireActivity()
+        this.adapter = SimpleCursorAdapter(activity, R.layout.item_group, null, FROM_COLUMNS, TO_IDS, 0)
 
-	public ListGroupsFragment()
-	{
-	}
+        // Gets the ListView from the View list of the parent activity
+        val contactsListView = activity.findViewById<ListView>(android.R.id.list)
 
-	@Override
-	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
-	{
-		return inflater.inflate(R.layout.fragment_list, container, false);
-	}
+        // Sets the adapter for the ListView
+        contactsListView.adapter = adapter
 
-	@Override
-	public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState)
-	{
-		super.onViewCreated(view, savedInstanceState);
+        // Set the item click listener to be the current fragment.
+        contactsListView.onItemClickListener = this
+    }
 
-		// Initializes the loader
-		LoaderManager.getInstance(this).initLoader(0, null, this);
+    // L O A D E R
 
-		// Gets a CursorAdapter
-		final Activity activity = getActivity();
-		assert activity != null;
-		this.adapter = new SimpleCursorAdapter(activity, R.layout.item_group, null, FROM_COLUMNS, TO_IDS, 0);
+    override fun onCreateLoader(loaderId: Int, args: Bundle?): Loader<Cursor> {
+        var selection: String? = null
+        val groups = getStringsPref(requireActivity(), Settings.PREF_FILTER_GROUPS)
+        if (groups != null) {
+            selection = ContactsContract.Groups._ID + " IN " + groups
+        }
+        val sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC"
 
-		// Gets the ListView from the View list of the parent activity
-		final ListView contactsListView = activity.findViewById(android.R.id.list);
+        // Starts the query
+        val activity: Activity = requireActivity()
+        return CursorLoader(
+            activity,
+            treebolic.provider.contacts.Settings.GROUP_URI,
+            treebolic.provider.contacts.Settings.GROUP_PROJECTION,
+            selection,
+            null,
+            sort
+        )
+    }
 
-		// Sets the adapter for the ListView
-		contactsListView.setAdapter(this.adapter);
+    override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
+        // Put the result Cursor in the adapter for the ListView
+        adapter!!.swapCursor(cursor)
+    }
 
-		// Set the item click listener to be the current fragment.
-		contactsListView.setOnItemClickListener(this);
-	}
+    override fun onLoaderReset(loader: Loader<Cursor>) {
+        // Delete the reference to the existing Cursor
+        adapter!!.swapCursor(null)
+    }
 
-	// L O A D E R
+    // C L I C K
 
-	@NonNull
-	@Override
-	public Loader<Cursor> onCreateLoader(int loaderId, Bundle args)
-	{
-		String selection = null;
-		final String groups = Settings.getStringsPref(requireActivity(), Settings.PREF_FILTER_GROUPS);
-		if (groups != null)
-		{
-			selection = ContactsContract.Groups._ID + " IN " + groups;
-		}
-		final String sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC";
+    override fun onItemClick(parent: AdapterView<*>, item: View, position: Int, rowID: Long) {
+        // Get the Cursor
+        val adapter = parent.adapter as SimpleCursorAdapter
+        val cursor = adapter.cursor
 
-		// Starts the query
-		final Activity activity = getActivity();
-		assert activity != null;
-		return new CursorLoader(activity, //
-				treebolic.provider.contacts.Settings.GROUP_URI, //
-				treebolic.provider.contacts.Settings.GROUP_PROJECTION, //
-				selection, //
-				null, //
-				sort);
-	}
+        Log.d(TAG, join(cursor.columnNames))
 
-	@Override
-	public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor)
-	{
-		// Put the result Cursor in the adapter for the ListView
-		this.adapter.swapCursor(cursor);
-	}
+        // Move to the selected contact
+        cursor.moveToPosition(position)
 
-	@Override
-	public void onLoaderReset(@NonNull Loader<Cursor> loader)
-	{
-		// Delete the reference to the existing Cursor
-		this.adapter.swapCursor(null);
-	}
+        // Get the _ID value
+        val groupId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ID_INDEX)
 
-	// C L I C K
+        // Content Uri
+        val systemId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_SYSTEM_ID_INDEX)
+        val title = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_INDEX)
+        val account = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_NAME)
+        val accountType = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_TYPE)
 
-	@Override
-	public void onItemClick(@NonNull AdapterView<?> parent, View item, int position, long rowID)
-	{
-		// Get the Cursor
-		final SimpleCursorAdapter adapter = (SimpleCursorAdapter) parent.getAdapter();
-		final Cursor cursor = adapter.getCursor();
+        // Buffer
+        val sb = XSpannableStringBuilder()
+        sb.append("Group ID", StyleSpan(Typeface.BOLD), 0)
+            .append('\n')
+            .append(groupId)
+            .append('\n')
+        sb.append("systemId ID", StyleSpan(Typeface.BOLD), 0)
+            .append('\n')
+            .append(systemId ?: "null")
+            .append('\n')
+        sb.append("Title", StyleSpan(Typeface.BOLD), 0)
+            .append('\n')
+            .append(title ?: "null")
+            .append('\n')
+        sb.append("Account", StyleSpan(Typeface.BOLD), 0)
+            .append('\n')
+            .append(account ?: "null")
+            .append('\n')
+        sb.append("Account type", StyleSpan(Typeface.BOLD), 0)
+            .append('\n')
+            .append(accountType ?: "null")
+            .append('\n')
 
-		Log.d(TAG, join(cursor.getColumnNames()));
+        // view
+        val activity: Activity = requireActivity()
+        val builder = AlertDialog.Builder(activity)
+        val inflater = activity.layoutInflater
+        @SuppressLint("InflateParams") val dialogView = inflater.inflate(R.layout.detail_contact, null)
+        val textView = dialogView.findViewById<TextView>(android.R.id.text1)
+        val imageView = dialogView.findViewById<ImageView>(R.id.photo)
+        textView.text = sb
+        imageView.setImageResource(R.drawable.ic_group_large)
 
-		// Move to the selected contact
-		cursor.moveToPosition(position);
+        builder.setView(dialogView).setCancelable(false).setPositiveButton("OK") { _: DialogInterface?, _: Int -> }
+        builder.show()
+    }
 
-		// Get the _ID value
-		final String groupId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ID_INDEX);
+    // U T I L S
 
-		// Content Uri
-		final String systemId = cursor.getString(treebolic.provider.contacts.Settings.GROUP_SYSTEM_ID_INDEX);
-		final String title = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_INDEX);
-		final String account = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_NAME);
-		final String accountType = cursor.getString(treebolic.provider.contacts.Settings.GROUP_ACCOUNT_TYPE);
-		// final String titleRes = cursor.getString(treebolic.provider.contacts.Settings.GROUP_TITLE_RES_INDEX);
-		// final String resPackage = cursor.getString(treebolic.provider.contacts.Settings.GROUP_RES_PACKAGE_INDEX);
+    private fun join(strings: Array<String>): String {
+        val sb = StringBuilder()
+        var first = true
+        sb.append('{')
+        for (str in strings) {
+            if (first) {
+                first = false
+            } else {
+                sb.append(',')
+            }
+            sb.append(str)
+        }
+        sb.append('}')
+        return sb.toString()
+    }
 
-		// Buffer
-		final AbstractListContactsFragment.XSpannableStringBuilder sb = new AbstractListContactsFragment.XSpannableStringBuilder();
-		sb.append("Group ID", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(groupId) //
-				.append('\n');
-		sb.append("systemId ID", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(systemId == null ? "null" : systemId) //
-				.append('\n');
-		sb.append("Title", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(title == null ? "null" : title) //
-				.append('\n');
-		sb.append("Account", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(account == null ? "null" : account) //
-				.append('\n');
-		sb.append("Account type", new StyleSpan(Typeface.BOLD), 0) //
-				.append('\n') //
-				.append(accountType == null ? "null" : accountType) //
-				.append('\n');
+    companion object {
 
-		// view
-		final Activity activity = getActivity();
-		assert activity != null;
-		final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		final LayoutInflater inflater = activity.getLayoutInflater();
-		@SuppressLint("InflateParams") final View dialogView = inflater.inflate(R.layout.detail_contact, null);
-		final TextView textView = dialogView.findViewById(android.R.id.text1);
-		final ImageView imageView = dialogView.findViewById(R.id.photo);
-		textView.setText(sb);
-		imageView.setImageResource(R.drawable.ic_group_large);
+        private const val TAG = "ListGroupsF"
 
-		builder.setView(dialogView).setCancelable(false).setPositiveButton("OK", (dialog, id) -> {
-			//do things
-		});
-		builder.show();
-	}
+        /**
+         * Column names in the Cursor mapping to the ListView ids
+         */
+        private val FROM_COLUMNS = arrayOf(ContactsContract.Groups._ID, ContactsContract.Groups.TITLE, ContactsContract.Groups.ACCOUNT_NAME, ContactsContract.Groups.ACCOUNT_TYPE)
 
-	// U T I L S
-
-	// --Commented out by Inspection START (9/23/17 5:48 PM):
-	//	private void str2sb(final String header, final String[] strings, final AbstractListContactsFragment.XSpannableStringBuilder sb)
-	//	{
-	//		sb.append(header, new StyleSpan(Typeface.BOLD), 0).append('\n');
-	//		sb.append(join(strings)).append('\n');
-	//	}
-	// --Commented out by Inspection STOP (9/23/17 5:48 PM)
-
-	@NonNull
-	private String join(@NonNull final String[] strings)
-	{
-		final StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		sb.append('{');
-		for (String str : strings)
-		{
-			if (first)
-			{
-				first = false;
-			}
-			else
-			{
-				sb.append(',');
-			}
-			sb.append(str);
-		}
-		sb.append('}');
-		return sb.toString();
-	}
+        /**
+         * Column names in the Cursor mapping to the ListView ids
+         */
+        private val TO_IDS = intArrayOf(R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type)
+    }
 }

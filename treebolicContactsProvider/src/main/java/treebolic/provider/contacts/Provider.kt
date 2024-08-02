@@ -101,14 +101,14 @@ class Provider : IProvider {
 
     // I P R O V I D E R  I N T E R F A C E   (M O D E L)
 
-    override fun makeModel(source: String?, base: URL, parameters: Properties): Model {
+    override fun makeModel(source: String?, base: URL?, parameters: Properties?): Model {
         val tree = makeTree(source, base, parameters, false)
         val settings = makeSettings()
         val images = images
         return Model(tree, settings, images)
     }
 
-    override fun makeTree(source: String?, base: URL, parameters: Properties, checkRecursion: Boolean): Tree {
+    override fun makeTree(source: String?, base: URL?, parameters: Properties?, checkRecursion: Boolean): Tree {
         this.contactsCount = 0
         val tree = buildTree(source, parameters)
         val root = tree.root as TreeMutableNode

@@ -1,75 +1,56 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
-
-import android.app.Activity;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import org.treebolic.TreebolicIface;
-
-import java.util.Properties;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import treebolic.provider.contacts.Permissions;
-import treebolic.provider.contacts.Provider;
+import android.app.Activity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import org.treebolic.TreebolicIface
+import org.treebolic.contacts.Settings.getStringPref
+import org.treebolic.contacts.Settings.settingsToProperties
+import treebolic.provider.contacts.Permissions.check
+import treebolic.provider.contacts.Provider.Companion.count
+import treebolic.provider.contacts.Provider.Companion.countContacts
+import treebolic.provider.contacts.Provider.Companion.countGroups
 
 /**
  * Main activity fragment
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-public class MainActivityFragment extends Fragment
-{
-	// static private final String TAG = "MainF";
+class MainActivityFragment : Fragment() {
 
-	private TextView statusView;
+    private var statusView: TextView? = null
 
-	// C R E A T E
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        this.statusView = view.findViewById(R.id.status)
+        return view
+    }
 
-	public MainActivityFragment()
-	{
-	}
+    override fun onResume() {
+        super.onResume()
+        val activity: Activity = requireActivity()
+        if (check(activity)) {
+            activity.finish()
+            return
+        }
+        val resources = activity.resources
+        val source = getStringPref(activity, TreebolicIface.PREF_SOURCE)
+        val parameters = settingsToProperties(requireContext())
+        val count = count(activity, source, parameters).toInt()
+        val countContacts = countContacts(activity, source).toInt()
+        val countGroups = countGroups(activity).toInt()
+        val countStr = resources.getQuantityString(R.plurals.format_count, count, count)
+        val countContactsStr = resources.getQuantityString(R.plurals.format_count_contacts, countContacts, countContacts)
+        val countGroupsStr = resources.getQuantityString(R.plurals.format_count_groups, countGroups, countGroups)
+        val status = resources.getString(R.string.status, countContactsStr, countGroupsStr, countStr)
 
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		final View view = inflater.inflate(R.layout.fragment_main, container, false);
-		this.statusView = view.findViewById(R.id.status);
-		return view;
-	}
-
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-
-		final Activity activity = requireActivity();
-		if (Permissions.check(activity))
-		{
-			activity.finish();
-			return;
-		}
-
-		final Resources resources = activity.getResources();
-
-		final String source = Settings.getStringPref(activity, TreebolicIface.PREF_SOURCE);
-		final Properties parameters = Settings.settingsToProperties(requireContext());
-		final int count = (int) Provider.count(activity, source, parameters);
-		final int countContacts = (int) Provider.countContacts(activity, source);
-		final int countGroups = (int) Provider.countGroups(activity);
-		final String countStr = resources.getQuantityString(R.plurals.format_count, count, count);
-		final String countContactsStr = resources.getQuantityString(R.plurals.format_count_contacts, countContacts, countContacts);
-		final String countGroupsStr = resources.getQuantityString(R.plurals.format_count_groups, countGroups, countGroups);
-		final String status = resources.getString(R.string.status, countContactsStr, countGroupsStr, countStr);
-
-		this.statusView.setText(status);
-	}
+        statusView!!.text = status
+    }
 }

@@ -1,158 +1,110 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package org.treebolic.contacts
 
-package org.treebolic.contacts;
+import android.content.Context
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.ListAdapter
+import android.widget.SimpleAdapter
+import androidx.appcompat.app.AlertDialog
+import androidx.preference.MultiSelectListPreference
+import androidx.preference.PreferenceDialogFragmentCompat
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
+abstract class MultiSelectListPreferenceCustomDialogFragmentCompat : PreferenceDialogFragmentCompat() {
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+    val newValues: MutableSet<String> = HashSet()
+    var preferenceChanged: Boolean = false
+    var entries: Array<CharSequence>? = null
+    var entryValues: Array<CharSequence>? = null
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.preference.MultiSelectListPreference;
-import androidx.preference.PreferenceDialogFragmentCompat;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-public abstract class MultiSelectListPreferenceCustomDialogFragmentCompat extends PreferenceDialogFragmentCompat
-{
-	private static final String SAVE_STATE_VALUES = "MultiSelectListPreferenceDialogFragmentCompat.values";
-	private static final String SAVE_STATE_CHANGED = "MultiSelectListPreferenceDialogFragmentCompat.changed";
-	private static final String SAVE_STATE_ENTRIES = "MultiSelectListPreferenceDialogFragmentCompat.entries";
-	private static final String SAVE_STATE_ENTRY_VALUES = "MultiSelectListPreferenceDialogFragmentCompat.entryValues";
+        if (savedInstanceState == null) {
+            val preference = listPreference
+            check(!(preference.entries == null || preference.entryValues == null)) { "MultiSelectListPreference requires an entries array and " + "an entryValues array." }
 
-	@SuppressWarnings("WeakerAccess")
-	final /* synthetic access */ Set<String> mNewValues = new HashSet<>();
-	@SuppressWarnings("WeakerAccess") /* synthetic access */ boolean mPreferenceChanged;
-	@Nullable
-	@SuppressWarnings("WeakerAccess") /* synthetic access */ CharSequence[] mEntries;
-	@Nullable
-	@SuppressWarnings("WeakerAccess") /* synthetic access */ CharSequence[] mEntryValues;
+            newValues.clear()
+            newValues.addAll(preference.values)
+            preferenceChanged = false
+            entries = preference.entries
+            entryValues = preference.entryValues
+        } else {
+            newValues.clear()
+            val valueList: List<String>? = savedInstanceState.getStringArrayList(SAVE_STATE_VALUES)
+            if (valueList != null) {
+                newValues.addAll(valueList)
+            }
+            preferenceChanged = savedInstanceState.getBoolean(SAVE_STATE_CHANGED, false)
+            entries = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRIES)
+            entryValues = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRY_VALUES)
+        }
+    }
 
-	@SuppressWarnings("WeakerAccess")
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putStringArrayList(SAVE_STATE_VALUES, ArrayList(newValues))
+        outState.putBoolean(SAVE_STATE_CHANGED, preferenceChanged)
+        outState.putCharSequenceArray(SAVE_STATE_ENTRIES, entries)
+        outState.putCharSequenceArray(SAVE_STATE_ENTRY_VALUES, entryValues)
+    }
 
-		if (savedInstanceState == null)
-		{
-			final MultiSelectListPreference preference = getListPreference();
-			if (preference.getEntries() == null || preference.getEntryValues() == null)
-			{
-				throw new IllegalStateException("MultiSelectListPreference requires an entries array and " + "an entryValues array.");
-			}
+    private val listPreference: MultiSelectListPreference
+        get() = preference as MultiSelectListPreference
 
-			mNewValues.clear();
-			mNewValues.addAll(preference.getValues());
-			mPreferenceChanged = false;
-			mEntries = preference.getEntries();
-			mEntryValues = preference.getEntryValues();
-		}
-		else
-		{
-			mNewValues.clear();
-			final List<String> valueList = savedInstanceState.getStringArrayList(SAVE_STATE_VALUES);
-			if (valueList != null)
-			{
-				mNewValues.addAll(valueList);
-			}
-			mPreferenceChanged = savedInstanceState.getBoolean(SAVE_STATE_CHANGED, false);
-			mEntries = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRIES);
-			mEntryValues = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRY_VALUES);
-		}
-	}
+    protected abstract val adapter: ListAdapter?
 
-	@Override
-	public void onSaveInstanceState(@NonNull Bundle outState)
-	{
-		super.onSaveInstanceState(outState);
-		outState.putStringArrayList(SAVE_STATE_VALUES, new ArrayList<>(mNewValues));
-		outState.putBoolean(SAVE_STATE_CHANGED, mPreferenceChanged);
-		outState.putCharSequenceArray(SAVE_STATE_ENTRIES, mEntries);
-		outState.putCharSequenceArray(SAVE_STATE_ENTRY_VALUES, mEntryValues);
-	}
+    override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
+        super.onPrepareDialogBuilder(builder)
 
-	@NonNull
-	private MultiSelectListPreference getListPreference()
-	{
-		return (MultiSelectListPreference) getPreference();
-	}
+        val listAdapter = adapter
+        builder.setAdapter(listAdapter, null)
+    }
 
-	@Nullable
-	abstract protected ListAdapter getAdapter();
+    internal inner class CheckBoxSimpleAdapter(context: Context?, data: List<MutableMap<String?, *>?>?, resource: Int, from: Array<String?>?, to: IntArray?, private val checkId: Int) : SimpleAdapter(context, data, resource, from, to) {
 
-	@Override
-	protected void onPrepareDialogBuilder(@NonNull AlertDialog.Builder builder)
-	{
-		super.onPrepareDialogBuilder(builder);
+        override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+            val view = super.getView(position, convertView, parent)
 
-		final ListAdapter listAdapter = getAdapter();
-		builder.setAdapter(listAdapter, null);
-	}
+            val checkBox = view.findViewById<CheckBox>(this.checkId)
+            checkBox.tag = position
+            checkBox.setOnClickListener { v: View ->
+                if (entryValues == null) {
+                    return@setOnClickListener
+                }
+                val checkBox2 = v as CheckBox
+                val position2 = checkBox2.tag as Int
+                val isChecked = checkBox2.isChecked
+                preferenceChanged = if (isChecked) {
+                    preferenceChanged or newValues.add(entryValues!![position2].toString())
+                } else {
+                    preferenceChanged or newValues.remove(entryValues!![position2].toString())
+                }
+            }
 
-	class CheckBoxSimpleAdapter extends SimpleAdapter
-	{
-		private final int checkId;
+            return view
+        }
+    }
 
-		CheckBoxSimpleAdapter(final Context context, final List<? extends Map<String, ?>> data, @SuppressWarnings("SameParameterValue") final int resource, final String[] from, final int[] to, @SuppressWarnings("SameParameterValue") final int checkId)
-		{
-			super(context, data, resource, from, to);
-			this.checkId = checkId;
-		}
+    override fun onDialogClosed(positiveResult: Boolean) {
+        if (positiveResult && preferenceChanged) {
+            val preference = listPreference
+            if (preference.callChangeListener(newValues)) {
+                preference.values = newValues
+            }
+        }
+        preferenceChanged = false
+    }
 
-		@NonNull
-		@Override
-		public View getView(final int position, final View convertView, final ViewGroup parent)
-		{
-			final View view = super.getView(position, convertView, parent);
+    companion object {
 
-			final CheckBox checkBox = view.findViewById(this.checkId);
-			checkBox.setTag(position);
-			checkBox.setOnClickListener((v) -> {
-
-				if (mEntryValues == null)
-				{
-					return;
-				}
-				final CheckBox checkBox2 = (CheckBox) v;
-				int position2 = (Integer) checkBox2.getTag();
-				boolean isChecked = checkBox2.isChecked();
-				if (isChecked)
-				{
-					mPreferenceChanged |= mNewValues.add(mEntryValues[position2].toString());
-				}
-				else
-				{
-					mPreferenceChanged |= mNewValues.remove(mEntryValues[position2].toString());
-				}
-			});
-
-			return view;
-		}
-	}
-
-	@Override
-	public void onDialogClosed(boolean positiveResult)
-	{
-		if (positiveResult && mPreferenceChanged)
-		{
-			final MultiSelectListPreference preference = getListPreference();
-			if (preference.callChangeListener(mNewValues))
-			{
-				preference.setValues(mNewValues);
-			}
-		}
-		mPreferenceChanged = false;
-	}
+        private const val SAVE_STATE_VALUES = "MultiSelectListPreferenceDialogFragmentCompat.values"
+        private const val SAVE_STATE_CHANGED = "MultiSelectListPreferenceDialogFragmentCompat.changed"
+        private const val SAVE_STATE_ENTRIES = "MultiSelectListPreferenceDialogFragmentCompat.entries"
+        private const val SAVE_STATE_ENTRY_VALUES = "MultiSelectListPreferenceDialogFragmentCompat.entryValues"
+    }
 }
