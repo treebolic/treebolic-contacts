@@ -1,189 +1,160 @@
 /*
  * Copyright (c) 2019-2023. Bernard Bou
  */
+package treebolic.provider.contacts
 
-package treebolic.provider.contacts;
-
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.ContactsContract;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
+import android.content.Context
+import android.net.Uri
+import android.provider.ContactsContract
+import androidx.preference.PreferenceManager
 
 /**
  * Settings
  *
- * @author <a href="mailto:1313ou@gmail.com">Bernard Bou</a>
+ * @author [Bernard Bou](mailto:1313ou@gmail.com)
  */
-public class Settings
-{
-	/**
-	 * URLSCHEME that is handled
-	 */
-	static final public String URLSCHEME = "contact:";
+object Settings {
 
-	// C O U N T    P R O J E C T I O N
+    /**
+     * URLSCHEME that is handled
+     */
+    const val URLSCHEME: String = "contact:"
 
-	// static final public String COUNT_COL = "count";
+    // C O N T A C T   P R O J E C T I O N
 
-	// static public final String[] COUNT_PROJECTION = {//
-	//		"count(*) AS " + COUNT_COL};
+    @JvmField
+    val CONTACT_URI: Uri = ContactsContract.Contacts.CONTENT_URI
+    val BASE_CONTACT_PROJECTION: Array<String> = arrayOf(
+        ContactsContract.Contacts._ID,
+    )
 
-	// C O N T A C T   P R O J E C T I O N
+    @JvmField
+    val CONTACT_PROJECTION: Array<String> = arrayOf(
+        ContactsContract.Contacts._ID,
+        ContactsContract.Contacts.DISPLAY_NAME,
+        ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE,
+        ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,  // A URI that can be used to retrieve a thumbnail of the contact's photo.
+        ContactsContract.Contacts.PHOTO_URI,  // A URI that can be used to retrieve the contact's full-size photo.
+        ContactsContract.Contacts.PHOTO_ID,  // Reference to the row in the data table holding the photo.
+        ContactsContract.Contacts.PHOTO_FILE_ID,  // Photo file ID of the full-size photo.
+        ContactsContract.Contacts.LOOKUP_KEY,
+    )
 
-	static public final Uri CONTACT_URI = ContactsContract.Contacts.CONTENT_URI;
-	static public final String[] BASE_CONTACT_PROJECTION = {//
-			ContactsContract.Contacts._ID, //
-	};
-	static public final String[] CONTACT_PROJECTION = {//
-			ContactsContract.Contacts._ID, //
-			ContactsContract.Contacts.DISPLAY_NAME, //
-			ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE, //
-			ContactsContract.Contacts.PHOTO_THUMBNAIL_URI, // A URI that can be used to retrieve a thumbnail of the contact's photo.
-			ContactsContract.Contacts.PHOTO_URI, // A URI that can be used to retrieve the contact's full-size photo.
-			ContactsContract.Contacts.PHOTO_ID, // Reference to the row in the data table holding the photo.
-			ContactsContract.Contacts.PHOTO_FILE_ID, // Photo file ID of the full-size photo.
-			ContactsContract.Contacts.LOOKUP_KEY, //
-	};
+    const val CONTACT_ID_INDEX: Int = 0
+    const val DISPLAY_NAME_INDEX: Int = 1
+    const val DISPLAY_NAME_ALTERNATIVE_INDEX: Int = 2
+    const val PHOTO_THUMBNAIL_URI_INDEX: Int = 3
+    const val PHOTO_URI_INDEX: Int = 4
+    const val PHOTO_THUMBNAIL_ID_INDEX: Int = 5
+    const val PHOTO_ID_INDEX: Int = 6
 
-	static public final int CONTACT_ID_INDEX = 0;
-	static public final int DISPLAY_NAME_INDEX = 1;
-	static public final int DISPLAY_NAME_ALTERNATIVE_INDEX = 2;
-	static public final int PHOTO_THUMBNAIL_URI_INDEX = 3;
-	static public final int PHOTO_URI_INDEX = 4;
-	static public final int PHOTO_THUMBNAIL_ID_INDEX = 5;
-	static public final int PHOTO_ID_INDEX = 6;
-	//static public final int LOOKUP_KEY_INDEX = 7;
+    // G R O U P  M E M B E R  P R O J E C T I O N
 
-	// G R O U P  M E M B E R  P R O J E C T I O N
+    @JvmField
+    val GROUP_MEMBERS_URI: Uri = ContactsContract.Data.CONTENT_URI
 
-	static public final Uri GROUP_MEMBERS_URI = ContactsContract.Data.CONTENT_URI;
+    val BASE_GROUP_MEMBERS_PROJECTION: Array<String> = arrayOf(
+        ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID,  // contact
+    )
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	static public final String[] BASE_GROUP_MEMBERS_PROJECTION = //
-			new String[]{ //
-					ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
-			};
+    @JvmField
+    val GROUP_MEMBERS_PROJECTION: Array<String> = arrayOf(
+        ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID,  // contact
+        ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,
+        ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,
+        ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI,
+        ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI,
+        ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID,
+        ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID,
+        ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,
+        ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID,  // raw contact id
+        ContactsContract.CommonDataKinds.GroupMembership._ID,  // membership row
+        ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,
+    )
 
-	static public final String[] GROUP_MEMBERS_PROJECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? //
-			new String[]{ //
-					ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
-					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
-					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID, //
-					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-					ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, // raw contact id
-					ContactsContract.CommonDataKinds.GroupMembership._ID, // membership row
-					ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,} : // account
-			new String[]{ //
-					ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID, // contact
-					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME, //
-					ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_THUMBNAIL_URI, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_URI, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_ID, //
-					ContactsContract.CommonDataKinds.GroupMembership.PHOTO_FILE_ID, //
-					ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID, //
-					ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, // raw contact id
-					ContactsContract.CommonDataKinds.GroupMembership._ID,}; // membership row
+    // membership row
 
-	static public final int GROUP_MEMBERS_CONTACT_ID_INDEX = 0;
-	static public final int GROUP_MEMBERS_DISPLAY_NAME_INDEX = 1;
-	static public final int GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX = 2;
-	static public final int GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX = 3;
-	//static public final int GROUP_MEMBERS_PHOTO_URI_INDEX = 4;
-	//static public final int GROUP_MEMBERS_PHOTO_ID_INDEX = 5;
-	//static public final int GROUP_MEMBERS_PHOTO_FILE_ID_INDEX = 6;
-	static public final int GROUP_MEMBERS_GROUP_ID_INDEX = 7;
+    const val GROUP_MEMBERS_CONTACT_ID_INDEX: Int = 0
+    const val GROUP_MEMBERS_DISPLAY_NAME_INDEX: Int = 1
+    const val GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX: Int = 2
+    const val GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX: Int = 3
 
-	// G R O U P  P R O J E C T I O N
+    const val GROUP_MEMBERS_GROUP_ID_INDEX: Int = 7
 
-	static public final Uri GROUP_URI = ContactsContract.Groups.CONTENT_URI;
+    // G R O U P  P R O J E C T I O N
 
-	static public final String[] BASE_GROUP_PROJECTION = new String[]{ //
-			ContactsContract.Groups._ID,};
+    @JvmField
+    val GROUP_URI: Uri = ContactsContract.Groups.CONTENT_URI
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	static public final String[] GROUP_PROJECTION = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? //
-			new String[]{ //
-					ContactsContract.Groups._ID, //
-					ContactsContract.Groups.SYSTEM_ID, //
-					ContactsContract.Groups.TITLE, //
-					ContactsContract.Groups.ACCOUNT_NAME, //
-					ContactsContract.Groups.ACCOUNT_TYPE, //
-					ContactsContract.Groups.TITLE_RES, //
-					ContactsContract.Groups.RES_PACKAGE,} : //
-			new String[]{ //
-					ContactsContract.Groups._ID, //
-					ContactsContract.Groups.SYSTEM_ID, //
-					ContactsContract.Groups.TITLE, //
-					ContactsContract.Groups.ACCOUNT_NAME, //
-					ContactsContract.Groups.ACCOUNT_TYPE,};
+    val BASE_GROUP_PROJECTION: Array<String> = arrayOf(
 
-	static public final int GROUP_ID_INDEX = 0;
-	static public final int GROUP_SYSTEM_ID_INDEX = 1;
-	static public final int GROUP_TITLE_INDEX = 2;
-	static public final int GROUP_ACCOUNT_NAME = 3;
-	static public final int GROUP_ACCOUNT_TYPE = 4;
-	static public final int GROUP_TITLE_RES_INDEX = 5;
-	static public final int GROUP_RES_PACKAGE_INDEX = 6;
+        ContactsContract.Groups._ID,
+    )
 
-	// S E L E C T I O N
+    @JvmField
+    val GROUP_PROJECTION: Array<String> = arrayOf(
 
-	/**
-	 * Selection expressions
-	 */
-	static public final String SELECTION_DN_LIKE = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?";
+        ContactsContract.Groups._ID,
+        ContactsContract.Groups.SYSTEM_ID,
+        ContactsContract.Groups.TITLE,
+        ContactsContract.Groups.ACCOUNT_NAME,
+        ContactsContract.Groups.ACCOUNT_TYPE,
+        ContactsContract.Groups.TITLE_RES,
+        ContactsContract.Groups.RES_PACKAGE,
+    )
 
-	// H E L P E R
+    const val GROUP_ID_INDEX: Int = 0
+    const val GROUP_SYSTEM_ID_INDEX: Int = 1
+    const val GROUP_TITLE_INDEX: Int = 2
+    const val GROUP_ACCOUNT_NAME: Int = 3
+    const val GROUP_ACCOUNT_TYPE: Int = 4
+    const val GROUP_TITLE_RES_INDEX: Int = 5
+    const val GROUP_RES_PACKAGE_INDEX: Int = 6
 
-	/**
-	 * Get string preference
-	 *
-	 * @param context context
-	 * @param key     key
-	 * @return value
-	 */
-	@Nullable
-	static public String getStringPref(@NonNull final Context context, final String key)
-	{
-		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		return sharedPref.getString(key, null);
-	}
+    // S E L E C T I O N
+    /**
+     * Selection expressions
+     */
+    const val SELECTION_DN_LIKE: String = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?"
 
-	/**
-	 * Get boolean preference
-	 *
-	 * @param context context
-	 * @param key     key
-	 * @return value
-	 */
-	static public boolean getBooleanPref(@NonNull final Context context, final String key)
-	{
-		final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		return sharedPref.getBoolean(key, false);
-	}
+    // H E L P E R
+    /**
+     * Get string preference
+     *
+     * @param context context
+     * @param key     key
+     * @return value
+     */
+    @JvmStatic
+    fun getStringPref(context: Context, key: String?): String? {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPref.getString(key, null)
+    }
 
-	// P A R A M E T E R S
+    /**
+     * Get boolean preference
+     *
+     * @param context context
+     * @param key     key
+     * @return value
+     */
+    @JvmStatic
+    fun getBooleanPref(context: Context, key: String?): Boolean {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPref.getBoolean(key, false)
+    }
 
-	static public final String PARAM_GROUPS = "groups";
-	static public final String PARAM_DISPLAY = "display";
-	static public final String PARAM_SORT = "sort";
-	static public final String PARAM_MERGE_GROUPS = "merge_groups";
-	static public final String PARAM_FILTER_GROUPS = "filter_groups";
-	static public final String PARAM_PHOTO = "photo";
+    // P A R A M E T E R S
+    const val PARAM_GROUPS: String = "groups"
+    const val PARAM_DISPLAY: String = "display"
+    const val PARAM_SORT: String = "sort"
+    const val PARAM_MERGE_GROUPS: String = "merge_groups"
+    const val PARAM_FILTER_GROUPS: String = "filter_groups"
+    const val PARAM_PHOTO: String = "photo"
 
-	static public final String VALUE_DISPLAY_FIRST_LAST = "first,last";
-	static public final String VALUE_DISPLAY_LAST_FIRST = "last,first";
-	static public final String VALUE_SORT_FIRST = "first";
-	static public final String VALUE_SORT_LAST = "last";
+    const val VALUE_DISPLAY_FIRST_LAST: String = "first,last"
+    const val VALUE_DISPLAY_LAST_FIRST: String = "last,first"
+    const val VALUE_SORT_FIRST: String = "first"
+    const val VALUE_SORT_LAST: String = "last"
 }
 
