@@ -113,7 +113,14 @@ protected constructor(
     /**
      * Parent (client) activity
      */
-    private var parentActivity: Intent? = null
+    private var parentActivityIntentArg: Intent? = null
+
+    override fun getParentActivityIntent(): Intent? {
+        if (parentActivityIntentArg != null) {
+            return parentActivityIntentArg
+        }
+        return super.getParentActivityIntent()
+    }
 
     // L I F E C Y C L E
 
@@ -286,14 +293,7 @@ protected constructor(
         return false
     }
 
-    override fun getParentActivityIntent(): Intent? {
-        if (this.parentActivity != null) {
-            return this.parentActivity
-        }
-        return super.getParentActivityIntent()
-    }
-
-    // T R E E B O L I C   M O D E L
+   // T R E E B O L I C   M O D E L
 
     /**
      * Unmarshal model and parameters from intent
@@ -311,7 +311,7 @@ protected constructor(
         this.settings = params.getString(TreebolicIface.ARG_SETTINGS)
         this.style = params.getString(TreebolicIface.ARG_STYLE)
         @Suppress("DEPRECATION")
-        this.parentActivity = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
+        this.parentActivityIntentArg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
             params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY, Intent::class.java) else  //
             params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY)
         @Suppress("DEPRECATION")

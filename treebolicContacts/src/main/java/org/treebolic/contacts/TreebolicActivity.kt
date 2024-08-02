@@ -18,6 +18,7 @@ import org.treebolic.TreebolicIface
 class TreebolicActivity : TreebolicSourceActivity(R.menu.treebolic) {
 
     // Q U E R Y
+
     override fun query() {
         // sanity checkAndRequest
         if (this.providerName == null && this.source == null) {
