@@ -70,10 +70,10 @@ protected constructor(
     /**
      * Parameter : CSS style for WebViews
      */
-    protected var style: String? = null
+    private var cssStyle: String? = null
 
     override fun getStyle(): String? {
-        return if (this.style != null) this.style else  //
+        return if (this.cssStyle != null) this.cssStyle else  //
             Settings.STYLE_DEFAULT
     }
 
@@ -309,7 +309,7 @@ protected constructor(
         this.base = params.getString(TreebolicIface.ARG_BASE)
         this.imagesBase = params.getString(TreebolicIface.ARG_IMAGEBASE)
         this.settings = params.getString(TreebolicIface.ARG_SETTINGS)
-        this.style = params.getString(TreebolicIface.ARG_STYLE)
+        this.cssStyle = params.getString(TreebolicIface.ARG_STYLE)
         @Suppress("DEPRECATION")
         this.parentActivityIntentArg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
             params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY, Intent::class.java) else  //

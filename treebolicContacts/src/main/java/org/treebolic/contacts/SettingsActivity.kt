@@ -102,6 +102,7 @@ object SettingsActivity : AppCompatCommonPreferenceActivity() {
 
             if (pref is GroupPreference) {
                 val dialogFragment: DialogFragment = GroupPreferenceDialogFragmentCompat.newInstance(pref)
+                @Suppress("DEPRECATION")
                 dialogFragment.setTargetFragment(this, 0)
                 dialogFragment.show(manager, DIALOG_FRAGMENT_TAG)
                 return
