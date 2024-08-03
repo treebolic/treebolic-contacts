@@ -26,26 +26,26 @@ class GroupPreferenceDialogFragmentCompat : MultiSelectListPreferenceCustomDialo
         counts.addAll(preference.counts)
     }
 
-    override fun getAdapter(): ListAdapter {
-        val entryCount = if (entryValues == null) 0 else entryValues!!.size
-        val data: MutableList<Map<String, Any?>> = ArrayList()
-        for (i in 0 until entryCount) {
-            val row: MutableMap<String, Any?> = HashMap()
-            val checked = newValues.contains(entryValues!![i].toString())
-            row["checkAndRequest"] = checked
-            row["group_id"] = entryValues!![i].toString()
-            checkNotNull(entries)
-            row["display_name"] = entries!![i]
-            row["account_name"] = accountNames[i]
-            row["account_type"] = accountTypes[i]
-            row["count"] = counts[i]
-            data.add(row)
-        }
+    override val adapter: ListAdapter
+        get() {
+            val entryCount = if (entryValues == null) 0 else entryValues!!.size
+            val data = List(entryCount) {
+                checkNotNull(entries)
+                val checked = newValues.contains(entryValues!![it].toString())
+                val row: MutableMap<String, Any?> = HashMap()
+                row["checkAndRequest"] = checked
+                row["group_id"] = entryValues!![it].toString()
+                row["display_name"] = entries!![it]
+                row["account_name"] = accountNames[it]
+                row["account_type"] = accountTypes[it]
+                row["count"] = counts[it]
+                row
+            }
 
-        val from = arrayOf("checkAndRequest", "group_id", "display_name", "account_name", "account_type", "count")
-        val to = intArrayOf(android.R.id.checkbox, R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type, R.id.count)
-        return CheckBoxSimpleAdapter(context, data, R.layout.item_group_select, from, to, android.R.id.checkbox)
-    }
+            val from = arrayOf("checkAndRequest", "group_id", "display_name", "account_name", "account_type", "count")
+            val to = intArrayOf(android.R.id.checkbox, R.id.group_id, R.id.display_name, R.id.account_name, R.id.account_type, R.id.count)
+            return CheckBoxSimpleAdapter(context, data, R.layout.item_group_select, from, to, android.R.id.checkbox)
+        }
 
     companion object {
 
