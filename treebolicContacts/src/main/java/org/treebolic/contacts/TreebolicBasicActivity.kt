@@ -131,7 +131,7 @@ protected constructor(
         val value = TypedValue()
         resources.getValue(R.dimen.splitter_position_percent, value, true)
         val splitterPositionPercent = value.float
-        Container.setSplitterPositionPercent(splitterPositionPercent)
+        Container.splitterPositionPercent = splitterPositionPercent
 
         // widget
         this.widget = Widget(this, this)
