@@ -73,7 +73,7 @@ protected constructor(
     private var cssStyle: String? = null
 
     override fun getStyle(): String? {
-        return if (this.cssStyle != null) this.cssStyle else  //
+        return if (cssStyle != null) cssStyle else  //
             Settings.STYLE_DEFAULT
     }
 
@@ -134,7 +134,7 @@ protected constructor(
         Container.splitterPositionPercent = splitterPositionPercent
 
         // widget
-        this.widget = Widget(this, this)
+        widget = Widget(this, this)
 
         // content view
         setContentView(R.layout.activity_treebolic)
@@ -173,7 +173,7 @@ protected constructor(
         unmarshalArgs(intent)
 
         // make parameters
-        this.parameters = makeParameters()
+        parameters = makeParameters()
 
         // query
         query()
@@ -206,12 +206,12 @@ protected constructor(
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         // inflate
-        menuInflater.inflate(this.menuId, menu)
+        menuInflater.inflate(menuId, menu)
 
         // search view
         val searchMenuItem = menu.findItem(R.id.action_search)
         searchMenuItem.expandActionView()
-        this.searchView = searchMenuItem.actionView as SearchView?
+        searchView = searchMenuItem.actionView as SearchView?
 
         // search view width
         val screenWidth = Utils.screenWidth(this)
@@ -293,7 +293,7 @@ protected constructor(
         return false
     }
 
-   // T R E E B O L I C   M O D E L
+    // T R E E B O L I C   M O D E L
 
     /**
      * Unmarshal model and parameters from intent
@@ -306,16 +306,16 @@ protected constructor(
         params.classLoader = classLoader
 
         // retrieve arguments
-        this.base = params.getString(TreebolicIface.ARG_BASE)
-        this.imagesBase = params.getString(TreebolicIface.ARG_IMAGEBASE)
-        this.settings = params.getString(TreebolicIface.ARG_SETTINGS)
-        this.cssStyle = params.getString(TreebolicIface.ARG_STYLE)
+        base = params.getString(TreebolicIface.ARG_BASE)
+        imagesBase = params.getString(TreebolicIface.ARG_IMAGEBASE)
+        settings = params.getString(TreebolicIface.ARG_SETTINGS)
+        cssStyle = params.getString(TreebolicIface.ARG_STYLE)
         @Suppress("DEPRECATION")
-        this.parentActivityIntentArg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
+        parentActivityIntentArg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
             params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY, Intent::class.java) else  //
             params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY)
         @Suppress("DEPRECATION")
-        this.more = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
+        more = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
             params.getParcelable(TreebolicIface.ARG_MORE, Bundle::class.java) else  //
             params.getParcelable(TreebolicIface.ARG_MORE)
     }
@@ -361,7 +361,7 @@ protected constructor(
     }
 
     override fun getInput(): String? {
-        return this.input
+        return input
     }
 
     override fun warn(message: String) {
@@ -435,7 +435,7 @@ protected constructor(
         closeKeyboard()
 
         // new or continued search
-        if (!this.searchPending) {
+        if (!searchPending) {
             val query = searchView!!.query.toString()
             val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
             val scope = sharedPrefs.getString(SearchSettings.PREF_SEARCH_SCOPE, SearchSettings.SCOPE_LABEL) // label, content, link, id
@@ -475,7 +475,7 @@ protected constructor(
     }
 
     private fun closeKeyboard() {
-        val view = this.currentFocus
+        val view = currentFocus
         if (view != null) {
             val imm = checkNotNull(getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
             imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -490,7 +490,7 @@ protected constructor(
         }
 
         Log.d(TAG, "Search run$scope $mode $target")
-        this.searchPending = true
+        searchPending = true
         widget!!.search(CMD_SEARCH, scope, mode, target)
     }
 
@@ -501,7 +501,7 @@ protected constructor(
 
     private fun resetSearch() {
         Log.d(TAG, "Search reset")
-        this.searchPending = false
+        searchPending = false
         widget!!.search(CMD_RESET)
     }
 
@@ -514,18 +514,18 @@ protected constructor(
      */
     protected open fun makeParameters(): Properties? {
         val parameters = Properties()
-        if (this.base != null) {
-            parameters.setProperty("base", this.base)
+        if (base != null) {
+            parameters.setProperty("base", base)
         }
-        if (this.imagesBase != null) {
-            parameters.setProperty("imagebase", this.imagesBase)
+        if (imagesBase != null) {
+            parameters.setProperty("imagebase", imagesBase)
         }
-        if (this.settings != null) {
-            parameters.setProperty("settings", this.settings)
+        if (settings != null) {
+            parameters.setProperty("settings", settings)
         }
 
         // add properties from bundle
-        if (this.more != null) {
+        if (more != null) {
             for (key in more!!.keySet()) {
                 val value = more!!.getString(key)
                 if (value != null) {
