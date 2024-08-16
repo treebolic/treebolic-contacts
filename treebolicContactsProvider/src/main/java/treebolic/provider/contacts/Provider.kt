@@ -155,7 +155,8 @@ class Provider : IProvider {
             }
 
             val filterGroupsParam = parameters.getProperty(Settings.PARAM_FILTER_GROUPS)
-            return buildTree(loadBalancer.buildHierarchy(if (filterGroupsParam == null) collectContacts(contactFilter) else collectContacts(contactFilter, filterGroupsParam), 0))
+            val contacts = if (filterGroupsParam == null) collectContacts(contactFilter) else collectContacts(contactFilter, filterGroupsParam)
+            return buildTree(loadBalancer.buildHierarchy(contacts, 0))
         } else {
             return buildTree(loadBalancer.buildHierarchy(collectGroups(contactFilter), 0))
         }
@@ -188,7 +189,7 @@ class Provider : IProvider {
      * @param contactFilter contact filter
      * @return list of contact nodes
      */
-    private fun collectContacts(contactFilter: String?): List<INode?>? {
+    private fun collectContacts(contactFilter: String?): List<INode>? {
         val nullSource = contactFilter.isNullOrEmpty()
         val selection = if (nullSource) null else Settings.SELECTION_DN_LIKE
         val selectionArgs = if (nullSource) null else arrayOf("%$contactFilter%")
@@ -202,7 +203,7 @@ class Provider : IProvider {
             selectionArgs,  // selection criteria arguments to placeholders
             sort
         ) // sort order for the returned rows
-        var nodes: MutableList<INode?>? = null
+        var nodes: MutableList<INode>? = null
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 nodes = ArrayList()
@@ -213,10 +214,10 @@ class Provider : IProvider {
                     val altName = cursor.getString(Settings.DISPLAY_NAME_ALTERNATIVE_INDEX)
                     val photoThumbnailUri = if (this.photo) cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX) else null
 
-                    //final String photoUri = cursor.getString(Settings.PHOTO_URI_INDEX);
-                    //final Long photoThumbnailId = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX);
-                    //final Long photoId = cursor.getLong(Settings.PHOTO_ID_INDEX);
-                    //final String lookup = cursor.getString(Settings.LOOKUP_KEY_INDEX);
+                    //val photoUri: String = cursor.getString(Settings.PHOTO_URI_INDEX)
+                    //val photoThumbnailId: Long  = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX)
+                    //val photoIdk: Long = cursor.getLong(Settings.PHOTO_ID_INDEX)
+                    //val lookupk:  String = cursor.getString(Settings.LOOKUP_KEY_INDEX)
                     val node = makeContactNode(id, name, altName, photoThumbnailUri)
                     nodes.add(node)
                 } while (cursor.moveToNext())
