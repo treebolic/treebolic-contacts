@@ -216,8 +216,8 @@ class Provider : IProvider {
 
                     //val photoUri: String = cursor.getString(Settings.PHOTO_URI_INDEX)
                     //val photoThumbnailId: Long  = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX)
-                    //val photoIdk: Long = cursor.getLong(Settings.PHOTO_ID_INDEX)
-                    //val lookupk:  String = cursor.getString(Settings.LOOKUP_KEY_INDEX)
+                    //val photoIdKey: Long = cursor.getLong(Settings.PHOTO_ID_INDEX)
+                    //val lookupKey:  String = cursor.getString(Settings.LOOKUP_KEY_INDEX)
                     val node = makeContactNode(id, name, altName, photoThumbnailUri)
                     nodes.add(node)
                 } while (cursor.moveToNext())

@@ -76,7 +76,7 @@ internal object Settings {
      * @param context context
      */
     @JvmStatic
-    fun setDefaults(@Suppress("unused") context: Context?) {
+    fun setDefaults(context: Context?) {
         //
     }
 
