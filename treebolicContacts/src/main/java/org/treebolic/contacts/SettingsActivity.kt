@@ -20,42 +20,7 @@ import org.treebolic.TreebolicIface
  *
  * @author Bernard Bou
  */
-object SettingsActivity : AppCompatCommonPreferenceActivity() {
-
-    // S U M M A R Y
-
-    /**
-     * A list preference summary provider.
-     */
-    private val LIST_SUMMARY_PROVIDER = SummaryProvider { preference: MultiSelectListPreference ->
-        val context = preference.context
-        val header: CharSequence = context.getString(R.string.pref_description_group_filter)
-        val values = preference.getPersistedStringSet(null)
-        var summary = header.toString() + '\n'
-        if (values == null || values.isEmpty()) {
-            summary += context.getString(R.string.all)
-        } else {
-            summary += setToString(values)
-        }
-        summary
-    }
-
-    private fun setToString(values: Set<String>?): CharSequence {
-        if (values == null) {
-            return ""
-        }
-        val sb = StringBuilder()
-        var isFirst = true
-        for (value in values) {
-            if (isFirst) {
-                isFirst = false
-            } else {
-                sb.append(' ')
-            }
-            sb.append(value)
-        }
-        return sb
-    }
+class SettingsActivity : AppCompatCommonPreferenceActivity() {
 
     // F R A G M E N T S
 
@@ -129,6 +94,44 @@ object SettingsActivity : AppCompatCommonPreferenceActivity() {
             }
 
             private const val DIALOG_FRAGMENT_TAG = "GroupPreference"
+        }
+    }
+
+    companion object {
+
+        // S U M M A R Y
+
+        /**
+         * A list preference summary provider.
+         */
+        private val LIST_SUMMARY_PROVIDER = SummaryProvider { preference: MultiSelectListPreference ->
+            val context = preference.context
+            val header: CharSequence = context.getString(R.string.pref_description_group_filter)
+            val values = preference.getPersistedStringSet(null)
+            var summary = header.toString() + '\n'
+            if (values == null || values.isEmpty()) {
+                summary += context.getString(R.string.all)
+            } else {
+                summary += setToString(values)
+            }
+            summary
+        }
+
+        private fun setToString(values: Set<String>?): CharSequence {
+            if (values == null) {
+                return ""
+            }
+            val sb = StringBuilder()
+            var isFirst = true
+            for (value in values) {
+                if (isFirst) {
+                    isFirst = false
+                } else {
+                    sb.append(' ')
+                }
+                sb.append(value)
+            }
+            return sb
         }
     }
 }
