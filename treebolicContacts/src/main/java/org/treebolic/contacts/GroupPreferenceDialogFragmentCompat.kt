@@ -8,9 +8,9 @@ import android.widget.ListAdapter
 
 class GroupPreferenceDialogFragmentCompat : MultiSelectListPreferenceCustomDialogFragmentCompat() {
 
-    private val accountNames: MutableList<String> = ArrayList()
+    private val accountNames: MutableList<String?> = ArrayList()
 
-    private val accountTypes: MutableList<String> = ArrayList()
+    private val accountTypes: MutableList<String?> = ArrayList()
 
     private val counts: MutableList<Long> = ArrayList()
 

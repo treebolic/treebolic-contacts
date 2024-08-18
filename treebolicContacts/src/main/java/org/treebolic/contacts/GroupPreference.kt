@@ -19,10 +19,10 @@ import treebolic.provider.contacts.Settings
 class GroupPreference : MultiSelectListPreference {
 
     @JvmField
-    val accountNames: MutableList<String> = ArrayList()
+    val accountNames: MutableList<String?> = ArrayList()
 
     @JvmField
-    val accountTypes: MutableList<String> = ArrayList()
+    val accountTypes: MutableList<String?> = ArrayList()
 
     @JvmField
     val counts: MutableList<Long> = ArrayList()

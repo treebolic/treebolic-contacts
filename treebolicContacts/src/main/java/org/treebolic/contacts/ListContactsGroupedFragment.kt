@@ -51,7 +51,7 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
      */
     internal inner class ImageAdapter(context: Context?, data: List<MutableMap<String?, *>?>?, resource: Int, from: Array<String>?, to: IntArray?) : SimpleAdapter(context, data, resource, from, to) {
 
-        override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             Log.d(TAG, "POS $position")
             val view = super.getView(position, convertView, parent)
             val imageView = view.findViewById<ImageView>(R.id.photo)

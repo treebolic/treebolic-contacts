@@ -573,7 +573,7 @@ class Provider : IProvider {
      * @param accountType   account type
      * @return group node
      */
-    private fun makeGroupNode(groupId: String, groupSystemId: String, title: String, accountName: String, accountType: String): TreeMutableNode {
+    private fun makeGroupNode(groupId: String, groupSystemId: String?, title: String?, accountName: String?, accountType: String?): TreeMutableNode {
         val node = TreeMutableNode(null, groupId)
         node.label = title
         node.content =

@@ -160,5 +160,5 @@ object Utils {
         return "data:image/png;base64,$imageBase64"
     }
 
-    class Group(val groupId: String, val systemId: String, @JvmField val title: String, @JvmField val account: String, val accountType: String, val titleRes: String?, val resPackage: String?)
+    data class Group(val groupId: String, val systemId: String?, @JvmField val title: String?, @JvmField val account: String?, val accountType: String?, val titleRes: String?, val resPackage: String?)
 }

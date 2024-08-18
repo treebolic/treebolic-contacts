@@ -67,7 +67,7 @@ abstract class MultiSelectListPreferenceCustomDialogFragmentCompat : PreferenceD
 
     internal inner class CheckBoxSimpleAdapter(context: Context?, data: List<MutableMap<String, *>?>?, resource: Int, from: Array<String>?, to: IntArray?, private val checkId: Int) : SimpleAdapter(context, data, resource, from, to) {
 
-        override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent)
 
             val checkBox = view.findViewById<CheckBox>(this.checkId)
