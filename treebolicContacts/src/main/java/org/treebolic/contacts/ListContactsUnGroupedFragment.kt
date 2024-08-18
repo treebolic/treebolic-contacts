@@ -63,6 +63,7 @@ class ListContactsUnGroupedFragment : AbstractListContactsCursorFragment(), Load
     }
 
     // L O A D E R
+
     override fun onCreateLoader(loaderId: Int, args: Bundle?): Loader<Cursor> {
         // selection
         val source = getStringPref(requireContext(), TreebolicIface.PREF_SOURCE)

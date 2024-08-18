@@ -112,12 +112,14 @@ object Settings {
     const val GROUP_RES_PACKAGE_INDEX: Int = 6
 
     // S E L E C T I O N
+
     /**
      * Selection expressions
      */
     const val SELECTION_DN_LIKE: String = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?"
 
     // H E L P E R
+
     /**
      * Get string preference
      *
@@ -145,6 +147,7 @@ object Settings {
     }
 
     // P A R A M E T E R S
+
     const val PARAM_GROUPS: String = "groups"
     const val PARAM_DISPLAY: String = "display"
     const val PARAM_SORT: String = "sort"

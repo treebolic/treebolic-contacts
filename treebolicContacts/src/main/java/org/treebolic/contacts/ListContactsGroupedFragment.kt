@@ -292,6 +292,7 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
         private const val TAG = "ListContactsGroupedF"
 
         // C U R S O R  C O L U M N S
+
         /**
          * Column names in the Cursor mapping to the ListView ids
          */
@@ -338,6 +339,7 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
         }
 
         // A D A P T E R  K E Y S
+
         /*
 	 * Key names in the row mapping to the ListView ids
 	 */
