@@ -106,11 +106,6 @@ object Utils {
     fun queryBitmapFromId(context: Context, id: Long): Bitmap? {
         val uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, id)
         val projection = arrayOf(ContactsContract.Contacts.Photo.PHOTO)
-
-        //final Uri uri = ContactsContract.Data.CONTENT_URI;
-        //final String[] projection = new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO};
-        //final String selection = ContactsContract.Data._ID + " = ?";
-        //final String[] selectionArgs = new String[]{Integer.toString(photoId)};
         context.contentResolver.query(uri, projection, null, null, null)?.use {
             return cursorToImage(it)
         }
