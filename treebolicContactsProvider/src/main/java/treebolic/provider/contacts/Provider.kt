@@ -612,7 +612,7 @@ class Provider : IProvider {
      * @param n   n first characters
      * @return left of string
      */
-    private fun left(str: String?, n: Int): String? {
+    private fun left(str: String?, @Suppress("SameParameterValue") n: Int): String? {
         if (str == null) {
             return null
         }

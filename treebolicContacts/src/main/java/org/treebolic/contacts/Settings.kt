@@ -75,6 +75,7 @@ internal object Settings {
      *
      * @param context context
      */
+    @Suppress("EmptyMethod")
     @JvmStatic
     fun setDefaults(context: Context?) {
         //
@@ -111,7 +112,7 @@ internal object Settings {
      * @param value   value
      */
     @SuppressLint("CommitPrefEdits", "ApplySharedPref")
-    private fun putStringPref(context: Context, key: String, value: String) {
+    private fun putStringPref(context: Context, @Suppress("SameParameterValue") key: String, value: String) {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPref.edit().putString(key, value).commit()
     }
