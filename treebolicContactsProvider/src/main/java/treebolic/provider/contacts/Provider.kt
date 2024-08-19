@@ -29,7 +29,7 @@ import java.util.Properties
  */
 class Provider : IProvider {
 
-    // S E T T I N G S  D A T A
+    // S E T T I N G S   D A T A
 
     /**
      * Ordinals used as indexes of images
@@ -85,7 +85,7 @@ class Provider : IProvider {
         loadBalancer.setGroupNode(null, null, null, LOADBALANCING_EDGE_COLOR, LOADBALANCING_EDGE_STYLE, -1,  /*ImageIndices.FOLDER.ordinal() */null, null)
     }
 
-    // I P R O V I D E R  I N T E R F A C E  (S E T U P)
+    // I P R O V I D E R   I N T E R F A C E  (S E T U P)
 
     override fun setHandle(handle: Any) {
         this.context = handle as Context
@@ -99,7 +99,7 @@ class Provider : IProvider {
         // not needed
     }
 
-    // I P R O V I D E R  I N T E R F A C E   (M O D E L)
+    // I P R O V I D E R   I N T E R F A C E   (M O D E L)
 
     override fun makeModel(source: String?, base: URL?, parameters: Properties?): Model {
         val tree = makeTree(source, base, parameters, false)

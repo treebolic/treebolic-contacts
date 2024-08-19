@@ -48,7 +48,7 @@ object Settings {
     const val PHOTO_THUMBNAIL_ID_INDEX: Int = 5
     const val PHOTO_ID_INDEX: Int = 6
 
-    // G R O U P  M E M B E R  P R O J E C T I O N
+    // G R O U P   M E M B E R   P R O J E C T I O N
 
     @JvmField
     val GROUP_MEMBERS_URI: Uri = ContactsContract.Data.CONTENT_URI
@@ -81,7 +81,7 @@ object Settings {
 
     const val GROUP_MEMBERS_GROUP_ID_INDEX: Int = 7
 
-    // G R O U P  P R O J E C T I O N
+    // G R O U P   P R O J E C T I O N
 
     @JvmField
     val GROUP_URI: Uri = ContactsContract.Groups.CONTENT_URI
