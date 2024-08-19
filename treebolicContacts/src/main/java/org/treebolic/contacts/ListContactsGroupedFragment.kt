@@ -248,6 +248,7 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
     override fun onItemClick(parent: AdapterView<*>, item: View, position: Int, rowID: Long) {
         // Get the Cursor
         val adapter = parent.adapter as SimpleAdapter
+
         @Suppress("UNCHECKED_CAST")
         val row = adapter.getItem(position) as Row<String?>
 
