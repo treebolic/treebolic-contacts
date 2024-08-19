@@ -33,8 +33,7 @@
 			android:exported="true"
 			android:hardwareAccelerated="true"
 			android:label="@string/title_activity_treebolic"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -44,8 +43,7 @@
 			android:name="org.treebolic.contacts.ListContactsActivity"
 			android:exported="false"
 			android:label="@string/title_activity_list_contacts"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -55,8 +53,7 @@
 			android:name="org.treebolic.contacts.ListContactsGroupedActivity"
 			android:exported="false"
 			android:label="@string/title_activity_list_grouped_contacts"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -66,8 +63,7 @@
 			android:name="org.treebolic.contacts.ListContactsUnGroupedActivity"
 			android:exported="false"
 			android:label="@string/title_activity_list_ungrouped_contacts"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -77,8 +73,7 @@
 			android:name="org.treebolic.contacts.ListGroupsActivity"
 			android:exported="false"
 			android:label="@string/title_activity_list_groups"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -88,8 +83,7 @@
 			android:name="org.treebolic.contacts.SettingsActivity"
 			android:exported="false"
 			android:label="@string/title_activity_settings"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -99,8 +93,7 @@
 			android:name="org.treebolic.contacts.FilterActivity"
 			android:exported="false"
 			android:label="@string/title_activity_filter"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -109,8 +102,7 @@
 		<activity
 			android:name="org.treebolic.guide.HelpActivity"
 			android:exported="false"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -119,8 +111,7 @@
 		<activity
 			android:name="com.bbou.others.OthersActivity"
 			android:exported="false"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
@@ -129,8 +120,7 @@
 		<activity
 			android:name="com.bbou.donate.DonateActivity"
 			android:exported="false"
-			android:parentActivityName="org.treebolic.contacts.MainActivity"
-			>
+			android:parentActivityName="org.treebolic.contacts.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.treebolic.contacts.MainActivity" />
