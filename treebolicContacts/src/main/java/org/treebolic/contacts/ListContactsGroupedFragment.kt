@@ -59,11 +59,11 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
             val item = getItem(position) as HashMap<*, *>
             if (item.containsKey(PHOTO_THUMBNAIL_URI_KEY)) {
                 val thumbnailPhotoUri = item[PHOTO_THUMBNAIL_URI_KEY] as String?
-                //imageView.setImageURI(Uri.parse(thumbnailPhotoUri));
+                //imageView.setImageURI(Uri.parse(thumbnailPhotoUri))
                 imageView.setImageBitmap(uri2CircularBitmap(thumbnailPhotoUri))
             } else if (item.containsKey(PHOTO_URI_KEY)) {
                 val photoUri = item[PHOTO_URI_KEY] as String?
-                //imageView.setImageURI(Uri.parse(photoUri));
+                //imageView.setImageURI(Uri.parse(photoUri))
                 imageView.setImageBitmap(uri2CircularBitmap(photoUri))
             } else {
                 imageView.setImageResource(R.drawable.ic_contact)
@@ -159,9 +159,8 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
 
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
         Log.d(TAG, "count=" + cursor.count)
-
-        // dumpCursor(cursor);
         rows.clear()
+
         // Gets adapter's source columns
         val displayPref = getStringPref(requireContext(), Settings.PREF_DISPLAY)
         val firstLastValue = getString(R.string.pref_display_value_first_last)

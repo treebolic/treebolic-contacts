@@ -84,7 +84,6 @@ class MainActivity : AppCompatCommonActivity() {
     private fun updateButton() {
         val button = findViewById<ImageButton>(R.id.queryButton)
         button.setOnClickListener { view: View? -> this.onClick(view) }
-        // final String source = Settings.getStringPref(this, TreebolicIface.PREF_SOURCE);
         button.visibility = View.VISIBLE
     }
 
@@ -125,7 +124,6 @@ class MainActivity : AppCompatCommonActivity() {
             provider.setHandle(this)
             val model = provider.makeModel(null, null, null)
             val dump = ModelDump.toString(model)
-            //System.out.println(dump);
             val builder = AlertDialog.Builder(this)
             builder.setMessage(dump)
             builder.show()

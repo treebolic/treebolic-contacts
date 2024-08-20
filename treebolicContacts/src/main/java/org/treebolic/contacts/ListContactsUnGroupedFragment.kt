@@ -100,8 +100,6 @@ class ListContactsUnGroupedFragment : AbstractListContactsCursorFragment(), Load
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
         Log.d(TAG, "count=" + cursor.count)
 
-        // dumpCursor(cursor);
-
         // Put the result Cursor in the adapter for the ListView
         adapter!!.swapCursor(cursor)
     }

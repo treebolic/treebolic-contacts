@@ -170,7 +170,7 @@ class Provider : IProvider {
      */
     private fun buildTree(nodes: List<INode>): Tree {
         val topRoot = TreeMutableNode(null, "root")
-        //topRoot.setLabel("contacts");
+        //topRoot.setLabel("contacts")
         topRoot.backColor = ROOT_BACKCOLOR
         topRoot.foreColor = ROOT_FORECOLOR
         topRoot.edgeColor = ROOT_EDGE_COLOR
@@ -272,9 +272,6 @@ class Provider : IProvider {
                     val altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX)
                     val photoThumbnailUri = if (this.photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
 
-                    //final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
-                    //final Long photoThumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_ID_INDEX);
-                    //final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
                     val node = makeContactNode(contactId, name, altName, photoThumbnailUri)
                     nodes.add(node)
                 } while (cursor.moveToNext())
@@ -303,9 +300,6 @@ class Provider : IProvider {
         )
         var nodes: MutableList<INode>? = null
         if (cursor != null) {
-            //final String[] columns = cursor.getColumnNames();
-            //Log.d(TAG, "GROUPS " + joinForIn(columns));
-
             if (cursor.moveToFirst()) {
                 nodes = ArrayList()
                 do {
@@ -411,9 +405,6 @@ class Provider : IProvider {
         )
         var nodes: MutableList<INode>? = null
         if (cursor != null) {
-            //final String[] columns = cursor.getColumnNames();
-            //Log.d(TAG, "MEMBERS " + joinForIn(columns));
-
             if (cursor.moveToFirst()) {
                 nodes = ArrayList()
                 do {
@@ -421,9 +412,6 @@ class Provider : IProvider {
                     val name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX)
                     val altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX)
                     val photoThumbnailUri = if (this.photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
-                    //final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
-                    //final Long thumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
-                    //final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_FILE_ID_INDEX);
                     val groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX)
                     Log.d("\tmember ", "$groupId $contactId $name $altName $photoThumbnailUri")
 
@@ -457,9 +445,6 @@ class Provider : IProvider {
         )
         var nodes: MutableList<INode?>? = null
         if (cursor != null) {
-            //final String[] columns = cursor.getColumnNames();
-            //Log.d(TAG, "MEMBERS " + joinForIn(columns));
-
             if (cursor.moveToFirst()) {
                 nodes = ArrayList()
                 var contactIdCurrent: String? = null
@@ -474,9 +459,6 @@ class Provider : IProvider {
                     val name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX)
                     val altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX)
                     val photoThumbnailUri = if (this.photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
-                    //final String photoUri = cursor.getString(Settings.GROUP_MEMBERS_PHOTO_URI_INDEX);
-                    //final Long thumbnailId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_ID_INDEX);
-                    //final Long photoId = cursor.getLong(Settings.GROUP_MEMBERS_PHOTO_FILE_ID_INDEX);
                     val groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX)
                     Log.d("\tmember ", "$groupId $contactId $name $altName $photoThumbnailUri")
 
@@ -506,7 +488,6 @@ class Provider : IProvider {
         val last = fields[0]
 
         // obfuscate
-        // last = last.substring(0, 2) + last.substring(2).replaceAll(".", "*");
         var first: String? = null
         if (fields.size > 1 && fields[1][0] != '#') {
             first = fields[1]
@@ -529,7 +510,6 @@ class Provider : IProvider {
             }
         }
 
-        //final String makeRangeLabel = altName.replace(',','\n');
         val target = left((if (this.sortCode == 1) name else altName).replaceFirst("^[@# ]*".toRegex(), ""), LABEL_TRUNCATE_AT)
 
         // node
@@ -538,10 +518,6 @@ class Provider : IProvider {
         node.content = name + NL + altName
 
         // obfuscate
-        // String name2 = name.substring(0, 2) + name.substring(2).replaceAll("[A-Z]", "*");
-        // int comma = altName.lastIndexOf(',');
-        // String altName2 = comma ==-1 ? "" : altName.substring(0, comma).replaceAll("[A-Z]", "*") + altName.substring(comma);
-        // node.setContent(name2 + NL + altName2);
         node.link = Settings.URLSCHEME + id
         node.target = target
 
@@ -665,7 +641,7 @@ class Provider : IProvider {
         settings.focusOnHoverFlag = true
         settings.treeEdgeColor = CONTACT_EDGE_COLOR
         settings.treeEdgeStyle = IEdge.DOT.toInt()
-        //settings.defaultNodeImageIndex = ImageIndices.CONTACT.ordinal();
+        //settings.defaultNodeImageIndex = ImageIndices.CONTACT.ordinal()
         return settings
     }
 

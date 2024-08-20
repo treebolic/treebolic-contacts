@@ -41,7 +41,7 @@ abstract class AbstractListContactsCursorFragment : AbstractListContactsFragment
             val photoThumbnailUri = cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX)
             if (photoThumbnailUri != null) {
                 Log.d(TAG, "thumbnail is $photoThumbnailUri")
-                //imageView.setImageURI(Uri.parse(photoThumbnailUri));
+                //imageView.setImageURI(Uri.parse(photoThumbnailUri))
                 imageView.setImageBitmap(uri2CircularBitmap(context, photoThumbnailUri))
                 return
             }
@@ -49,7 +49,7 @@ abstract class AbstractListContactsCursorFragment : AbstractListContactsFragment
             val photoUri = cursor.getString(Settings.PHOTO_URI_INDEX)
             if (photoUri != null) {
                 Log.d(TAG, "photo is $photoUri")
-                //imageView.setImageURI(Uri.parse(photoUri));
+                //imageView.setImageURI(Uri.parse(photoUri))
                 imageView.setImageBitmap(uri2CircularBitmap(context, photoUri))
                 return
             }
@@ -89,12 +89,6 @@ abstract class AbstractListContactsCursorFragment : AbstractListContactsFragment
         // Get the _ID value
         val contactId = cursor.getString(Settings.CONTACT_ID_INDEX)
 
-        // Get the selected LOOKUP KEY
-        // final String contactKey = cursor.getString(Settings.LOOKUP_KEY_INDEX);
-
-        // Lookup Uri. You can use it as the content URI for retrieving the details for a contact
-        // final Uri contactLookupUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
-
         // Content Uri
         val contactContentUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId.toLong())
 
@@ -113,8 +107,6 @@ abstract class AbstractListContactsCursorFragment : AbstractListContactsFragment
         val thumbnailId = cursor.getString(Settings.PHOTO_THUMBNAIL_ID_INDEX)
 
         // Photo Uri
-        //final Uri photoUriFromContent = Uri.withAppendedPath(contactContentUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-        //final Uri photoUriFromPhotoId = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, photoId);
         val sb = XSpannableStringBuilder()
         val labels = arrayOf("content Uri", "thumbnail Uri", "photo Uri", "thumbnail id", "photo id")
         showDialog(

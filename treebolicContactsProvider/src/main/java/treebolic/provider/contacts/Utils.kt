@@ -140,7 +140,7 @@ object Utils {
         val paint = Paint()
         paint.isAntiAlias = true
         paint.color = color
-        canvas.drawCircle(h2, h2, h2, paint) // canvas.drawRoundRect(rect, roundPx, roundPx, paint);
+        canvas.drawCircle(h2, h2, h2, paint) // canvas.drawRoundRect(rect, roundPx, roundPx, paint)
 
         paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
         canvas.drawBitmap(bitmap, rect, rect, paint)
