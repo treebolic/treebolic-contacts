@@ -25,11 +25,11 @@ import treebolic.provider.contacts.Provider.Companion.countGroups
  */
 class MainActivityFragment : Fragment() {
 
-    private var statusView: TextView? = null
+    private lateinit var statusView: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
-        this.statusView = view.findViewById(R.id.status)
+        statusView = view.findViewById(R.id.contactStatus)
         return view
     }
 
@@ -51,6 +51,6 @@ class MainActivityFragment : Fragment() {
         val countGroupsStr = resources.getQuantityString(R.plurals.format_count_groups, countGroups, countGroups)
         val status = resources.getString(R.string.status, countContactsStr, countGroupsStr, countStr)
 
-        statusView!!.text = status
+        statusView.text = status
     }
 }

@@ -24,12 +24,14 @@
 		android:src="@drawable/ic_splash" />
 
 	<TextView
-		android:id="@+id/status"
+		android:id="@+id/contactStatus"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
 		android:layout_above="@id/imageView"
+		android:layout_margin="20dp"
+		android:layout_centerHorizontal="true"
+		android:contentDescription="@string/contacts"
 		android:gravity="center"
-		android:contentDescription="@string/contacts" />
+		android:textColor="@color/status_color" />
 
 </RelativeLayout>
