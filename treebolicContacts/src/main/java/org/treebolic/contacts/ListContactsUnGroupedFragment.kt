@@ -53,7 +53,7 @@ class ListContactsUnGroupedFragment : AbstractListContactsCursorFragment(), Load
 
         // Gets a CursorAdapter
         val activity: Activity = requireActivity()
-        this.adapter = ImageCursorAdapter(activity, R.layout.item_contact_ungrouped, null, from, TO_IDS, 0)
+        adapter = ImageCursorAdapter(activity, R.layout.item_contact_ungrouped, null, from, TO_IDS, 0)
 
         // Gets the ListView from the View list of the parent activity
         val contactsListView = activity.findViewById<ListView>(android.R.id.list)
