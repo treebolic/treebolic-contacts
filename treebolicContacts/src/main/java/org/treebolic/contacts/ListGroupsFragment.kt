@@ -53,7 +53,7 @@ class ListGroupsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>, On
 
         // Gets a CursorAdapter
         val activity: Activity = requireActivity()
-        this.adapter = SimpleCursorAdapter(activity, R.layout.item_group, null, FROM_COLUMNS, TO_IDS, 0)
+        adapter = SimpleCursorAdapter(activity, R.layout.item_group, null, FROM_COLUMNS, TO_IDS, 0)
 
         // Gets the ListView from the View list of the parent activity
         val contactsListView = activity.findViewById<ListView>(android.R.id.list)
