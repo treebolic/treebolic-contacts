@@ -50,12 +50,12 @@ abstract class TreebolicSourceActivity(menuId0: Int) : TreebolicBasicActivity(me
         source = savedInstanceState.getString(TreebolicIface.ARG_SOURCE)
     }
 
-    public override fun onSaveInstanceState(savedInstanceState: Bundle) {
+    public override fun onSaveInstanceState(outState: Bundle) {
         // save
-        savedInstanceState.putString(TreebolicIface.ARG_SOURCE, source)
+        outState.putString(TreebolicIface.ARG_SOURCE, source)
 
         // always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState)
+        super.onSaveInstanceState(outState)
     }
 
     // T R E E B O L I C   C O N T E X T
