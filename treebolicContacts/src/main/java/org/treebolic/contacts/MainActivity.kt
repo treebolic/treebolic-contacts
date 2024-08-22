@@ -83,7 +83,7 @@ class MainActivity : AppCompatCommonActivity() {
 
     private fun updateButton() {
         val button = findViewById<ImageButton>(R.id.queryButton)
-        button.setOnClickListener { view: View? -> this.onClick(view) }
+        button.setOnClickListener { view: View? -> onClick(view) }
         button.visibility = View.VISIBLE
     }
 
