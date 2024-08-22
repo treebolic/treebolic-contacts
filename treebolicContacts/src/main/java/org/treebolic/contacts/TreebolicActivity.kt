@@ -21,27 +21,27 @@ class TreebolicActivity : TreebolicSourceActivity(R.menu.treebolic) {
 
     override fun query() {
         // sanity checkAndRequest
-        if (this.providerName == null && this.source == null) {
+        if (providerName == null && source == null) {
             Toast.makeText(this, R.string.error_null_data, Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
         // query
-        widget!!.init(this.providerName, this.source)
+        widget!!.init(providerName, source)
     }
 
-    override fun requery(source: String?) {
-        val fields0 = source?.split(",".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray()
-        checkNotNull(this.source)
-        val fields = this.source!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        if (fields0 != null) {
-            this.source = fields[0] + ',' + (if (fields0.size > 1) fields0[1] else source) + ','
+    override fun requery(newSource: String?) {
+        if (source != null) {
+            val fields = source!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val newFields = newSource?.split(",".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray()
+            if (newFields != null) {
+                source = fields[0] + ',' + (if (newFields.size > 1) newFields[1] else newSource) + ','
+            }
+            Log.d(TAG, "New source: $newSource saved:$source")
         }
-        Log.d(TAG, "New source: " + source + " saved:" + this.source)
-
-        this.restoring = true
-        widget!!.reinit(source)
+        restoring = true
+        widget!!.reinit(newSource)
     }
 
     companion object {
