@@ -52,7 +52,7 @@ class ListContactsFragment : AbstractListContactsCursorFragment(), LoaderManager
 
         // Gets a CursorAdapter
         val context: Context = requireActivity()
-        this.adapter = ImageCursorAdapter(context, R.layout.item_contact, null, from, TO_IDS, 0)
+        adapter = ImageCursorAdapter(context, R.layout.item_contact, null, from, TO_IDS, 0)
 
         // Gets the ListView from the View list of the parent activity
         val activity: Activity = requireActivity()
