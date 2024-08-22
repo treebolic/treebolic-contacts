@@ -113,13 +113,13 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
         LoaderManager.getInstance(this).initLoader(0, null, this)
 
         // Gets a CursorAdapter
-        this.adapter = ImageAdapter(activity, this.rows, R.layout.item_contact_grouped, FROM_KEYS, TO_IDS)
+        adapter = ImageAdapter(activity, rows, R.layout.item_contact_grouped, FROM_KEYS, TO_IDS)
 
         // Sets the adapter for the ListView
         contactsListView.adapter = adapter
 
         // Get groups
-        this.groups = queryGroups(activity)
+        groups = queryGroups(activity)
     }
 
     // L O A D E R
@@ -205,7 +205,7 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
                 }
 
                 // group
-                checkNotNull(this.groups)
+                checkNotNull(groups)
                 val group = groups!![groupId]
                 if (group != null) {
                     for (i in columnIndexes.indices) {
@@ -232,13 +232,13 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
             } while (cursor.moveToNext())
         }
         cursor.close()
-        checkNotNull(this.adapter)
+        checkNotNull(adapter)
         adapter!!.notifyDataSetChanged()
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
         // Delete the reference to the existing Cursor
-        checkNotNull(this.adapter)
+        checkNotNull(adapter)
         adapter!!.notifyDataSetInvalidated()
     }
 
