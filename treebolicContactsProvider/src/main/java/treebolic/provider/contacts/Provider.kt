@@ -88,7 +88,7 @@ class Provider : IProvider {
     // I P R O V I D E R   I N T E R F A C E  (S E T U P)
 
     override fun setHandle(handle: Any) {
-        this.context = handle as Context
+        context = handle as Context
     }
 
     override fun setContext(providerContext: IProviderContext) {
@@ -109,7 +109,7 @@ class Provider : IProvider {
     }
 
     override fun makeTree(source: String?, base: URL?, parameters: Properties?, checkRecursion: Boolean): Tree {
-        this.contactsCount = 0
+        contactsCount = 0
         val tree = buildTree(source, parameters)
         val root = tree.root as TreeMutableNode
         root.content = contactsCount.toString()
@@ -129,23 +129,23 @@ class Provider : IProvider {
         if (parameters != null) {
             val displayParam = parameters.getProperty(Settings.PARAM_DISPLAY)
             if (Settings.VALUE_DISPLAY_FIRST_LAST == displayParam) {
-                this.displayCode = 1
+                displayCode = 1
             } else if (Settings.VALUE_DISPLAY_LAST_FIRST == displayParam) {
-                this.displayCode = 2
+                displayCode = 2
             }
 
             val sortParam = parameters.getProperty(Settings.PARAM_SORT)
             if (Settings.VALUE_SORT_FIRST == sortParam) {
-                this.sortCode = 1
+                sortCode = 1
             } else if (Settings.VALUE_SORT_LAST == sortParam) {
-                this.sortCode = 2
+                sortCode = 2
             }
 
             val mergeGroupsParam = parameters.getProperty(Settings.PARAM_MERGE_GROUPS, "true")
-            this.mergeGroups = ("true" == mergeGroupsParam)
+            mergeGroups = ("true" == mergeGroupsParam)
 
             val photoParam = parameters.getProperty(Settings.PARAM_PHOTO, "false")
-            this.photo = ("true" == photoParam)
+            photo = ("true" == photoParam)
 
             // start
             val groupsParam = parameters.getProperty(Settings.PARAM_GROUPS, "false")
@@ -193,7 +193,7 @@ class Provider : IProvider {
         val nullSource = contactFilter.isNullOrEmpty()
         val selection = if (nullSource) null else Settings.SELECTION_DN_LIKE
         val selectionArgs = if (nullSource) null else arrayOf("%$contactFilter%")
-        val sort = (if (this.sortCode == 1) ContactsContract.Contacts.DISPLAY_NAME else ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC"
+        val sort = (if (sortCode == 1) ContactsContract.Contacts.DISPLAY_NAME else ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC"
 
         val contentResolver = context!!.contentResolver
         val cursor = contentResolver.query( //
@@ -212,7 +212,7 @@ class Provider : IProvider {
                     val id = cursor.getString(Settings.CONTACT_ID_INDEX)
                     val name = cursor.getString(Settings.DISPLAY_NAME_INDEX)
                     val altName = cursor.getString(Settings.DISPLAY_NAME_ALTERNATIVE_INDEX)
-                    val photoThumbnailUri = if (this.photo) cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX) else null
+                    val photoThumbnailUri = if (photo) cursor.getString(Settings.PHOTO_THUMBNAIL_URI_INDEX) else null
 
                     //val photoUri: String = cursor.getString(Settings.PHOTO_URI_INDEX)
                     //val photoThumbnailId: Long  = cursor.getLong(Settings.PHOTO_THUMBNAIL_ID_INDEX)
@@ -241,7 +241,7 @@ class Provider : IProvider {
         var selection = if (nullContactFilter) null else Settings.SELECTION_DN_LIKE
         val selectionArgs = if (nullContactFilter) null else arrayOf("%$contactFilter%")
         val sort =
-            (if (this.sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
+            (if (sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
 
         val extraSelection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + groupFilter + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'"
         selection = if (selection == null) extraSelection else "$selection AND $extraSelection"
@@ -270,7 +270,7 @@ class Provider : IProvider {
                     // row values
                     val name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX)
                     val altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX)
-                    val photoThumbnailUri = if (this.photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
+                    val photoThumbnailUri = if (photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
 
                     val node = makeContactNode(contactId, name, altName, photoThumbnailUri)
                     nodes.add(node)
@@ -337,7 +337,7 @@ class Provider : IProvider {
             }
             cursor.close()
         }
-        if (!this.mergeGroups || nodes == null) {
+        if (!mergeGroups || nodes == null) {
             return nodes
         }
 
@@ -393,7 +393,7 @@ class Provider : IProvider {
 
         // sort
         val sort =
-            (if (this.sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
+            (if (sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
 
         val contentResolver = context!!.contentResolver
         val cursor = contentResolver.query( //
@@ -411,7 +411,7 @@ class Provider : IProvider {
                     val contactId = cursor.getString(Settings.GROUP_MEMBERS_CONTACT_ID_INDEX)
                     val name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX)
                     val altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX)
-                    val photoThumbnailUri = if (this.photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
+                    val photoThumbnailUri = if (photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
                     val groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX)
                     Log.d("\tmember ", "$groupId $contactId $name $altName $photoThumbnailUri")
 
@@ -433,7 +433,7 @@ class Provider : IProvider {
     private fun collectGroupsMembers(vararg groupIDs: String): List<INode?>? {
         val selection = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + " IN " + joinForIn(groupIDs) + " AND " + ContactsContract.Data.MIMETYPE + " = " + "'" + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'"
         val sort =
-            (if (this.sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC, " + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
+            (if (sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC, " + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
 
         val contentResolver = context!!.contentResolver
         val cursor = contentResolver.query( //
@@ -458,7 +458,7 @@ class Provider : IProvider {
 
                     val name = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_INDEX)
                     val altName = cursor.getString(Settings.GROUP_MEMBERS_DISPLAY_NAME_ALTERNATIVE_INDEX)
-                    val photoThumbnailUri = if (this.photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
+                    val photoThumbnailUri = if (photo) cursor.getString(Settings.GROUP_MEMBERS_PHOTO_THUMBNAIL_URI_INDEX) else null
                     val groupId = cursor.getLong(Settings.GROUP_MEMBERS_GROUP_ID_INDEX)
                     Log.d("\tmember ", "$groupId $contactId $name $altName $photoThumbnailUri")
 
@@ -494,7 +494,7 @@ class Provider : IProvider {
         }
 
         var label: String?
-        if (this.displayCode == 1) //first last
+        if (displayCode == 1) //first last
         {
             label = first
             if (first == null) {
@@ -510,7 +510,7 @@ class Provider : IProvider {
             }
         }
 
-        val target = left((if (this.sortCode == 1) name else altName).replaceFirst("^[@# ]*".toRegex(), ""), LABEL_TRUNCATE_AT)
+        val target = left((if (sortCode == 1) name else altName).replaceFirst("^[@# ]*".toRegex(), ""), LABEL_TRUNCATE_AT)
 
         // node
         val node = TreeMutableNode(null, id)
