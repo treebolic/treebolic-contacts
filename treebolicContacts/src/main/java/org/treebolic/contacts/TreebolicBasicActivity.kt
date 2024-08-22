@@ -329,7 +329,7 @@ protected constructor(
         return null
     }
 
-    override fun linkTo(url: String, target: String): Boolean {
+    override fun linkTo(url: String, target: String?): Boolean {
         // if url is handled by client, return query to client, which will handle it by initiating another query
         if (url.startsWith(treebolic.provider.contacts.Settings.URLSCHEME)) {
             val contactId = url.substring(treebolic.provider.contacts.Settings.URLSCHEME.length)
