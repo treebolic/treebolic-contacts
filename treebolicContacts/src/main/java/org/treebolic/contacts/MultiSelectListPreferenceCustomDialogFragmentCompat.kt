@@ -70,7 +70,7 @@ abstract class MultiSelectListPreferenceCustomDialogFragmentCompat : PreferenceD
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent)
 
-            val checkBox = view.findViewById<CheckBox>(this.checkId)
+            val checkBox = view.findViewById<CheckBox>(checkId)
             checkBox.tag = position
             checkBox.setOnClickListener { v: View ->
                 if (entryValues == null) {
