@@ -18,6 +18,7 @@ import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import org.treebolic.TreebolicIface
+import org.treebolic.contacts.ListContactsGroupedFragment.Companion
 import org.treebolic.contacts.Settings.getStringPref
 
 /**
@@ -89,7 +90,10 @@ class ListContactsFragment : AbstractListContactsCursorFragment(), LoaderManager
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
+        if (!cursor.isClosed)
+            return
         Log.d(TAG, "count=" + cursor.count)
+
         // Put the result Cursor in the adapter for the ListView
         adapter!!.swapCursor(cursor)
     }

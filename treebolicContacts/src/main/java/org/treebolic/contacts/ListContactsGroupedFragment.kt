@@ -158,8 +158,10 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
-        Log.d(TAG, "count=" + cursor.count)
+        if (!cursor.isClosed)
+            return
         rows.clear()
+        Log.d(TAG, "count=" + cursor.count)
 
         // Gets adapter's source columns
         val displayPref = getStringPref(requireContext(), Settings.PREF_DISPLAY)
@@ -340,9 +342,8 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
 
         // A D A P T E R  K E Y S
 
-        /*
-	 * Key names in the row mapping to the ListView ids
-	 */
+        // Key names in the row mapping to the ListView ids
+
         private const val CONTACT_ID_KEY = "contact_id"
         private const val DISPLAY_NAME_KEY = "display_name"
         private const val GROUP_KEY = "group"

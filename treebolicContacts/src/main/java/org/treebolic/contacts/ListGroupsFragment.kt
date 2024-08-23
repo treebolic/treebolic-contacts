@@ -88,6 +88,10 @@ class ListGroupsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>, On
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
+        if (!cursor.isClosed)
+            return
+        Log.d(TAG, "count=" + cursor.count)
+
         // Put the result Cursor in the adapter for the ListView
         adapter!!.swapCursor(cursor)
     }
