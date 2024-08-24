@@ -90,7 +90,7 @@ class ListContactsFragment : AbstractListContactsCursorFragment(), LoaderManager
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
-        if (!cursor.isClosed)
+        if (cursor.isClosed)
             return
         Log.d(TAG, "count=" + cursor.count)
 
