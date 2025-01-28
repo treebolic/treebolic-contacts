@@ -301,7 +301,7 @@ protected constructor(
      */
     protected open fun unmarshalArgs(intent: Intent) {
         // retrieve arguments
-        val params = checkNotNull(intent.extras)
+        val params = intent.extras!!
         params.classLoader = classLoader
 
         // retrieve arguments
@@ -476,7 +476,7 @@ protected constructor(
     private fun closeKeyboard() {
         val view = currentFocus
         if (view != null) {
-            val imm = checkNotNull(getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }

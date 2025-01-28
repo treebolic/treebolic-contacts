@@ -72,8 +72,8 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
         }
 
         private fun uri2CircularBitmap(photoUriString: String?): Bitmap {
-            val context: Context = checkNotNull(activity)
-            val bitmap = checkNotNull(queryBitmapFromUri(context, photoUriString))
+            val context = activity as Context
+            val bitmap = queryBitmapFromUri(context, photoUriString)!!
             return roundCrop(bitmap)
         }
     }
@@ -207,7 +207,6 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
                 }
 
                 // group
-                checkNotNull(groups)
                 val group = groups!![groupId]
                 if (group != null) {
                     for (i in columnIndexes.indices) {
@@ -234,13 +233,11 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
             } while (cursor.moveToNext())
         }
         cursor.close()
-        checkNotNull(adapter)
         adapter!!.notifyDataSetChanged()
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
         // Delete the reference to the existing Cursor
-        checkNotNull(adapter)
         adapter!!.notifyDataSetInvalidated()
     }
 

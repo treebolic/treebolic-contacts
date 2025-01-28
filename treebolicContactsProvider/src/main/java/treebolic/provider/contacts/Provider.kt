@@ -346,7 +346,7 @@ class Provider : IProvider {
         var i = 0
         while (i < nodes.size) {
             val node = nodes[i]
-            val label = checkNotNull(node.label)
+            val label = node.label!!
             // kin nodes
             val kinNodes: MutableList<INode> = ArrayList()
             for (j in i + 1 until nodes.size) {
@@ -523,7 +523,7 @@ class Provider : IProvider {
 
         // image
         if (photoThumbnailUri != null) {
-            val bitmap = checkNotNull(Utils.queryBitmapFromUri(context!!, photoThumbnailUri))
+            val bitmap = Utils.queryBitmapFromUri(context!!, photoThumbnailUri)!!
             val roundBitmap = Utils.roundCrop(bitmap)
             val scaledUpBitmap = Utils.scale(roundBitmap, 200, 200)
             val scaledDownBitmap = Utils.scale(roundBitmap, 50, 50)

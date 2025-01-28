@@ -58,7 +58,7 @@ abstract class AbstractListContactsCursorFragment : AbstractListContactsFragment
         }
 
         private fun uri2CircularBitmap(context: Context, photoUriString: String): Bitmap {
-            val bitmap = checkNotNull(queryBitmapFromUri(context, photoUriString))
+            val bitmap = queryBitmapFromUri(context, photoUriString)!!
             return roundCrop(bitmap)
         }
     }

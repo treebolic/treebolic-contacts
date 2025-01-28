@@ -31,10 +31,10 @@ class SettingsActivity : AppCompatCommonPreferenceActivity() {
             addPreferencesFromResource(R.xml.pref_general)
 
             // bind
-            val displayPref = checkNotNull(findPreference<ListPreference>(Settings.PREF_DISPLAY))
+            val displayPref: Preference = findPreference(Settings.PREF_DISPLAY)!!
             displayPref.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
 
-            val sortPref = checkNotNull(findPreference<ListPreference>(Settings.PREF_SORT))
+            val sortPref: Preference = findPreference(Settings.PREF_SORT)!!
             sortPref.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         }
     }
@@ -46,10 +46,10 @@ class SettingsActivity : AppCompatCommonPreferenceActivity() {
             addPreferencesFromResource(R.xml.pref_filter)
 
             // bind
-            val sourcePref = checkNotNull(findPreference<EditTextPreference>(TreebolicIface.PREF_SOURCE))
+            val sourcePref: Preference = findPreference(TreebolicIface.PREF_SOURCE)!!
             sourcePref.summaryProvider = SOURCE_SUMMARY_PROVIDER
 
-            val pref = checkNotNull(findPreference<MultiSelectListPreference>(Settings.PREF_FILTER_GROUPS))
+            val pref: Preference = findPreference(Settings.PREF_FILTER_GROUPS)!!
             pref.summaryProvider = LIST_SUMMARY_PROVIDER
         }
 
@@ -57,7 +57,7 @@ class SettingsActivity : AppCompatCommonPreferenceActivity() {
             val manager: FragmentManager
             try {
                 manager = parentFragmentManager
-            } catch (e: IllegalStateException) {
+            } catch (_: IllegalStateException) {
                 return
             }
 
@@ -82,9 +82,8 @@ class SettingsActivity : AppCompatCommonPreferenceActivity() {
              */
             private val SOURCE_SUMMARY_PROVIDER = SummaryProvider { preference: EditTextPreference ->
                 val context = preference.context
-                val prefs = checkNotNull(preference.sharedPreferences)
                 val desc = context.getString(R.string.pref_description_source)
-                var value = prefs.getString(preference.key, null)
+                var value = preference.sharedPreferences!!.getString(preference.key, null)
                 value = if (value.isNullOrEmpty()) {
                     context.getString(R.string.none)
                 } else {

@@ -30,7 +30,6 @@ class GroupPreferenceDialogFragmentCompat : MultiSelectListPreferenceCustomDialo
         get() {
             val entryCount = if (entryValues == null) 0 else entryValues!!.size
             val data = List(entryCount) {
-                checkNotNull(entries)
                 val checked = newValues.contains(entryValues!![it].toString())
                 val row: MutableMap<String, Any?> = HashMap()
                 row["checkAndRequest"] = checked
