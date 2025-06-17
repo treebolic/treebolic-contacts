@@ -38,10 +38,10 @@ android {
 
     signingConfigs {
         create("treebolic") {
-            keyAlias = keystoreProperties.getProperty("keyAlias")
-            keyPassword = keystoreProperties.getProperty("keyPassword")
-            storeFile = file(keystoreProperties.getProperty("storeFile"))
-            storePassword = keystoreProperties.getProperty("storePassword")
+            keyAlias = keystoreProperties.getProperty("keyAlias_contacts")
+            keyPassword = keystoreProperties.getProperty("keyPassword_contacts")
+            storeFile = file(keystoreProperties.getProperty("storeFile_contacts"))
+            storePassword = keystoreProperties.getProperty("storePassword_contacts")
         }
     }
 
