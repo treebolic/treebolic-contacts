@@ -18,7 +18,6 @@ import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import org.treebolic.TreebolicIface
-import org.treebolic.contacts.ListContactsGroupedFragment.Companion
 import org.treebolic.contacts.Settings.getStringPref
 import org.treebolic.contacts.Settings.getStringsPref
 
@@ -89,11 +88,11 @@ class ListContactsUnGroupedFragment : AbstractListContactsCursorFragment(), Load
         Log.d(TAG, "selection=$selection")
         val activity: Activity = requireActivity()
         return CursorLoader(
-            activity,  //
-            treebolic.provider.contacts.Settings.GROUP_MEMBERS_URI,  //
-            treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION,  //
-            selection,  //
-            selectionArgs,  //
+            activity,  
+            treebolic.provider.contacts.Settings.GROUP_MEMBERS_URI,  
+            treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION,  
+            selection,  
+            selectionArgs,  
             sort
         )
     }
@@ -136,23 +135,23 @@ class ListContactsUnGroupedFragment : AbstractListContactsCursorFragment(), Load
         init {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 FROM_COLUMNS = arrayOf(
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  //
-                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  
+                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  
                     ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET
                 )
                 FROM_COLUMNS_ALT = arrayOf(
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  //
-                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  
+                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  
                     ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET
                 )
                 TO_IDS = intArrayOf(R.id.display_name, R.id.group, R.id.account)
             } else {
                 FROM_COLUMNS = arrayOf(
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  
                     ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID
                 )
                 FROM_COLUMNS_ALT = arrayOf(
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  
                     ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID
                 )
                 TO_IDS = intArrayOf(R.id.display_name, R.id.group)

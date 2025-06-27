@@ -196,8 +196,8 @@ class Provider : IProvider {
         val sort = (if (sortCode == 1) ContactsContract.Contacts.DISPLAY_NAME else ContactsContract.Contacts.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC"
 
         val contentResolver = context!!.contentResolver
-        val cursor = contentResolver.query( //
-            Settings.CONTACT_URI,  //
+        val cursor = contentResolver.query( 
+            Settings.CONTACT_URI,  
             Settings.CONTACT_PROJECTION,  // columns to return for each row
             selection,  // selection criteria
             selectionArgs,  // selection criteria arguments to placeholders
@@ -248,10 +248,10 @@ class Provider : IProvider {
         Log.d(TAG, "selection=$selection")
 
         val contentResolver = context!!.contentResolver
-        val cursor = contentResolver.query( //
-            Settings.GROUP_MEMBERS_URI,  //
+        val cursor = contentResolver.query( 
+            Settings.GROUP_MEMBERS_URI,  
             Settings.GROUP_MEMBERS_PROJECTION,  // columns to return for each row
-            selection,  //
+            selection,  
             selectionArgs,  // selection criteria arguments to placeholders
             sort
         ) // sort order for the returned rows
@@ -291,12 +291,12 @@ class Provider : IProvider {
      */
     private fun collectGroups(contactFilter: String?): List<INode>? {
         val contentResolver = context!!.contentResolver
-        val cursor = contentResolver.query( //
-            Settings.GROUP_URI,  //
-            Settings.GROUP_PROJECTION,  //
-            null,  //
-            null,  //
-            ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC" //
+        val cursor = contentResolver.query( 
+            Settings.GROUP_URI,  
+            Settings.GROUP_PROJECTION,  
+            null,  
+            null,  
+            ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC" 
         )
         var nodes: MutableList<INode>? = null
         if (cursor != null) {
@@ -396,12 +396,12 @@ class Provider : IProvider {
             (if (sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC," + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
 
         val contentResolver = context!!.contentResolver
-        val cursor = contentResolver.query( //
-            Settings.GROUP_MEMBERS_URI,  //
-            Settings.GROUP_MEMBERS_PROJECTION,  //
-            selection,  //
-            selectionArgs,  //
-            sort //
+        val cursor = contentResolver.query( 
+            Settings.GROUP_MEMBERS_URI,  
+            Settings.GROUP_MEMBERS_PROJECTION,  
+            selection,  
+            selectionArgs,  
+            sort 
         )
         var nodes: MutableList<INode>? = null
         if (cursor != null) {
@@ -436,12 +436,12 @@ class Provider : IProvider {
             (if (sortCode == 1) ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME else ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE) + " COLLATE LOCALIZED ASC, " + ContactsContract.CommonDataKinds.GroupMembership.CONTACT_ID
 
         val contentResolver = context!!.contentResolver
-        val cursor = contentResolver.query( //
-            Settings.GROUP_MEMBERS_URI,  //
-            Settings.GROUP_MEMBERS_PROJECTION,  //
-            selection,  //
-            null,  //
-            sort //
+        val cursor = contentResolver.query( 
+            Settings.GROUP_MEMBERS_URI,  
+            Settings.GROUP_MEMBERS_PROJECTION,  
+            selection,  
+            null,  
+            sort 
         )
         var nodes: MutableList<INode?>? = null
         if (cursor != null) {
@@ -653,7 +653,7 @@ class Provider : IProvider {
          * Image array
          */
         private val images: Array<Image> = arrayOf(
-            //
+            
             treebolic.glue.Image(Provider::class.java.getResource("images/root.png")),  // ROOT
             treebolic.glue.Image(Provider::class.java.getResource("images/folder.png")),  // FOLDER
             treebolic.glue.Image(Provider::class.java.getResource("images/contact.png")),  // CONTACT
@@ -775,8 +775,8 @@ class Provider : IProvider {
             val selectionArgs = if (nullSource) null else arrayOf("%$contactFilter%")
 
             val contentResolver = context.contentResolver
-            val cursor = contentResolver.query( //
-                Settings.CONTACT_URI,  //
+            val cursor = contentResolver.query( 
+                Settings.CONTACT_URI,  
                 null,  // Settings.BASE_CONTACT_PROJECTION, // columns to return for each row
                 selection,  // selection criteria
                 selectionArgs,  // selection criteria arguments to placeholders
@@ -803,10 +803,10 @@ class Provider : IProvider {
             Log.d(TAG, "selection=$selection")
 
             val contentResolver = context.contentResolver
-            val cursor = contentResolver.query( //
-                Settings.GROUP_MEMBERS_URI,  //
+            val cursor = contentResolver.query( 
+                Settings.GROUP_MEMBERS_URI,  
                 null,  //Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_MEMBERS_PROJECTION, // columns to return for each row
-                selection,  //
+                selection,  
                 selectionArgs,  // selection criteria arguments to placeholders
                 null
             ) // sort order for the returned rows
@@ -822,12 +822,12 @@ class Provider : IProvider {
         @JvmStatic
         fun countGroups(context: Context): Long {
             val contentResolver = context.contentResolver
-            val cursor = contentResolver.query( //
-                Settings.GROUP_URI,  //
-                null,  // Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_PROJECTION, //
-                null,  //
-                null,  //
-                null //
+            val cursor = contentResolver.query( 
+                Settings.GROUP_URI,  
+                null,  // Settings.COUNT_PROJECTION, //Settings.BASE_GROUP_PROJECTION, 
+                null,  
+                null,  
+                null 
             )
             return count(cursor)
         }
@@ -852,12 +852,12 @@ class Provider : IProvider {
             val selectionArgs = if (nullSource) null else arrayOf("%$contactFilter%")
 
             val contentResolver = context.contentResolver
-            val cursor = contentResolver.query( //
-                Settings.GROUP_MEMBERS_URI,  //
-                null,  // Settings.COUNT_PROJECTION, // Settings.BASE_GROUP_MEMBERS_PROJECTION, //
-                selection,  //
-                selectionArgs,  //
-                null //
+            val cursor = contentResolver.query( 
+                Settings.GROUP_MEMBERS_URI,  
+                null,  // Settings.COUNT_PROJECTION, // Settings.BASE_GROUP_MEMBERS_PROJECTION, 
+                selection,  
+                selectionArgs,  
+                null 
             )
             return count(cursor)
         }
@@ -887,12 +887,12 @@ class Provider : IProvider {
 
         private fun getGroups(context: Context): Array<String> {
             val contentResolver = context.contentResolver
-            val cursor = contentResolver.query( //
-                Settings.GROUP_URI,  //
-                Settings.BASE_GROUP_PROJECTION,  //
-                null,  //
-                null,  //
-                null //
+            val cursor = contentResolver.query( 
+                Settings.GROUP_URI,  
+                Settings.BASE_GROUP_PROJECTION,  
+                null,  
+                null,  
+                null 
             )
             val groupIDs: MutableList<String> = ArrayList()
             if (cursor != null) {

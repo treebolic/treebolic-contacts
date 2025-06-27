@@ -18,7 +18,6 @@ import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import org.treebolic.TreebolicIface
-import org.treebolic.contacts.ListContactsGroupedFragment.Companion
 import org.treebolic.contacts.Settings.getStringPref
 
 /**
@@ -80,11 +79,11 @@ class ListContactsFragment : AbstractListContactsCursorFragment(), LoaderManager
         // Starts the query
         val activity: Activity = requireActivity()
         return CursorLoader(
-            activity,  //
-            treebolic.provider.contacts.Settings.CONTACT_URI,  //
-            treebolic.provider.contacts.Settings.CONTACT_PROJECTION,  //
-            selection,  //
-            selectionArgs,  //
+            activity,  
+            treebolic.provider.contacts.Settings.CONTACT_URI,  
+            treebolic.provider.contacts.Settings.CONTACT_PROJECTION,  
+            selection,  
+            selectionArgs,  
             sort
         )
     }

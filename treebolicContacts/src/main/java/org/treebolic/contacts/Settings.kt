@@ -6,8 +6,9 @@ package org.treebolic.contacts
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.preference.PreferenceManager
 import org.treebolic.TreebolicIface
 import treebolic.provider.contacts.Settings
@@ -63,11 +64,11 @@ internal object Settings {
     /**
      * Default CSS
      */
-    const val STYLE_DEFAULT: String = ".content { }\n" +  //
-            ".link {color: #FFA500;font-size: small;}\n" +  //
-            ".linking {color: #FFA500; font-size: small; }" +  //
-            ".mount {color: #CD5C5C; font-size: small;}" +  //
-            ".mounting {color: #CD5C5C; font-size: small; }" +  //
+    const val STYLE_DEFAULT: String = ".content { }\n" +  
+            ".link {color: #FFA500;font-size: small;}\n" +  
+            ".linking {color: #FFA500; font-size: small; }" +  
+            ".mount {color: #CD5C5C; font-size: small;}" +  
+            ".mounting {color: #CD5C5C; font-size: small; }" +  
             ".searching {color: #FF7F50; font-size: small; }"
 
     /**
@@ -78,7 +79,7 @@ internal object Settings {
     @Suppress("EmptyMethod")
     @JvmStatic
     fun setDefaults(context: Context?) {
-        //
+        
     }
 
     /**
@@ -114,7 +115,7 @@ internal object Settings {
     @SuppressLint("CommitPrefEdits", "ApplySharedPref")
     private fun putStringPref(context: Context, @Suppress("SameParameterValue") key: String, value: String) {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPref.edit().putString(key, value).commit()
+        sharedPref.edit(commit = true) { putString(key, value) }
     }
 
     /**
@@ -217,12 +218,12 @@ internal object Settings {
         val intent = Intent()
 
         if (apiLevel >= 9) {
-            intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.setData(Uri.parse("package:$pkgName"))
+            intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            intent.data = "package:$pkgName".toUri()
         } else {
             val appPkgName = if (apiLevel == 8) "pkg" else "com.android.settings.ApplicationPkgName"
 
-            intent.setAction(Intent.ACTION_VIEW)
+            intent.action = Intent.ACTION_VIEW
             intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails")
             intent.putExtra(appPkgName, pkgName)
         }

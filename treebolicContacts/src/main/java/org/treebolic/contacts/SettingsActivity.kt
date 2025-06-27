@@ -108,10 +108,10 @@ class SettingsActivity : AppCompatCommonPreferenceActivity() {
             val header: CharSequence = context.getString(R.string.pref_description_group_filter)
             val values = preference.getPersistedStringSet(null)
             var summary = header.toString() + '\n'
-            if (values == null || values.isEmpty()) {
-                summary += context.getString(R.string.all)
+            summary += if (values == null || values.isEmpty()) {
+                context.getString(R.string.all)
             } else {
-                summary += setToString(values)
+                setToString(values)
             }
             summary
         }

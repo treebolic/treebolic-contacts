@@ -40,6 +40,8 @@ import treebolic.glue.component.Surface
 import treebolic.glue.component.Utils
 import java.net.URL
 import java.util.Properties
+import androidx.core.net.toUri
+import androidx.core.content.edit
 
 /**
  * Treebolic basic activity
@@ -72,7 +74,7 @@ protected constructor(
     private var cssStyle: String? = null
 
     override fun getStyle(): String? {
-        return if (cssStyle != null) cssStyle else  //
+        return if (cssStyle != null) cssStyle else  
             Settings.STYLE_DEFAULT
     }
 
@@ -181,10 +183,11 @@ protected constructor(
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val hasRun = prefs.getBoolean(Settings.PREF_FIRSTRUN, false)
         if (!hasRun) {
-            val edit = prefs.edit()
+            prefs.edit {
 
-            // flag as 'has run'
-            edit.putBoolean(Settings.PREF_FIRSTRUN, true).apply()
+                // flag as 'has run'
+                putBoolean(Settings.PREF_FIRSTRUN, true)
+            }
 
             // tips
             Tip.show(supportFragmentManager)
@@ -310,12 +313,12 @@ protected constructor(
         settings = params.getString(TreebolicIface.ARG_SETTINGS)
         cssStyle = params.getString(TreebolicIface.ARG_STYLE)
         @Suppress("DEPRECATION")
-        parentActivityIntentArg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
-            params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY, Intent::class.java) else  //
+        parentActivityIntentArg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) 
+            params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY, Intent::class.java) else  
             params.getParcelable(TreebolicIface.ARG_PARENTACTIVITY)
         @Suppress("DEPRECATION")
-        more = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) //
-            params.getParcelable(TreebolicIface.ARG_MORE, Bundle::class.java) else  //
+        more = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) 
+            params.getParcelable(TreebolicIface.ARG_MORE, Bundle::class.java) else  
             params.getParcelable(TreebolicIface.ARG_MORE)
     }
 
@@ -335,7 +338,7 @@ protected constructor(
             val contactId = url.substring(treebolic.provider.contacts.Settings.URLSCHEME.length)
             val intent = Intent(Intent.ACTION_VIEW)
             val uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactId)
-            intent.setData(uri)
+            intent.data = uri
             startActivity(intent)
             return true
         }
@@ -343,17 +346,17 @@ protected constructor(
         // standard handling
         try {
             val intent = Intent(Intent.ACTION_VIEW)
-            val uri = Uri.parse(url)
+            val uri = url.toUri()
             val extension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
             val mimetype = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
             if (mimetype == null) {
-                intent.setData(uri)
+                intent.data = uri
             } else {
                 intent.setDataAndType(uri, mimetype)
             }
             startActivity(intent)
             return true
-        } catch (ignored: Exception) {
+        } catch (_: Exception) {
             Toast.makeText(this, R.string.error_link, Toast.LENGTH_LONG).show()
         }
         return false

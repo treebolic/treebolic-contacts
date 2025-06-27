@@ -35,6 +35,7 @@ import treebolic.provider.contacts.Permissions.checkAndRequest
 import treebolic.provider.contacts.Provider
 import treebolic.provider.contacts.Settings.getBooleanPref
 import treebolic.provider.contacts.Settings.getStringPref
+import androidx.core.content.edit
 
 /**
  * Main activity
@@ -186,7 +187,7 @@ class MainActivity : AppCompatCommonActivity() {
             setDefaults(this)
 
             // flag as initialized
-            sharedPref.edit().putBoolean(Settings.PREF_INITIALIZED, true).commit()
+            sharedPref.edit(commit = true) { putBoolean(Settings.PREF_INITIALIZED, true) }
         }
     }
 

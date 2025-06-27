@@ -8,7 +8,6 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
@@ -18,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
+import androidx.core.net.toUri
 import treebolic.provider.contacts.Settings
 import treebolic.provider.contacts.Utils.queryBitmapFromUri
 import treebolic.provider.contacts.Utils.roundCrop
@@ -110,14 +110,14 @@ abstract class AbstractListContactsCursorFragment : AbstractListContactsFragment
         val sb = XSpannableStringBuilder()
         val labels = arrayOf("content Uri", "thumbnail Uri", "photo Uri", "thumbnail id", "photo id")
         showDialog(
-            sb,  //
-            contactId,  //
-            if (thumbnailUri != null) Uri.parse(thumbnailUri) else (if (photoUri != null) Uri.parse(photoUri) else null),  //
-            labels,  //
-            contactContentUri.toString(),  //
-            thumbnailUri,  //
-            photoUri,  //
-            thumbnailId,  //
+            sb,  
+            contactId,  
+            thumbnailUri?.toUri() ?: photoUri?.toUri(),  
+            labels,  
+            contactContentUri.toString(),  
+            thumbnailUri,  
+            photoUri,  
+            thumbnailId,  
             photoId
         )
     }

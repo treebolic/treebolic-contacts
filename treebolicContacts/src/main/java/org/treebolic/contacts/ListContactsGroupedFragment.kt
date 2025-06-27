@@ -8,7 +8,6 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -21,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.SimpleAdapter
+import androidx.core.net.toUri
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
@@ -58,12 +58,10 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
 
             val item = getItem(position) as HashMap<*, *>
             if (item.containsKey(PHOTO_THUMBNAIL_URI_KEY)) {
-                val thumbnailPhotoUri = item[PHOTO_THUMBNAIL_URI_KEY] as String?
-                //imageView.setImageURI(Uri.parse(thumbnailPhotoUri))
+                val thumbnailPhotoUri = item[PHOTO_THUMBNAIL_URI_KEY] as String
                 imageView.setImageBitmap(uri2CircularBitmap(thumbnailPhotoUri))
             } else if (item.containsKey(PHOTO_URI_KEY)) {
-                val photoUri = item[PHOTO_URI_KEY] as String?
-                //imageView.setImageURI(Uri.parse(photoUri))
+                val photoUri = item[PHOTO_URI_KEY] as String
                 imageView.setImageBitmap(uri2CircularBitmap(photoUri))
             } else {
                 imageView.setImageResource(R.drawable.ic_contact)
@@ -71,7 +69,7 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
             return view
         }
 
-        private fun uri2CircularBitmap(photoUriString: String?): Bitmap {
+        private fun uri2CircularBitmap(photoUriString: String): Bitmap {
             val context = activity as Context
             val bitmap = queryBitmapFromUri(context, photoUriString)!!
             return roundCrop(bitmap)
@@ -148,11 +146,11 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
         Log.d(TAG, "selection=$selection")
         val activity: Activity = requireActivity()
         return CursorLoader(
-            activity,  //
-            treebolic.provider.contacts.Settings.GROUP_MEMBERS_URI,  //
-            treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION,  //
-            selection,  //
-            selectionArgs,  //
+            activity,  
+            treebolic.provider.contacts.Settings.GROUP_MEMBERS_URI,  
+            treebolic.provider.contacts.Settings.GROUP_MEMBERS_PROJECTION,  
+            selection,  
+            selectionArgs,  
             sort
         )
     }
@@ -274,14 +272,14 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
         val sb = XSpannableStringBuilder()
         val labels = arrayOf("content Uri", "thumbnail Uri", "photo Uri", "thumbnail id", "photo id")
         showDialog(
-            sb,  //
-            contactId!!,  //
-            if (thumbnailUri != null) Uri.parse(thumbnailUri) else (if (photoUri != null) Uri.parse(photoUri) else null),  //
-            labels,  //
-            contactContentUri?.toString() ?: "",  //
-            thumbnailUri,  //
-            photoUri,  //
-            thumbnailId,  //
+            sb,  
+            contactId!!,  
+            thumbnailUri?.toUri() ?: photoUri?.toUri(),  
+            labels,  
+            contactContentUri?.toString() ?: "",  
+            thumbnailUri,  
+            photoUri,  
+            thumbnailId,  
             photoId
         )
     }
@@ -310,27 +308,23 @@ class ListContactsGroupedFragment : AbstractListContactsFragment(), LoaderManage
         init {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                 FROM_COLUMNS = arrayOf(
-                    //
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  //
-                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  
+                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  
                     ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,
                 )
                 FROM_COLUMNS_ALT = arrayOf(
-                    //
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  //
-                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  
+                    ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,  
                     ContactsContract.CommonDataKinds.GroupMembership.ACCOUNT_TYPE_AND_DATA_SET,
                 )
                 TO_IDS = intArrayOf(R.id.display_name, R.id.group, R.id.account)
             } else {
                 FROM_COLUMNS = arrayOf(
-                    //
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME,  
                     ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,
                 )
                 FROM_COLUMNS_ALT = arrayOf(
-                    //
-                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  //
+                    ContactsContract.CommonDataKinds.GroupMembership.DISPLAY_NAME_ALTERNATIVE,  
                     ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,
                 )
                 TO_IDS = intArrayOf(R.id.display_name, R.id.group)

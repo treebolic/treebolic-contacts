@@ -47,11 +47,11 @@ class GroupPreference : MultiSelectListPreference {
         val sort = ContactsContract.Groups.TITLE + " COLLATE LOCALIZED ASC"
 
         val contentResolver = context.contentResolver
-        val cursor = contentResolver.query( //
-            ContactsContract.Groups.CONTENT_URI,  //
-            Settings.GROUP_PROJECTION,  //
-            null,  //
-            null,  //
+        val cursor = contentResolver.query( 
+            ContactsContract.Groups.CONTENT_URI,  
+            Settings.GROUP_PROJECTION,  
+            null,  
+            null,  
             sort
         )
 

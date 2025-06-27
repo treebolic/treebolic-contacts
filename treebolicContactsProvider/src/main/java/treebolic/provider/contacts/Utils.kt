@@ -15,11 +15,12 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
-import android.net.Uri
 import android.os.Build
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.util.Base64
+import androidx.core.graphics.createBitmap
+import androidx.core.net.toUri
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
@@ -81,16 +82,16 @@ object Utils {
      */
     @JvmStatic
     @Suppress("deprecation")
-    fun queryBitmapFromUri(context: Context, uriStr: String?): Bitmap? {
+    fun queryBitmapFromUri(context: Context, uriStr: String): Bitmap? {
         try {
-            val uri = Uri.parse(uriStr)
+            val uri = uriStr.toUri()
             if (Build.VERSION.SDK_INT >= 28) {
                 val source = ImageDecoder.createSource(context.contentResolver, uri)
                 return ImageDecoder.decodeBitmap(source) { decoder: ImageDecoder, _: ImageInfo?, _: ImageDecoder.Source? -> decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE }
             } else {
                 return MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
             }
-        } catch (ignored: IOException) {
+        } catch (_: IOException) {
 
         }
         return null
@@ -131,7 +132,7 @@ object Utils {
         val w = bitmap.width
         val h = bitmap.height
         val h2 = h / 2f
-        val output = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val output = createBitmap(w, h)
         val canvas = Canvas(output)
         canvas.drawARGB(0, 0, 0, 0)
         val rect = Rect(0, 0, w, h)
@@ -142,7 +143,7 @@ object Utils {
         paint.color = color
         canvas.drawCircle(h2, h2, h2, paint) // canvas.drawRoundRect(rect, roundPx, roundPx, paint)
 
-        paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
         canvas.drawBitmap(bitmap, rect, rect, paint)
 
         return output
