@@ -29,7 +29,6 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "17"
     }
 }
 
@@ -38,7 +37,7 @@ dependencies {
     implementation(libs.treebolic.mutable)
     implementation(libs.treebolic.loadbalancer)
 
-    implementation(project (":treebolicGlue"))
+    implementation(project(":treebolicGlue"))
 
     implementation(libs.core.ktx)
     implementation(libs.preference.ktx)
