@@ -78,7 +78,7 @@ internal object Settings {
      */
     @Suppress("EmptyMethod")
     @JvmStatic
-    fun setDefaults(context: Context?) {
+    fun setDefaults(@Suppress("unused") context: Context?) {
         
     }
 

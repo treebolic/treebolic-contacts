@@ -204,7 +204,7 @@ class MainActivity : AppCompatCommonActivity() {
      *
      * @param view view
      */
-    private fun onClick(view: View?) {
+    private fun onClick(@Suppress("unused") view: View?) {
         query()
     }
 

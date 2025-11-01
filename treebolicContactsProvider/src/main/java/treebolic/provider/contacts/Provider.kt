@@ -592,7 +592,7 @@ class Provider : IProvider {
         if (str == null) {
             return null
         }
-        return if (str.length > n) str.substring(0, n).lowercase(Locale.getDefault()) else str.lowercase(Locale.getDefault())
+        return if (str.length > n) str.take(n).lowercase(Locale.getDefault()) else str.lowercase(Locale.getDefault())
     }
 
     /**
