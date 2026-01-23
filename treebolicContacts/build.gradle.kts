@@ -91,7 +91,6 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.core.ktx)
-    implementation(libs.multidex)
     coreLibraryDesugaring(libs.desugar)
 
     testImplementation(libs.junit)
