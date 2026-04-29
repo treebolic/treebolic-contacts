@@ -18,7 +18,6 @@
 		android:id="@+id/action_filter"
 		android:orderInCategory="100"
 		android:icon="@drawable/ic_filter"
-		android:iconTint="?attr/colorOnCustom"
 		android:title="@string/action_filter"
 		app:showAsAction="ifRoom" />
 	<item
