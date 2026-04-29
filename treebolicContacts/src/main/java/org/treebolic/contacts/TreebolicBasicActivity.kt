@@ -29,11 +29,11 @@ import com.google.android.material.snackbar.Snackbar
 import org.treebolic.ActionBarColorUtils.getActionBarForegroundColorFromTheme
 import org.treebolic.AppCompatCommonActivity
 import org.treebolic.ColorUtils.fetchColors
+import org.treebolic.ColorUtils.tint
 import org.treebolic.TreebolicIface
 import org.treebolic.guide.AboutActivity
 import org.treebolic.guide.HelpActivity
 import org.treebolic.guide.Tip
-import org.treebolic.search.ColorUtils.tint
 import org.treebolic.search.SearchSettings
 import treebolic.IContext
 import treebolic.Widget
@@ -237,7 +237,7 @@ protected constructor(
 
         // icon tint
         val iconTint = getActionBarForegroundColorFromTheme(this)
-        tint(iconTint, menu, R.id.action_search_run, R.id.action_search_reset, R.id.action_search_settings)
+        tint(iconTint, menu, R.id.action_search_run, R.id.action_search_reset, R.id.action_search_settings, R.id.action_filter)
 
         return super.onCreateOptionsMenu(menu)
     }

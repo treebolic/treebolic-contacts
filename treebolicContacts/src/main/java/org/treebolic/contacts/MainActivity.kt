@@ -16,13 +16,16 @@ import android.widget.ImageButton
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.bbou.donate.DonateActivity
 import com.bbou.others.OthersActivity
 import com.bbou.rate.AppRate.promptRate
 import com.bbou.rate.AppRate.rate
+import org.treebolic.ActionBarColorUtils.getActionBarForegroundColorFromTheme
 import org.treebolic.AppCompatCommonActivity
+import org.treebolic.ColorUtils.tint
 import org.treebolic.TreebolicIface
 import org.treebolic.contacts.Settings.applicationSettings
 import org.treebolic.contacts.Settings.getStringsPref
@@ -35,7 +38,6 @@ import treebolic.provider.contacts.Permissions.checkAndRequest
 import treebolic.provider.contacts.Provider
 import treebolic.provider.contacts.Settings.getBooleanPref
 import treebolic.provider.contacts.Settings.getStringPref
-import androidx.core.content.edit
 
 /**
  * Main activity
@@ -93,6 +95,10 @@ class MainActivity : AppCompatCommonActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+
+        val iconTint = getActionBarForegroundColorFromTheme(this)
+        tint(iconTint, menu, R.id.action_filter)
+
         return true
     }
 
