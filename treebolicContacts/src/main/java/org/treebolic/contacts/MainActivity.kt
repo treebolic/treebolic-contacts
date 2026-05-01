@@ -35,6 +35,7 @@ import org.treebolic.dialog
 import org.treebolic.guide.AboutActivity
 import org.treebolic.guide.HelpActivity
 import org.treebolic.guide.Tip.Companion.show
+import org.treebolic.makeDialog
 import treebolic.model.ModelDump
 import treebolic.provider.contacts.Permissions.checkAndRequest
 import treebolic.provider.contacts.Provider
@@ -143,9 +144,10 @@ class MainActivity : AppCompatCommonActivity() {
                 provider.setHandle(this)
                 val model = provider.makeModel(null, null, null)
                 val dump = ModelDump.toString(model)
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage(dump)
-                builder.show()
+
+                makeDialog(this)
+                    .setMessage(dump)
+                    .show()
                 true
             }
 

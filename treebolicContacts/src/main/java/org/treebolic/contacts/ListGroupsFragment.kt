@@ -28,6 +28,7 @@ import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import org.treebolic.contacts.AbstractListContactsFragment.XSpannableStringBuilder
 import org.treebolic.contacts.Settings.getStringsPref
+import org.treebolic.makeDialog
 
 /**
  * Fragment with list of contacts
@@ -108,7 +109,7 @@ class ListGroupsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>, On
         val adapter = parent.adapter as SimpleCursorAdapter
         val cursor = adapter.cursor
 
-        Log.d(TAG, join(cursor.columnNames))
+        Log.d(TAG, cursor.columnNames.joinToString(separator = ",", prefix = "{", postfix = "}"))
 
         // Move to the selected contact
         cursor.moveToPosition(position)
@@ -124,57 +125,40 @@ class ListGroupsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>, On
 
         // Buffer
         val sb = XSpannableStringBuilder()
-        sb.append("Group ID", StyleSpan(Typeface.BOLD), 0)
+            .append("Group ID", StyleSpan(Typeface.BOLD), 0)
             .append('\n')
             .append(groupId)
             .append('\n')
-        sb.append("systemId ID", StyleSpan(Typeface.BOLD), 0)
+            .append("systemId ID", StyleSpan(Typeface.BOLD), 0)
             .append('\n')
             .append(systemId ?: "null")
             .append('\n')
-        sb.append("Title", StyleSpan(Typeface.BOLD), 0)
+            .append("Title", StyleSpan(Typeface.BOLD), 0)
             .append('\n')
             .append(title ?: "null")
             .append('\n')
-        sb.append("Account", StyleSpan(Typeface.BOLD), 0)
+            .append("Account", StyleSpan(Typeface.BOLD), 0)
             .append('\n')
             .append(account ?: "null")
             .append('\n')
-        sb.append("Account type", StyleSpan(Typeface.BOLD), 0)
+            .append("Account type", StyleSpan(Typeface.BOLD), 0)
             .append('\n')
             .append(accountType ?: "null")
             .append('\n')
 
         // view
-        val activity: Activity = requireActivity()
-        val builder = AlertDialog.Builder(activity)
-        val inflater = activity.layoutInflater
-        @SuppressLint("InflateParams") val dialogView = inflater.inflate(R.layout.detail_contact, null)
+        @SuppressLint("InflateParams") val dialogView = layoutInflater.inflate(R.layout.detail_contact, null)
         val textView = dialogView.findViewById<TextView>(android.R.id.text1)
         val imageView = dialogView.findViewById<ImageView>(R.id.photo)
+
         textView.text = sb
         imageView.setImageResource(R.drawable.ic_group_large)
 
-        builder.setView(dialogView).setCancelable(false).setPositiveButton("OK") { _: DialogInterface?, _: Int -> }
-        builder.show()
-    }
-
-    // U T I L S
-
-    private fun join(strings: Array<String>): String {
-        val sb = StringBuilder()
-        var first = true
-        sb.append('{')
-        for (str in strings) {
-            if (first) {
-                first = false
-            } else {
-                sb.append(',')
-            }
-            sb.append(str)
-        }
-        sb.append('}')
-        return sb.toString()
+        makeDialog(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton("OK") { _, _ -> }
+            .show()
     }
 
     companion object {

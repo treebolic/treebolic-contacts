@@ -19,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import org.treebolic.makeDialog
 
 /**
  * Abstract fragment for list of contacts
@@ -66,21 +67,22 @@ abstract class AbstractListContactsFragment : Fragment() {
         }
 
         // view
-        val activity: Activity = requireActivity()
-        val builder = AlertDialog.Builder(activity)
-        val inflater = activity.layoutInflater
-        @SuppressLint("InflateParams") val dialogView = inflater.inflate(R.layout.detail_contact, null)
+        @SuppressLint("InflateParams") val dialogView = layoutInflater.inflate(R.layout.detail_contact, null)
         val textView = dialogView.findViewById<TextView>(android.R.id.text1)
-        val imageView = dialogView.findViewById<ImageView>(R.id.photo)
         textView.text = sb
+
+        val imageView = dialogView.findViewById<ImageView>(R.id.photo)
         if (photoUri != null) {
             imageView.setImageURI(photoUri)
         } else {
             imageView.setImageResource(R.drawable.ic_contact_large)
         }
 
-        builder.setView(dialogView).setCancelable(false).setPositiveButton("OK") { _: DialogInterface?, _: Int -> }
-        builder.show()
+        makeDialog(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton("OK") { _, _ -> }
+            .show()
     }
 
     // M O R E

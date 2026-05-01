@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import org.treebolic.AppCompatCommonActivity
+import org.treebolic.makeDialog
 import treebolic.model.ModelDump
 import treebolic.provider.contacts.Provider
 
@@ -65,9 +66,7 @@ abstract class AbstractActivity : AppCompatCommonActivity() {
             provider.setHandle(this)
             val model = provider.makeModel(null, null, null)
             val dump = ModelDump.toString(model)
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage(dump)
-            builder.show()
+            makeDialog(dump, this).show()
             return true
         } else if (R.id.action_settings == id) {
             val intent = Intent(this, SettingsActivity::class.java)
