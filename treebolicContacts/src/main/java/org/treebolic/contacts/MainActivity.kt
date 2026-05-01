@@ -27,9 +27,11 @@ import org.treebolic.ActionBarColorUtils.getActionBarForegroundColorFromTheme
 import org.treebolic.AppCompatCommonActivity
 import org.treebolic.ColorUtils.tint
 import org.treebolic.TreebolicIface
+import org.treebolic.Version.appVersion
 import org.treebolic.contacts.Settings.applicationSettings
 import org.treebolic.contacts.Settings.getStringsPref
 import org.treebolic.contacts.Settings.setDefaults
+import org.treebolic.dialog
 import org.treebolic.guide.AboutActivity
 import org.treebolic.guide.HelpActivity
 import org.treebolic.guide.Tip.Companion.show
@@ -106,76 +108,114 @@ class MainActivity : AppCompatCommonActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-        if (R.id.action_run == id) {
-            query()
-            return true
-        } else if (R.id.action_list_contacts == id) {
-            val intent = Intent(this, ListContactsActivity::class.java)
-            startActivity(intent)
-            return true
-        } else if (R.id.action_list_grouped_contacts == id) {
-            val intent = Intent(this, ListContactsGroupedActivity::class.java)
-            startActivity(intent)
-            return true
-        } else if (R.id.action_list_ungrouped_contacts == id) {
-            val intent = Intent(this, ListContactsUnGroupedActivity::class.java)
-            startActivity(intent)
-            return true
-        } else if (R.id.action_list_groups == id) {
-            val intent = Intent(this, ListGroupsActivity::class.java)
-            startActivity(intent)
-            return true
-        } else if (R.id.action_model == id) {
-            val provider = Provider()
-            provider.setHandle(this)
-            val model = provider.makeModel(null, null, null)
-            val dump = ModelDump.toString(model)
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage(dump)
-            builder.show()
-            return true
-        } else if (R.id.action_filter == id) {
-            val intent = Intent(this, FilterActivity::class.java)
-            startActivity(intent)
-            return true
-        } else if (R.id.action_settings == id) {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
-            return true
-        } else if (R.id.action_help == id) {
-            startActivity(Intent(this, HelpActivity::class.java))
-            return true
-        } else if (R.id.action_tips == id) {
-            show(supportFragmentManager)
-            return true
-        } else if (R.id.action_about == id) {
-            startActivity(Intent(this, AboutActivity::class.java))
-            return true
-        } else if (R.id.action_others == id) {
-            startActivity(Intent(this, OthersActivity::class.java))
-            return true
-        } else if (R.id.action_donate == id) {
-            startActivity(Intent(this, DonateActivity::class.java))
-            return true
-        } else if (R.id.action_rate == id) {
-            rate(this)
-            return true
-        } else if (R.id.action_app_settings == id) {
-            applicationSettings(this, "org.treebolic.contacts")
-            return true
-        } else if (R.id.action_finish == id) {
-            finish()
-            return true
-        } else if (R.id.action_kill == id) {
-            Process.killProcess(Process.myPid())
-            return true
-        } else {
-            return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_run -> {
+                query()
+                true
+            }
+
+            R.id.action_list_contacts -> {
+                val intent = Intent(this, ListContactsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.action_list_grouped_contacts -> {
+                val intent = Intent(this, ListContactsGroupedActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.action_list_ungrouped_contacts -> {
+                val intent = Intent(this, ListContactsUnGroupedActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.action_list_groups -> {
+                val intent = Intent(this, ListGroupsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.action_model -> {
+                val provider = Provider()
+                provider.setHandle(this)
+                val model = provider.makeModel(null, null, null)
+                val dump = ModelDump.toString(model)
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage(dump)
+                builder.show()
+                true
+            }
+
+            R.id.action_filter -> {
+                val intent = Intent(this, FilterActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            R.id.action_help -> {
+                startActivity(Intent(this, HelpActivity::class.java))
+                true
+            }
+
+            R.id.action_tips -> {
+                show(supportFragmentManager)
+                true
+            }
+
+            R.id.action_about -> {
+                startActivity(Intent(this, AboutActivity::class.java))
+                true
+            }
+
+            R.id.action_version -> {
+                dialog(appVersion(this), this)
+                true
+            }
+
+            R.id.action_others -> {
+                startActivity(Intent(this, OthersActivity::class.java))
+                true
+            }
+
+            R.id.action_donate -> {
+                startActivity(Intent(this, DonateActivity::class.java))
+                true
+            }
+
+            R.id.action_rate -> {
+                rate(this)
+                true
+            }
+
+            R.id.action_app_settings -> {
+                applicationSettings(this, "org.treebolic.contacts")
+                true
+            }
+
+            R.id.action_finish -> {
+                finish()
+                true
+            }
+
+            R.id.action_kill -> {
+                Process.killProcess(Process.myPid())
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    // I N I T I A L I Z E
+// I N I T I A L I Z E
 
     /**
      * Initialize
@@ -197,13 +237,13 @@ class MainActivity : AppCompatCommonActivity() {
         }
     }
 
-    // Q U E R Y
+// Q U E R Y
 
     private fun query() {
         tryStartTreebolic(this)
     }
 
-    // C L I C K
+// C L I C K
 
     /**
      * Click listener
