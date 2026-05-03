@@ -33,7 +33,6 @@ import org.treebolic.contacts.Settings.applicationSettings
 import org.treebolic.contacts.Settings.getStringsPref
 import org.treebolic.contacts.Settings.setDefaults
 import org.treebolic.dialog
-import org.treebolic.glue.BuildConfig
 import org.treebolic.guide.AboutActivity
 import org.treebolic.guide.HelpActivity
 import org.treebolic.guide.Tip.Companion.show
@@ -43,6 +42,7 @@ import treebolic.provider.contacts.Permissions.checkAndRequest
 import treebolic.provider.contacts.Provider
 import treebolic.provider.contacts.Settings.getBooleanPref
 import treebolic.provider.contacts.Settings.getStringPref
+import org.treebolic.common.BuildConfig as CommonBuildConfig
 import org.treebolic.glue.BuildConfig as GlueBuildConfig
 
 /**
@@ -185,6 +185,8 @@ class MainActivity : AppCompatCommonActivity() {
                 val v = appVersion(this.applicationContext)
                     .append(buildTime(BuildConfig.BUILD_TIME, "app"))
                     .append(gitHash(BuildConfig.GIT_HASH, "app"))
+                    .append(buildTime(CommonBuildConfig.BUILD_TIME, "common"))
+                    .append(gitHash(CommonBuildConfig.GIT_HASH, "common"))
                     .append(buildTime(GlueBuildConfig.BUILD_TIME, "glue"))
                     .append(gitHash(GlueBuildConfig.GIT_HASH, "glue"))
                 dialog(v, this)
