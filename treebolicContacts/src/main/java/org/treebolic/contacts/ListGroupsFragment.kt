@@ -5,7 +5,6 @@ package org.treebolic.contacts
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
 import android.database.Cursor
 import android.graphics.Typeface
 import android.os.Bundle
@@ -21,7 +20,6 @@ import android.widget.ImageView
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
