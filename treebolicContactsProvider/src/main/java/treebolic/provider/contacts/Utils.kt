@@ -81,7 +81,6 @@ object Utils {
      * @return bitmap
      */
     @JvmStatic
-    @Suppress("deprecation")
     fun queryBitmapFromUri(context: Context, uriStr: String): Bitmap? {
         try {
             val uri = uriStr.toUri()
