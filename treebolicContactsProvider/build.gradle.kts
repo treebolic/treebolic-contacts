@@ -36,7 +36,6 @@ dependencies {
 
     implementation(project(":treebolicGlue"))
 
-    implementation(libs.core.ktx)
     implementation(libs.preference.ktx)
     implementation(libs.annotation)
 
