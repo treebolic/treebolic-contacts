@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+# Copyright (c) 2026. Bernard Bou
+#
+
 source "lib-artwork.sh"
 
 subdir="treebolic/provider/contacts/images"
